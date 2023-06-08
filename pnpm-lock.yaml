@@ -20,6 +20,12 @@ dependencies:
   react-native-web:
     specifier: ^0.19.4
     version: 0.19.4(react-dom@18.2.0)(react@18.2.0)
+  react-router-dom:
+    specifier: ^6.12.0
+    version: 6.12.0(react-dom@18.2.0)(react@18.2.0)
+  react-router-native:
+    specifier: ^6.12.0
+    version: 6.12.0(react-native@0.71.10)(react@18.2.0)
 
 devDependencies:
   '@types/react':
@@ -2106,6 +2112,11 @@ packages:
       react-test-renderer: 18.2.0(react@18.2.0)
     dev: false
 
+  /@remix-run/router@1.6.3:
+    resolution: {integrity: sha512-EXJysQ7J3veRECd0kZFQwYYd5sJMcq2O/m60zu1W2l3oVQ9xtub8jTOtYRE0+M2iomyG/W3Ps7+vp2kna0C27Q==}
+    engines: {node: '>=14'}
+    dev: false
+
   /@sideway/address@4.1.4:
     resolution: {integrity: sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==}
     dependencies:
@@ -2348,6 +2359,10 @@ packages:
       '@typescript-eslint/types': 5.59.0
       eslint-visitor-keys: 3.4.1
     dev: true
+
+  /@ungap/url-search-params@0.1.4:
+    resolution: {integrity: sha512-RLwrxCTDNiNev9hpr9rDq8NyeQ8Nn0X1we4Wu7Tlf368I8r+7hBj3uObhifhuLk74egaYaSX5nUsBlWz6kjj+A==}
+    dev: false
 
   /@vitejs/plugin-react@4.0.0(vite@4.3.9):
     resolution: {integrity: sha512-HX0XzMjL3hhOYm+0s95pb0Z7F8O81G7joUHgfDd/9J/ZZf5k4xX6QAMFkKsHFxaHlf6X7GD7+XuaZ66ULiJuhQ==}
@@ -5257,6 +5272,42 @@ packages:
   /react-refresh@0.4.3:
     resolution: {integrity: sha512-Hwln1VNuGl/6bVwnd0Xdn1e84gT/8T9aYNL+HAKDArLCS7LWjwr7StE30IEYbIkx0Vi3vs+coQxe+SQDbGbbpA==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /react-router-dom@6.12.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-UzLwZ3ZVaDr6YV0HdjwxuwtDKgwpJx9o1ea9fU0HV4tTvzdB8WPHzlLFMo5orchpIS84e8G4Erlhu7Rl84XDFQ==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.6.3
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-router: 6.12.0(react@18.2.0)
+    dev: false
+
+  /react-router-native@6.12.0(react-native@0.71.10)(react@18.2.0):
+    resolution: {integrity: sha512-ZFthhP3kaMvyvuQnHWMJ1u3GzXHHoXAKXYpjeVkhm/87JsmaJa35N3lHl0aFq85WZ59INxMkHVFr1UXCNq96mw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8'
+      react-native: '>=0.44'
+    dependencies:
+      '@ungap/url-search-params': 0.1.4
+      react: 18.2.0
+      react-native: 0.71.10(@babel/core@7.22.1)(@babel/preset-env@7.22.4)(react@18.2.0)
+      react-router: 6.12.0(react@18.2.0)
+    dev: false
+
+  /react-router@6.12.0(react@18.2.0):
+    resolution: {integrity: sha512-/tCGtLq9umxRvbYeIx3j94CmpQfue0E3qnetVm9luKhu58cR4t+3O4ZrQXBdXfJrBATOAj+wF/1ihJJQI8AoTw==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.6.3
+      react: 18.2.0
     dev: false
 
   /react-shallow-renderer@16.15.0(react@18.2.0):
