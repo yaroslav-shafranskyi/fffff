@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 import { Home } from './components/Home';
 
@@ -8,16 +9,20 @@ import './App.css'
 
 const queryClient = new QueryClient();
 
+const theme = createTheme();
+
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/fff' element={<div>FFF</div>} />
-        </Routes>
-      </Router>
-    </QueryClientProvider>
+    <ThemeProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/fff' element={<div>FFF</div>} />
+          </Routes>
+        </Router>
+      </QueryClientProvider>
+    </ThemeProvider>
   )
 }
 
