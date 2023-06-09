@@ -1,10 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createTheme, ThemeProvider } from '@mui/material';
 
-import { Home } from './components/Home';
-
 // @ts-expect-error TODO: set tsconfig to allow .web.* and .native.* extensions
-import { Router, Route, Routes } from './routing';
+import { Router, Route, Routes } from './shared';
+import { Home, Form100 } from './components';
 import './App.css'
 
 const queryClient = new QueryClient();
@@ -18,7 +17,7 @@ const App = () => {
         <Router>
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/fff' element={<div>FFF</div>} />
+            <Route path='/form100' element={<Form100 />} />
           </Routes>
         </Router>
       </QueryClientProvider>
