@@ -10,9 +10,7 @@ export interface IPerson {
     tokenNumber: string;
     birthDate: Date;
     rank: Rank;
-    gender?: Gender;
+    gender: Gender;
     militaryBase: string; // TODO declare type
     records: IRecord[];
-    author: string; // TODO declare type
-    resume: string;  // TODO declare type
 }

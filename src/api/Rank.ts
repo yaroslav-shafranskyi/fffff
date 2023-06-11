@@ -1,32 +1,32 @@
 export enum ArmyRank {
-    RECRUITE = 'Рекрут',
-    SOLDIER = 'Солдат',
-    SENIOR_SOLDIER = 'Старший солдат',
+    RECRUITE = 'рекрут',
+    SOLDIER = 'солдат',
+    SENIOR_SOLDIER = 'ст. солдат',
 
-    JUNIOR_SERGEANT = 'Молодший сержант',
-    SERGEANT = 'Сержант',
+    JUNIOR_SERGEANT = 'мол. сержант',
+    SERGEANT = 'сержант',
 
-    SENIOR_SERGEANT = 'Старший сержант',
-    MAIN_SERGEANT = 'Головний сержант',
-    STAFF_SERGEANT = 'Штаб-сержант',
+    SENIOR_SERGEANT = 'ст. сержант',
+    MAIN_SERGEANT = 'гол. сержант',
+    STAFF_SERGEANT = 'штаб-сержант',
 
-    MASTER_SERGEANT = 'Майстер-сержант',
-    SENIOR_MASTER_SERGEANT = 'Старший майстер-сержант',
-    PRIMARY_MASTER_SERGEANT = 'Головний майстер-сержант',
+    MASTER_SERGEANT = 'м. с-нт',
+    SENIOR_MASTER_SERGEANT = 'ст. м.-сержант',
+    PRIMARY_MASTER_SERGEANT = 'гол. м.-сержант',
 
-    JUNIOR_LIEUTENANT = 'Молодший лейтенант', 
-    LIEUTENANT = 'Лейтенант',
-    SENIOR_LIEUTENANT = 'Старший лейтенант', 
-    CAPTAIN = 'Капітан',
+    JUNIOR_LIEUTENANT = 'мол. л-нт.', 
+    LIEUTENANT = 'лейтенант',
+    SENIOR_LIEUTENANT = 'ст. л-нт.', 
+    CAPTAIN = 'капітан',
 
-    MAJOR = 'Майор',
-    LIEUTENANT_COLONEL = 'Підполковник',
-    COLONEL = 'Полковник',
+    MAJOR = 'майор',
+    LIEUTENANT_COLONEL = 'підполковник',
+    COLONEL = 'полковник',
 
-    BRIGADIER_GENERAL = 'Бригадний генерал',
-    GENERAL_MAJOR = 'Генерал-майор',
-    GENERAL_LIEUTENANT = 'Генерал-лейтенант',
-    GENERAL = 'Генерал'
+    BRIGADIER_GENERAL = 'бригадний генерал',
+    GENERAL_MAJOR = 'генерал-майор',
+    GENERAL_LIEUTENANT = 'генерал-лейтенант',
+    GENERAL = 'генерал'
 }
 
 export enum ShipRank {

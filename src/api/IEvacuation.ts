@@ -4,7 +4,7 @@ export enum EvacuationType {
 }
 
 export enum EvacuationClinic {
-    MPP = 'МПП Мед. Р',
+    MPP = 'МПП МедР',
     VMH = 'ВМГ лікарні',
     VH = 'ВГ',
     VMKC = 'ВМКЦ',
@@ -14,11 +14,13 @@ export enum EvacuationClinic {
 export type EvacuationPriority = 'I' | 'II' | 'III';
 
 export enum EvacuationTransport {
-    TRUCK = 'Truck',
-    CAR = 'Car',
-    SHIP = 'Ship',
-    HELICOPTER = 'Helicopter',
-    PLANE = 'Plane'
+    SANITARY = 'сан-',
+    TRUCK = 'груз-',
+    CAR = 'авто',
+    TRAIN = 'потягом',
+    SHIP = 'кораблем',
+    HELICOPTER = 'гелікоптером',
+    PLANE = 'літаком'
 }
 
 export interface IEvacuation {
