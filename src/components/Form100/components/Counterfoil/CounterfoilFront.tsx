@@ -3,14 +3,14 @@ import { Box, IconButton, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import { getDateData } from '../../../../helpers';
-import { ArmyRank, EvacuationClinic, EvacuationTransport, Gender, IInjury, IMedicalOperations, RecordType } from '../../../../api';
+import { ArmyRank, EvacuationClinic, EvacuationTransport, Gender, IInjury, RecordType } from '../../../../api';
 import { Select, Input } from '../../../../shared';
 
-import { iconStyles, sectionStyles } from '../../styles';
+import { iconStyles, sectionStyles, cursorPointerStyles } from '../../styles';
+import { MedicalHelp } from '../MedicalHelp';
 
 import { 
     columnStyles,
-    cursorPointerStyles,
     dateWrapperStyles,
     fieldNameStyles,
     fullNameTitleStyles,
@@ -34,19 +34,13 @@ import {
     evacuationClinicOptionsWrapperStyles,
     evacuationClinicStyles,
     medicalHelpAndInjuryTypeWrapperStyles,
-    medicalHelpWrapperStyles,
     medicalHelpAndInjutyTypeTipStyles,
     injuryTypeWrapperStyles,
-    medicalPreparationsWrapperStyles,
-    preparationGroupWrapperStyles,
-    preparationCellWrapperStyles,
-    preparationGroupTitleStyles,
-    dozeInputStyles,
-    operationCellWrapperStyles,
-    twoOperationsCellWrapperStyles,
     injuryTypeCellStyles,
     injuryTypeTitleCellStyles,
     diagnosisStyles,
+    diagnosisInputStyles,
+    injuryCellStyles,
 } from './styles';
 import { ICounterfoilFrontState, ICounterfoilFrontProps } from './types';
 import { getDefaultCounterfoilFrontState } from './constants';
@@ -58,9 +52,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
     });
 
     const values = getValues();
-    const { date, medicalHelp, injury } = values;
-
-    const { operations } = medicalHelp;
+    const { date, injury } = values;
 
     const { hours: dateHours, minutes: dateMinutes, day: dateDay, month: dateMonth, year: dateYear } = getDateData(date);
 
@@ -68,7 +60,6 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
     watch('reason');
     watch('evacuation.transport');
     watch('evacuation.clinic');
-    watch('medicalHelp.operations');
     watch('injury');
 
     const updateValue = <T extends string>(name: keyof typeof values, value: T) => () => {
@@ -78,18 +69,6 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
     const getNestedFieldOptionColor = <T extends string>(groupName: keyof typeof values, fieldName: string, option: T) => option === (values[groupName] as Record<string, T>)[fieldName] ? 'primary' : 'textPrimary';
 
     const getClinicBgColor = (option: EvacuationClinic) => option === values.evacuation.clinic ? 'primary.main' : 'background.paper';
-
-    const updateOperation = (operation: keyof IMedicalOperations) => () => {
-        if (typeof operations?.[operation] === 'string') {
-            return;
-        }
-        if (!operations) {
-            setValue('medicalHelp.operations', { [operation]: true });
-            return;
-        }
-        setValue(`medicalHelp.operations.${operation}`, !operations[operation]);
-    };
-    const getOperationColor = (operation: keyof IMedicalOperations) => operations?.[operation] ? 'primary' : 'textPrimary';
 
     const updateInjury = (injuryType: keyof IInjury) => () => {
         if (!injury) {
@@ -309,136 +288,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
                 </Box> 
             </Box>
             <Box sx={medicalHelpAndInjuryTypeWrapperStyles}>
-                <Box>
-                    <Typography sx={{ fontWeight: 'bold', ml: .5 }}>
-                        МЕДИЧНА ДОПОМОГА
-                    </Typography>
-                    <Box sx={medicalHelpWrapperStyles}>
-                        <Box sx={medicalPreparationsWrapperStyles}>
-                            <Box sx={preparationGroupWrapperStyles}>
-                                <Box sx={preparationGroupTitleStyles}>
-                                    <Typography>
-                                        Введено
-                                    </Typography>
-                                    <Typography>
-                                        (підкреслити)
-                                    </Typography>
-                                </Box>
-                                <Box sx={preparationCellWrapperStyles}>
-                                    <Typography>
-                                        Антибіотик
-                                    </Typography>
-                                </Box>
-                                <Box sx={preparationCellWrapperStyles}>
-                                    <Typography>
-                                        Сироватка ППС, ПГС
-                                    </Typography>
-                                </Box>
-                                <Box sx={preparationCellWrapperStyles}>
-                                    <Typography>
-                                        Анатоксин (який)
-                                    </Typography>
-                                </Box>
-                                <Box sx={preparationCellWrapperStyles}>
-                                    <Typography>
-                                        Антидот (який)
-                                    </Typography>
-                                </Box>
-                                <Box sx={preparationCellWrapperStyles}>
-                                    <Typography>
-                                        Знебол. засіб
-                                    </Typography>
-                                </Box>
-                            </Box>
-                            <Box sx={preparationGroupWrapperStyles}>
-                                <Box sx={preparationGroupTitleStyles}>
-                                    <Typography>
-                                        Доза
-                                    </Typography>
-                                    <Typography>
-                                        (вписати)
-                                    </Typography>
-                                </Box>
-                                <Box sx={preparationCellWrapperStyles}>
-                                    <Input {...register('medicalHelp.treatments.antibiotic')} sx={dozeInputStyles} />
-                                </Box>
-                                <Box sx={preparationCellWrapperStyles}>
-                                    <Input {...register('medicalHelp.treatments.serum')} sx={dozeInputStyles} />
-                                </Box>
-                                <Box sx={preparationCellWrapperStyles}>
-                                    <Input {...register('medicalHelp.treatments.toxoid')} sx={dozeInputStyles} />
-                                </Box>
-                                <Box sx={preparationCellWrapperStyles}>
-                                    <Input {...register('medicalHelp.treatments.antidote')} sx={dozeInputStyles} />
-                                </Box>
-                                <Box sx={preparationCellWrapperStyles}>
-                                    <Input {...register('medicalHelp.treatments.painReliever')} sx={dozeInputStyles} />
-                                </Box>
-                            </Box>
-                        </Box>
-                        <Box sx={preparationCellWrapperStyles}>
-                            <Typography sx={{ textAlign: 'center' }}>
-                                Проведено:
-                            </Typography>
-                        </Box>
-                        <Box sx={operationCellWrapperStyles}>
-                            <Box sx={cursorPointerStyles} onClick={updateOperation('bloodTransfusion')}>
-                                <Typography color={getOperationColor('bloodTransfusion')}>
-                                    Переливання крові
-                                </Typography>
-                            </Box>
-                            <Typography>,</Typography>
-                        </Box>
-                        <Box sx={operationCellWrapperStyles}>
-                            <Box sx={cursorPointerStyles} onClick={updateOperation('bloodSubstitute')}>
-                                <Typography color={getOperationColor('bloodSubstitute')}>
-                                    кровозамінників
-                                </Typography>
-                            </Box>
-                            <Typography>,</Typography>
-                        </Box>
-                        <Box sx={twoOperationsCellWrapperStyles}>
-                            <Box sx={{ display: 'flex' }}>
-                                <Box sx={cursorPointerStyles} onClick={updateOperation('immobilization')}>
-                                    <Typography color={getOperationColor('immobilization')}>
-                                        іммобілізація
-                                    </Typography>
-                                </Box>
-                                <Typography>,</Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex' }}>
-                                <Box sx={cursorPointerStyles} onClick={updateOperation('dressing')}>
-                                    <Typography color={getOperationColor('dressing')}>
-                                        {`перев’язка`}
-                                    </Typography>
-                                </Box>
-                                <Typography>,</Typography>
-                            </Box>
-                        </Box>
-                        <Box sx={twoOperationsCellWrapperStyles}>
-                            <Box sx={{ display: 'flex' }}>
-                                <Box sx={cursorPointerStyles} onClick={updateOperation('bandage')}>
-                                    <Typography color={getOperationColor('bandage')}>
-                                        накладений джгут
-                                    </Typography>
-                                </Box>
-                                <Typography>,</Typography>
-                            </Box>
-                            <Box sx={cursorPointerStyles} onClick={updateOperation('sanitary')}>
-                                <Typography color={getOperationColor('sanitary')}>
-                                    санобробка
-                                </Typography>
-                            </Box>
-                        </Box>
-                        <Box sx={preparationCellWrapperStyles}>
-                            <Input 
-                                multiline={true} 
-                                {...register('medicalHelp.operations.additionalInfo')}
-                                sx={{ width: '100%', bottom: '-0.5px', p: 0 }}
-                            />
-                        </Box>
-                    </Box>
-                </Box>
+                <MedicalHelp />
                 <Box sx={medicalHelpAndInjutyTypeTipStyles}>
                     <Typography>
                         Вид санітарних втрат (обвести)
@@ -449,7 +299,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
                         <Typography sx={{ fontWeight: 'bold', pl: 2 }}>Б</Typography>
                         <Typography sx={{ fontWeight: 'bold' }}>НБ</Typography>
                     </Box>
-                    <Box sx={{ border: '1.5px solid', '& :last-child': { borderBottom: 'none' } }}>
+                    <Box sx={injuryCellStyles}>
                         {Object.keys(injuriesFields).slice().sort().map(key => <Box sx={injuryTypeCellStyles}>
                                 <Box>
                                     <Typography key={key}>
@@ -479,9 +329,9 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
                     multiline={true}
                     inputProps={{ sx: { p: 0, textIndent: 60 }}}
                     fullWidth={true}
-                    sx={{ p: 0, '& :first-child': { p: 0 } }}
+                    sx={diagnosisInputStyles}
                 />
             </Box>
         </Box>
     </>
-}
+};

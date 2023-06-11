@@ -37,3 +37,7 @@ export const iconStyles: SxProps<Theme> = (theme) => ({
         }
     }
 });
+
+export const cursorPointerStyles: SxProps = {
+    cursor: 'pointer'
+};

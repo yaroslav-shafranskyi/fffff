@@ -1,4 +1,4 @@
-import { InjuryFieldType } from "../../api";
+import { InjuryFieldType } from "../../interfaces";
 
 import { FireArmIcon,
     BiologicalIcon,

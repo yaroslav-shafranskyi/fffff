@@ -56,10 +56,6 @@ export const severalFieldsRowStyles: SxProps = {
     padding: '0px 4px',
 };
 
-export const cursorPointerStyles: SxProps = {
-    cursor: 'pointer'
-};
-
 export const displayFlexStyles: SxProps = {
     display: 'flex', 
 };
@@ -70,7 +66,8 @@ export const reasonWrapperStyles: SxProps = {
 };
 
 export const injuryReasonWrapper: SxProps = {
-    ...cursorPointerStyles, ...displayFlexStyles
+    cursor: 'pointer',
+    display: 'flex',
 };
 
 export const dateNumberInputStyles: SxProps = {
@@ -122,6 +119,9 @@ export const evacuationClinicTipWrapperStyles: SxProps = {
 export const evacuationClinicOptionsWrapperStyles: SxProps = {
     display: 'grid',
     gridTemplateColumns: 'repeat(5, 1fr)',
+    '& :last-child': {
+        borderRight: 'none'
+    },
 };
 
 export const evacuationClinicStyles: SxProps = {
@@ -137,53 +137,16 @@ export const medicalHelpAndInjuryTypeWrapperStyles: SxProps = {
     height: 'auto',
 };
 
-export const medicalHelpWrapperStyles: SxProps<Theme> = (theme) => ({
-    border: '1.5px solid',
-    borderLeft: 'none',
-    borderBottom: 'none',
-    height: `calc(100% - ${theme.spacing(3)})`,
-});
-
-export const medicalPreparationsWrapperStyles: SxProps = {
-    display: 'grid',
-    gridTemplateColumns: '5fr 3fr',
-};
-
-export const preparationGroupWrapperStyles: SxProps = {
-    borderRight: '1.5px solid',
-    marginRight: '-0.5px',
-};
-
-export const preparationCellCommonStyles: SxProps = {
-    borderBottom: '1.5px solid',
-};
-
-export const preparationCellWrapperStyles: SxProps = {
-    ...preparationCellCommonStyles,
-    pl: .5,
-};
-
-export const operationCellWrapperStyles: SxProps = {
-    ...preparationCellWrapperStyles,
-    display: 'flex',
-};
-
-export const twoOperationsCellWrapperStyles: SxProps = {
-    ...operationCellWrapperStyles,
-    gridColumnGap: 2
-};
-
-export const preparationGroupTitleStyles: SxProps = {
-    ...preparationCellCommonStyles,
-    textAlign: 'center',
-};
-
-export const dozeInputStyles: SxProps = {
-    bottom: '-1.5px',
-};
-
 export const injuryTypeWrapperStyles: SxProps = {
 
+};
+
+export const injuryCellStyles: SxProps = {
+    border: '1.5px solid',
+    borderLeft: 'none',
+    '& :last-child': { 
+        borderBottom: 'none' 
+    }
 };
 
 export const injuryCellCommonStyles: SxProps = {
@@ -203,10 +166,20 @@ export const injuryTypeTitleCellStyles: SxProps = {
 export const medicalHelpAndInjutyTypeTipStyles: SxProps= {
     writingMode: 'vertical-lr',
     textOrientation: 'upright',
-    pt: 3,
+    mt: 3,
+    borderBlock: '1.5px solid',
 };
 
-export const diagnosisStyles: SxProps = {
+export const diagnosisStyles: SxProps<Theme> = (theme) => ({
     pl: .5,
-    display: 'flex'
-};
+    display: 'flex',
+    height: theme.spacing(8)
+});
+
+export const diagnosisInputStyles: SxProps<Theme> = (theme) => ({
+    p: 0, 
+    '& :first-child': {
+        p: 0,
+        maxHeight: theme.spacing(8)
+    }
+});

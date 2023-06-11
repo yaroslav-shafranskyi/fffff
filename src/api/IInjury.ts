@@ -10,9 +10,3 @@ export interface IInjury {
     mechanical?: boolean;
     reactive?: boolean;
 }
-
-export type InjuryFieldType = Record<number, {
-    name: string;
-    icon: JSX.Element;
-    fieldName: keyof IInjury;
-}>
