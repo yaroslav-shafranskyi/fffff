@@ -35,12 +35,11 @@ import {
     evacuationClinicStyles,
     medicalHelpAndInjuryTypeWrapperStyles,
     medicalHelpAndInjutyTypeTipStyles,
-    diagnosisStyles,
-    diagnosisInputStyles,
 } from './styles';
 import { ICounterfoilFrontState, ICounterfoilFrontProps } from './types';
 import { getDefaultCounterfoilFrontState } from './constants';
 import { Injury } from '../Injury';
+import { Diagnosis } from '../Diagnosis';
 
 export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
     const { register, getValues, setValue, watch } = useForm<ICounterfoilFrontState>({
@@ -283,18 +282,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
                 </Box>
                 <Injury />
             </Box>
-            <Box sx={diagnosisStyles}>
-                <Typography sx={{ position: 'absolute'}}>
-                    Діагноз
-                </Typography>
-                <Input 
-                    {...register('diagnosis')}
-                    multiline={true}
-                    inputProps={{ sx: { p: 0, textIndent: 60 }}}
-                    fullWidth={true}
-                    sx={diagnosisInputStyles}
-                />
-            </Box>
+            <Diagnosis />
         </Box>
     </>
 };
