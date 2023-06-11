@@ -4,6 +4,7 @@ export interface IDateData {
     hours: number;
     minutes: number;
     day: number;
-    month: MonthName | number;
+    month: number;
+    monthName: MonthName;
     year: number;
 }

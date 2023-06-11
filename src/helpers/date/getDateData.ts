@@ -5,6 +5,7 @@ export const getDateData = (date: Date): IDateData => ({
     hours: date.getHours(),
     minutes: date.getMinutes(),
     day: date.getDate(),
-    month: monthNames[date.getMonth() + 1],
+    month: date.getMonth(),
+    monthName: monthNames[date.getMonth() + 1],
     year: date.getFullYear() % 2000,
 });

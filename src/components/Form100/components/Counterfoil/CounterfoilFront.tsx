@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import { getDateData } from '../../../../helpers';
-import { ArmyRank, EvacuationClinic, EvacuationTransport, Gender, IInjury, RecordType } from '../../../../api';
+import { ArmyRank, EvacuationClinic, EvacuationTransport, Gender, RecordType } from '../../../../api';
 import { Select, Input } from '../../../../shared';
 
-import { iconStyles, sectionStyles, cursorPointerStyles } from '../../styles';
+import { sectionStyles, cursorPointerStyles } from '../../styles';
 import { MedicalHelp } from '../MedicalHelp';
 
 import { 
@@ -35,16 +35,12 @@ import {
     evacuationClinicStyles,
     medicalHelpAndInjuryTypeWrapperStyles,
     medicalHelpAndInjutyTypeTipStyles,
-    injuryTypeWrapperStyles,
-    injuryTypeCellStyles,
-    injuryTypeTitleCellStyles,
     diagnosisStyles,
     diagnosisInputStyles,
-    injuryCellStyles,
 } from './styles';
 import { ICounterfoilFrontState, ICounterfoilFrontProps } from './types';
 import { getDefaultCounterfoilFrontState } from './constants';
-import { injuriesFields } from '../../../../constants';
+import { Injury } from '../Injury';
 
 export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
     const { register, getValues, setValue, watch } = useForm<ICounterfoilFrontState>({
@@ -52,7 +48,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
     });
 
     const values = getValues();
-    const { date, injury } = values;
+    const { date } = values;
 
     const { hours: dateHours, minutes: dateMinutes, day: dateDay, month: dateMonth, year: dateYear } = getDateData(date);
 
@@ -69,15 +65,6 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
     const getNestedFieldOptionColor = <T extends string>(groupName: keyof typeof values, fieldName: string, option: T) => option === (values[groupName] as Record<string, T>)[fieldName] ? 'primary' : 'textPrimary';
 
     const getClinicBgColor = (option: EvacuationClinic) => option === values.evacuation.clinic ? 'primary.main' : 'background.paper';
-
-    const updateInjury = (injuryType: keyof IInjury) => () => {
-        if (!injury) {
-            setValue('injury', { [injuryType]: true });
-            return;
-        }
-        setValue(`injury.${injuryType}`, !injury[injuryType]);
-    }
-    const getInjuryColor = (injuryType: keyof IInjury) => injury?.[injuryType] ? 'primary.main' : 'background.paper';
 
     return <>
         <Box sx={sectionStyles}>
@@ -294,31 +281,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
                         Вид санітарних втрат (обвести)
                     </Typography>
                 </Box>
-                <Box sx={injuryTypeWrapperStyles}>
-                    <Box sx={injuryTypeTitleCellStyles}>
-                        <Typography sx={{ fontWeight: 'bold', pl: 2 }}>Б</Typography>
-                        <Typography sx={{ fontWeight: 'bold' }}>НБ</Typography>
-                    </Box>
-                    <Box sx={injuryCellStyles}>
-                        {Object.keys(injuriesFields).slice().sort().map(key => <Box sx={injuryTypeCellStyles}>
-                                <Box>
-                                    <Typography key={key}>
-                                        {injuriesFields[+key].name}
-                                    </Typography>
-                                </Box>
-                                <Box
-                                    sx={cursorPointerStyles}
-                                    onClick={updateInjury(`${injuriesFields[+key].fieldName}`)}
-                                    bgcolor={getInjuryColor(injuriesFields[+key].fieldName)}
-                                >
-                                <IconButton sx={iconStyles} size='small'>
-                                    {injuriesFields[+key].icon}
-                                </IconButton>
-                                </Box>
-                            </Box>
-                        )}
-                    </Box>
-                </Box>
+                <Injury />
             </Box>
             <Box sx={diagnosisStyles}>
                 <Typography sx={{ position: 'absolute'}}>

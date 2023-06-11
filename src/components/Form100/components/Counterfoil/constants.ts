@@ -1,6 +1,5 @@
 import { Rank, EvacuationTransport, EvacuationClinic, Gender, RecordType } from '../../../../api';
 import { getDateData } from '../../../../helpers';
-import { MonthName } from '../../../../interfaces';
 
 import { ICounterfoilFrontState } from './types';
 
@@ -14,7 +13,7 @@ export const getDefaultCounterfoilFrontState = ():ICounterfoilFrontState => {
         newRecordHour: hours,
         newRecordMinute: minutes,
         newRecordDay: day,
-        newRecordMonth: month as MonthName,
+        newRecordMonth: month,
         newRecordYear: year,
         rank: '' as Rank,
         militaryBase: '',
