@@ -6,4 +6,6 @@ export enum RecordType {
 export interface IRecord {
     type: RecordType;
     date: Date;
+    author: string; // TODO declare type
+    resume: string;  // TODO declare type
 }

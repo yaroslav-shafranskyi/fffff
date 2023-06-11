@@ -7,13 +7,16 @@ export interface ITreatments {
 }
 
 export interface IMedicalOperations {
-    bloodTransfusion?: string;
-    bloodSubstitute?: string;
-    immobilization?: string;
-    dressing?: string;
+    bloodTransfusion?: boolean;
+    bloodSubstitute?: boolean;
+    immobilization?: boolean;
+    dressing?: boolean;
+    bandage?: boolean;
+    sanitary?: boolean;
+    additionalInfo?: string;
 }
 
 export interface IMedicalHelp {
-    treatments: ITreatments;
-    operations: IMedicalOperations;
+    treatments?: ITreatments;
+    operations?: IMedicalOperations;
 }
