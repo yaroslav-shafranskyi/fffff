@@ -1,4 +1,6 @@
-import { IEvacuation, IForm100, IPerson } from "../../../../api";
+import { IEvacuation, IForm100 } from "../../../../api";
+
+import { PersonDataType } from "../PersonInfo/types";
 
 export interface ICounterfoilFrontData extends Pick<IForm100, 'date' | 'person' | 'diagnosis' | 'medicalHelp'| 'injury' | 'reason' > {
     evacuation: Pick<IEvacuation, 'transport' | 'clinic'>;
@@ -8,12 +10,4 @@ export interface ICounterfoilFrontProps {
     data?: ICounterfoilFrontData;
 }
 
-export interface ICounterfoilFrontState extends Omit<ICounterfoilFrontData, 'person'>, Pick<IPerson, 'id' | 'tokenNumber' | 'rank' | 'gender' | 'militaryBase' > {
-    newRecordDate: Date;
-    newRecordHour: number;
-    newRecordMinute: number;
-    newRecordDay: number;
-    newRecordMonth: number;
-    newRecordYear: number;
-    personFullName: string;
-}
+export interface ICounterfoilFrontState extends Omit<ICounterfoilFrontData, 'person'>, PersonDataType {}

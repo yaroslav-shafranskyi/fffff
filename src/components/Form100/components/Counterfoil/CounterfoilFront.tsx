@@ -3,21 +3,14 @@ import { Box, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import { getDateData } from '../../../../helpers';
-import { ArmyRank, EvacuationClinic, EvacuationTransport, Gender, RecordType } from '../../../../api';
-import { Select, Input } from '../../../../shared';
+import { EvacuationClinic, EvacuationTransport, RecordType } from '../../../../api';
+import { Input } from '../../../../shared';
 
 import { sectionStyles, cursorPointerStyles } from '../../styles';
 import { MedicalHelp } from '../MedicalHelp';
 
 import { 
-    columnStyles,
     dateWrapperStyles,
-    fieldNameStyles,
-    fullNameTitleStyles,
-    fullWidthInputStyles,
-    rowStyles,
-    singleElementRowStyles,
-    severalFieldsRowStyles,
     titleStyles,
     titleWrapperStyles, 
     injuryReasonWrapper,
@@ -51,8 +44,6 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
 
     const { hours: dateHours, minutes: dateMinutes, day: dateDay, month: dateMonth, year: dateYear } = getDateData(date);
 
-    watch('gender');
-    watch('reason');
     watch('evacuation.transport');
     watch('evacuation.clinic');
     watch('injury');
@@ -79,54 +70,6 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
                 <Typography>
                     {dateHours} год. {dateMinutes} хв. "{dateDay}" {dateMonth} 20{dateYear}р. 
                 </Typography>
-            </Box>
-            <Box sx={rowStyles}>
-                <Box sx={columnStyles}>
-                    <Box sx={fieldNameStyles}>
-                        <Typography>в/звання</Typography>
-                    </Box>
-                    <Select { ...register('rank')} options={Object.values(ArmyRank)} />
-                </Box>
-                <Box sx={columnStyles}>
-                    <Box>
-                        <Typography>в/ч</Typography>
-                        <Typography>з’єднання</Typography>
-                    </Box>
-                    <Input {...register('militaryBase')} />
-                </Box>
-            </Box>
-            <Box sx={singleElementRowStyles}>
-                <Input {...register('personFullName')} sx={fullWidthInputStyles} />
-                <Box sx={fullNameTitleStyles}>
-                    <Typography>
-                        прізвище
-                    </Typography>
-                    <Typography>
-                        ім’я
-                    </Typography>
-                    <Typography>
-                        по батькові
-                    </Typography>
-                </Box>
-            </Box>
-            <Box sx={severalFieldsRowStyles}>
-                <Box sx={fieldNameStyles}>
-                    <Typography>Посвідчення особи</Typography>
-                </Box>
-                <Input {...register('id')} sx={fullWidthInputStyles} />
-            </Box>
-            <Box sx={severalFieldsRowStyles}>
-                <Box sx={fieldNameStyles}>
-                    <Typography>Особистий №</Typography>
-                </Box>
-                <Input {...register('tokenNumber')} sx={fullWidthInputStyles} />
-                <Typography>Стать: </Typography>
-                <Box sx={cursorPointerStyles} onClick={updateValue('gender', Gender.MALE)}>
-                    <Typography color={getOptionColor('gender', Gender.MALE)}>{Gender.MALE}</Typography> 
-                </Box>
-                <Box sx={cursorPointerStyles} onClick={updateValue('gender', Gender.FEMALE)}>
-                    <Typography color={getOptionColor('gender', Gender.FEMALE)}>{Gender.FEMALE}</Typography> 
-                </Box>
             </Box>
             <Box sx={reasonAndNewRecordDateWrapperStyles}>
                 <Box sx={reasonWrapperStyles}>
