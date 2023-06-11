@@ -31,32 +31,11 @@ export const evacuationTransportOptionsRowWrapperStyles: SxProps = {
 export const evacuationClinicWrapperStyles: SxProps = {
     display: 'grid',
     gridTemplateRows: '1fr 3fr 1fr',
-
-};
-
-export const evacuationClinicTitleWrapperStyles: SxProps = {
-    borderBottom: '1.5px solid',
-    textAlign: 'center',
 };
 
 export const evacuationClinicTipWrapperStyles: SxProps = {
     borderTop: '1.5px solid',
     textAlign: 'center',
-};
-
-export const evacuationClinicOptionsWrapperStyles: SxProps = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(5, 1fr)',
-    '& :last-child': {
-        borderRight: 'none'
-    },
-};
-
-export const evacuationClinicStyles: SxProps = {
-    borderRight: '1.5px solid',
-    textAlign: 'center',
-    wordBreak: 'break-all',
-    cursor: 'pointer',
 };
 
 export const medicalHelpAndInjuryTypeWrapperStyles: SxProps = {

@@ -2,13 +2,15 @@ import { FC } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
-import { EvacuationClinic, EvacuationTransport } from '../../../../api';
+import { EvacuationTransport } from '../../../../api';
 
 import { sectionStyles, cursorPointerStyles, displayFlexStyles } from '../../styles';
 import { MedicalHelp } from '../MedicalHelp';
 import { Injury } from '../Injury';
 import { Diagnosis } from '../Diagnosis';
 import { PersonInfo } from '../PersonInfo';
+import { Form100Date } from '../Date';
+import { EvacuationClinicComponent } from '../EvacuationClinic';
 
 import { 
     titleStyles,
@@ -17,16 +19,12 @@ import {
     evacuationTransportWrapperStyles,
     evacuationTransportOptionsRowWrapperStyles,
     evacuationClinicWrapperStyles,
-    evacuationClinicTitleWrapperStyles,
     evacuationClinicTipWrapperStyles,
-    evacuationClinicOptionsWrapperStyles,
-    evacuationClinicStyles,
     medicalHelpAndInjuryTypeWrapperStyles,
     medicalHelpAndInjutyTypeTipStyles,
 } from './styles';
 import { ICounterfoilFrontState, ICounterfoilFrontProps } from './types';
 import { getDefaultCounterfoilFrontState } from './constants';
-import { Form100Date } from '../Date';
 
 export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
     const { getValues, setValue, watch } = useForm<ICounterfoilFrontState>({
@@ -43,8 +41,6 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
         setValue(name, value)
     };
     const getNestedFieldOptionColor = <T extends string>(groupName: keyof typeof values, fieldName: string, option: T) => option === (values[groupName] as Record<string, T>)[fieldName] ? 'primary' : 'textPrimary';
-
-    const getClinicBgColor = (option: EvacuationClinic) => option === values.evacuation.clinic ? 'primary.main' : 'background.paper';
 
     return <>
         <Box sx={sectionStyles}>
@@ -124,58 +120,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
                     </Box>
                 </Box>
                 <Box sx={evacuationClinicWrapperStyles}>
-                    <Box sx={evacuationClinicTitleWrapperStyles}>
-                        <Typography>
-                            куди евакуйований
-                        </Typography>
-                    </Box>
-                    <Box sx={evacuationClinicOptionsWrapperStyles}>
-                        <Box 
-                            sx={evacuationClinicStyles}
-                            bgcolor={getClinicBgColor(EvacuationClinic.MPP)}
-                            onClick={updateValue('evacuation.clinic' as keyof ICounterfoilFrontState, EvacuationClinic.MPP)}
-                        >
-                            <Typography>
-                                {EvacuationClinic.MPP}
-                            </Typography>
-                        </Box>
-                        <Box
-                            sx={evacuationClinicStyles}
-                            bgcolor={getClinicBgColor(EvacuationClinic.VMH)}
-                            onClick={updateValue('evacuation.clinic' as keyof ICounterfoilFrontState, EvacuationClinic.VMH)}
-                        >
-                            <Typography>
-                                {EvacuationClinic.VMH}
-                            </Typography>
-                        </Box>
-                        <Box
-                            sx={evacuationClinicStyles}
-                            bgcolor={getClinicBgColor(EvacuationClinic.VH)}
-                            onClick={updateValue('evacuation.clinic' as keyof ICounterfoilFrontState, EvacuationClinic.VH)}
-                        >
-                            <Typography>
-                                {EvacuationClinic.VH}
-                            </Typography>
-                        </Box>
-                        <Box
-                            sx={evacuationClinicStyles}
-                            bgcolor={getClinicBgColor(EvacuationClinic.VMKC)}
-                            onClick={updateValue('evacuation.clinic' as keyof ICounterfoilFrontState, EvacuationClinic.VMKC)}    
-                        >
-                            <Typography>
-                                {EvacuationClinic.VMKC}
-                            </Typography>
-                        </Box>
-                        <Box
-                            sx={evacuationClinicStyles}
-                            bgcolor={getClinicBgColor(EvacuationClinic.CIVIL)}
-                            onClick={updateValue('evacuation.clinic' as keyof ICounterfoilFrontState, EvacuationClinic.CIVIL)}    
-                        >
-                            <Typography>
-                                {EvacuationClinic.CIVIL}
-                            </Typography>
-                        </Box>
-                    </Box>
+                    <EvacuationClinicComponent />
                     <Box sx={evacuationClinicTipWrapperStyles}>
                         <Typography>
                             потрібне обвести
