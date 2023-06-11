@@ -41,3 +41,7 @@ export const iconStyles: SxProps<Theme> = (theme) => ({
 export const cursorPointerStyles: SxProps = {
     cursor: 'pointer'
 };
+
+export const displayFlexStyles: SxProps = {
+    display: 'flex', 
+};

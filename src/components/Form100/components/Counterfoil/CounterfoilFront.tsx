@@ -2,24 +2,19 @@ import { FC } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
-import { getDateData } from '../../../../helpers';
-import { EvacuationClinic, EvacuationTransport, RecordType } from '../../../../api';
-import { Input } from '../../../../shared';
+import { EvacuationClinic, EvacuationTransport } from '../../../../api';
 
-import { sectionStyles, cursorPointerStyles } from '../../styles';
+import { sectionStyles, cursorPointerStyles, displayFlexStyles } from '../../styles';
 import { MedicalHelp } from '../MedicalHelp';
+import { Injury } from '../Injury';
+import { Diagnosis } from '../Diagnosis';
+import { PersonInfo } from '../PersonInfo';
 
 import { 
-    dateWrapperStyles,
     titleStyles,
     titleWrapperStyles, 
-    injuryReasonWrapper,
-    dateNumberInputStyles,
-    reasonWrapperStyles,
-    reasonAndNewRecordDateWrapperStyles,
     evacuationWrapperStyles,
     evacuationTransportWrapperStyles,
-    displayFlexStyles,
     evacuationTransportOptionsRowWrapperStyles,
     evacuationClinicWrapperStyles,
     evacuationClinicTitleWrapperStyles,
@@ -31,18 +26,14 @@ import {
 } from './styles';
 import { ICounterfoilFrontState, ICounterfoilFrontProps } from './types';
 import { getDefaultCounterfoilFrontState } from './constants';
-import { Injury } from '../Injury';
-import { Diagnosis } from '../Diagnosis';
+import { Form100Date } from '../Date';
 
 export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
-    const { register, getValues, setValue, watch } = useForm<ICounterfoilFrontState>({
+    const { getValues, setValue, watch } = useForm<ICounterfoilFrontState>({
         defaultValues: getDefaultCounterfoilFrontState(),
     });
 
     const values = getValues();
-    const { date } = values;
-
-    const { hours: dateHours, minutes: dateMinutes, day: dateDay, month: dateMonth, year: dateYear } = getDateData(date);
 
     watch('evacuation.transport');
     watch('evacuation.clinic');
@@ -51,7 +42,6 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
     const updateValue = <T extends string>(name: keyof typeof values, value: T) => () => {
         setValue(name, value)
     };
-    const getOptionColor = <T extends string>(name: keyof typeof values, option: T) => option === values[name] ? 'primary' : 'textPrimary';
     const getNestedFieldOptionColor = <T extends string>(groupName: keyof typeof values, fieldName: string, option: T) => option === (values[groupName] as Record<string, T>)[fieldName] ? 'primary' : 'textPrimary';
 
     const getClinicBgColor = (option: EvacuationClinic) => option === values.evacuation.clinic ? 'primary.main' : 'background.paper';
@@ -66,31 +56,8 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
                     КАРТКИ
                 </Typography>
             </Box>
-            <Box sx={dateWrapperStyles}>
-                <Typography>
-                    {dateHours} год. {dateMinutes} хв. "{dateDay}" {dateMonth} 20{dateYear}р. 
-                </Typography>
-            </Box>
-            <Box sx={reasonAndNewRecordDateWrapperStyles}>
-                <Box sx={reasonWrapperStyles}>
-                    <Box sx={injuryReasonWrapper} onClick={updateValue('reason', RecordType.INJURY)}>
-                        <Typography color={getOptionColor('reason', RecordType.INJURY)}>Поранений</Typography>
-                        <Typography>,</Typography>
-                    </Box>
-                    <Box sx={cursorPointerStyles} onClick={updateValue('reason', RecordType.SICK)}>
-                        <Typography color={getOptionColor('reason', RecordType.SICK)}>захворів</Typography>
-                    </Box>
-                </Box>
-                <Box>
-                    <Typography>
-                        <Input {...register('newRecordHour')} sx={dateNumberInputStyles} /> год. 
-                        <Input { ...register('newRecordHour')} sx={dateNumberInputStyles} /> {`хв. `}
-                        <Input { ...register('newRecordDay')} sx={dateNumberInputStyles} />. 
-                        <Input { ...register('newRecordMonth')} sx={dateNumberInputStyles} />.
-                        20<Input { ...register('newRecordYear')} sx={dateNumberInputStyles} />р. 
-                    </Typography>
-                </Box>
-            </Box>
+            <Form100Date />
+            <PersonInfo />
             <Box sx={evacuationWrapperStyles}>
                 <Box sx={evacuationTransportWrapperStyles}>
                     <Typography>

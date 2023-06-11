@@ -1,5 +1,7 @@
 import { SxProps } from "@mui/system";
 
+import { displayFlexStyles } from "../../styles";
+
 export const rowStyles: SxProps = {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
@@ -39,4 +41,26 @@ export const severalFieldsRowStyles: SxProps = {
     justifyContent: 'space-between',
     gridColumnGap: 4,
     padding: '0px 4px',
+};
+
+export const injuryReasonWrapper: SxProps = {
+    cursor: 'pointer',
+    display: 'flex',
+};
+
+export const dateNumberInputStyles: SxProps = {
+    width: 18,
+    p: 0,
+};
+
+export const reasonWrapperStyles: SxProps = {
+    ...displayFlexStyles,
+    gridColumnGap: 2,
+};
+
+export const reasonAndNewRecordDateWrapperStyles: SxProps = {
+    display: 'grid',
+    gridTemplateColumns: '1fr auto',
+    gridColumnGap: 4,
+    padding: '0 4px',
 };

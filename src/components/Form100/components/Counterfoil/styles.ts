@@ -10,36 +10,6 @@ export const titleWrapperStyles: SxProps = {
     borderColor: 'text.primary',
 };
 
-export const dateWrapperStyles: SxProps = {
-    textAlign: 'center',
-};
-
-export const displayFlexStyles: SxProps = {
-    display: 'flex', 
-};
-
-export const reasonWrapperStyles: SxProps = {
-    ...displayFlexStyles,
-    gridColumnGap: 2,
-};
-
-export const injuryReasonWrapper: SxProps = {
-    cursor: 'pointer',
-    display: 'flex',
-};
-
-export const dateNumberInputStyles: SxProps = {
-    width: 18,
-    p: 0,
-};
-
-export const reasonAndNewRecordDateWrapperStyles: SxProps = {
-    display: 'grid',
-    gridTemplateColumns: '1fr auto',
-    gridColumnGap: 4,
-    padding: '0 4px',
-};
-
 export const evacuationWrapperStyles: SxProps = {
     border: '1.5px solid',
     borderColor: 'text.primary',

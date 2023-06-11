@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import { Input, Select } from '../../../../shared';
-import { ArmyRank, Gender } from '../../../../api';
+import { ArmyRank, Gender, RecordType } from '../../../../api';
 
 import { cursorPointerStyles } from '../../styles';
 
@@ -17,6 +17,10 @@ import {
     rowStyles,
     singleElementRowStyles,
     severalFieldsRowStyles,
+    injuryReasonWrapper,
+    dateNumberInputStyles,
+    reasonWrapperStyles,
+    reasonAndNewRecordDateWrapperStyles,
 } from './styles';
 
 export const PersonInfo: FC<IPersonInfoProps> = (props) => {
@@ -47,8 +51,7 @@ export const PersonInfo: FC<IPersonInfoProps> = (props) => {
                 </Box>
                 <Box sx={columnStyles}>
                     <Box>
-                        <Typography>в/ч</Typography>
-                        <Typography>з’єднання</Typography>
+                        <Typography>в/ч, з’єднання</Typography>
                     </Box>
                     <Input {...register('militaryBase')} />
                 </Box>
@@ -84,6 +87,27 @@ export const PersonInfo: FC<IPersonInfoProps> = (props) => {
                 </Box>
                 <Box sx={cursorPointerStyles} onClick={updateValue('gender', Gender.FEMALE)}>
                     <Typography color={getOptionColor('gender', Gender.FEMALE)}>{Gender.FEMALE}</Typography> 
+                </Box>
+            </Box>
+            
+            <Box sx={reasonAndNewRecordDateWrapperStyles}>
+                <Box sx={reasonWrapperStyles}>
+                    <Box sx={injuryReasonWrapper} onClick={updateValue('newRecordReason', RecordType.INJURY)}>
+                        <Typography color={getOptionColor('newRecordReason', RecordType.INJURY)}>Поранений</Typography>
+                        <Typography>,</Typography>
+                    </Box>
+                    <Box sx={cursorPointerStyles} onClick={updateValue('newRecordReason', RecordType.SICK)}>
+                        <Typography color={getOptionColor('newRecordReason', RecordType.SICK)}>захворів</Typography>
+                    </Box>
+                </Box>
+                <Box>
+                    <Typography>
+                        <Input {...register('newRecordHour')} sx={dateNumberInputStyles} /> год. 
+                        <Input { ...register('newRecordHour')} sx={dateNumberInputStyles} /> {`хв. `}
+                        <Input { ...register('newRecordDay')} sx={dateNumberInputStyles} />. 
+                        <Input { ...register('newRecordMonth')} sx={dateNumberInputStyles} />.
+                        20<Input { ...register('newRecordYear')} sx={dateNumberInputStyles} />р. 
+                    </Typography>
                 </Box>
             </Box>
         </>
