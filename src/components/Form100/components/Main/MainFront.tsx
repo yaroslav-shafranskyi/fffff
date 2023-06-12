@@ -3,23 +3,26 @@ import { Box, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import { Input } from '../../../../shared';
-import { BodyImageBack, BodyImageFront, EvacuationLayIcon, EvacuationSitIcon } from '../../../../assets';
-import { BodyDamageInfo, EvacuationClinic, EvacuationPriority, EvacuationTransport, EvacuationType, IEvacuation, SanitaryTreatmentStatus } from '../../../../api';
+import { EvacuationLayIcon, EvacuationSitIcon } from '../../../../assets';
+import { EvacuationClinic, EvacuationPriority, EvacuationTransport, EvacuationType, IEvacuation, SanitaryTreatmentStatus } from '../../../../api';
 import { evacuationTransportFields } from '../../../../constants';
 
-import { boldTextStyles, cursorPointerStyles, dateNumberInputStyles, displayFlexStyles } from '../../styles';
+import {
+    boldTextStyles,
+    cursorPointerStyles,
+    dateNumberInputStyles,
+    displayFlexStyles,
+    severalInlineOptionsWrapperStyles
+} from '../../styles';
 import { PersonInfo } from '../PersonInfo';
 import { Injury } from '../Injury';
 import { MedicalHelp } from '../MedicalHelp';
 import { EvacuationClinicComponent } from '../EvacuationClinic';
 import { Diagnosis } from '../Diagnosis';
+import { BodyDamage } from '../BodyDamage';
 
 import { IMainFrontProps } from './types';
 import {
-    bodyDamageInfoWrapperStyles,
-    bodyDamageWrapperStyles,
-    bodyImageTipWrapperStyles,
-    bodyImagesWrapperStyles,
     centralSectionWraperStyles,
     clinicCaptionWrapperStyles,
     clinicInputPropsSx,
@@ -31,7 +34,6 @@ import {
     mainSectionStyles,
     mainTitleStyles,
     topBorderStyles,
-    severalInlineOptionsWrapperStyles,
     sanitaryStatusWrapperStyles,
     evacuationTypeWrapperStyles,
     evacuationTypeTipStyles,
@@ -53,24 +55,16 @@ export const MainFront: FC<IMainFrontProps> = (props) => {
     });
 
     const values = getValues();
-    const { bodyDamage, sanitaryTreatment, evacuation } = values;
+    const {
+        bodyDamage,
+        bodyImage,
+        sanitaryTreatment,
+        evacuation
+    } = values;
 
     watch('bodyDamage');
     watch('sanitaryTreatment');
     watch('evacuation');
-
-    const updateBodyDamage = (damage: BodyDamageInfo) => () => {
-        const damageIdx = bodyDamage?.findIndex(d => d === damage) ?? -1;
-        if (damageIdx < 0) {
-            setValue('bodyDamage', [...(bodyDamage ?? []), damage])
-            return;
-        }
-        if (!bodyDamage) {
-            return;
-        }
-        setValue('bodyDamage', [...bodyDamage.slice(0, damageIdx), ...bodyDamage.slice(damageIdx + 1)]);
-    };
-    const getBodyDamageColor = (damage: BodyDamageInfo) => bodyDamage?.includes(damage) ? 'error' : 'textPrimary';
 
     const updateSanitaryTreatmentStatus = (type: SanitaryTreatmentStatus) => () => {
         setValue('sanitaryTreatment', type);
@@ -125,61 +119,7 @@ export const MainFront: FC<IMainFrontProps> = (props) => {
                         <PersonInfo />
                         <Box sx={injuryWrapperStyles}>
                             <Injury />
-                            <Box sx={bodyDamageWrapperStyles}>
-                                <Box sx={bodyImageTipWrapperStyles}>
-                                    <Typography sx={{ textAlign: 'center' }} variant='subtitle2'>
-                                        локалізацію обвести
-                                    </Typography>
-                                </Box>
-                                <Box sx={bodyImagesWrapperStyles}>
-                                    <Box sx={cursorPointerStyles}>
-                                        <BodyImageFront />
-                                    </Box>
-                                    <Box sx={cursorPointerStyles}>
-                                        <BodyImageBack />
-                                    </Box>
-                                </Box>
-                                <Box sx={bodyDamageInfoWrapperStyles}>
-                                    <Typography sx={boldTextStyles}>
-                                        підкреслити
-                                    </Typography>
-                                    <Box sx={displayFlexStyles}>
-                                        <Box sx={cursorPointerStyles} onClick={updateBodyDamage(BodyDamageInfo.SOFT_TISSUES)}>
-                                            <Typography color={getBodyDamageColor(BodyDamageInfo.SOFT_TISSUES)}>
-                                                {BodyDamageInfo.SOFT_TISSUES}
-                                            </Typography>
-                                        </Box>,
-                                    </Box>
-                                    <Box sx={severalInlineOptionsWrapperStyles}>
-                                        <Box sx={displayFlexStyles}>
-                                            <Box sx={cursorPointerStyles} onClick={updateBodyDamage(BodyDamageInfo.BONES)}>
-                                                <Typography color={getBodyDamageColor(BodyDamageInfo.BONES)}>
-                                                    {BodyDamageInfo.BONES}
-                                                </Typography>
-                                            </Box>,
-                                        </Box>
-                                        <Box sx={displayFlexStyles}>
-                                            <Box sx={cursorPointerStyles} onClick={updateBodyDamage(BodyDamageInfo.VESSELS)}>
-                                                <Typography color={getBodyDamageColor(BodyDamageInfo.VESSELS)}>
-                                                    {BodyDamageInfo.VESSELS}
-                                                </Typography>
-                                            </Box>,
-                                        </Box>
-                                    </Box>
-                                    <Box sx={displayFlexStyles}>
-                                        <Box sx={cursorPointerStyles} onClick={updateBodyDamage(BodyDamageInfo.CAVITY_WOUNDS)}>
-                                            <Typography color={getBodyDamageColor(BodyDamageInfo.CAVITY_WOUNDS)}>
-                                                {BodyDamageInfo.CAVITY_WOUNDS}
-                                            </Typography>
-                                        </Box>,
-                                    </Box>
-                                    <Box sx={cursorPointerStyles} onClick={updateBodyDamage(BodyDamageInfo.BURN)}>
-                                        <Typography color={getBodyDamageColor(BodyDamageInfo.BURN)}>
-                                            {BodyDamageInfo.BURN}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                            </Box>
+                            <BodyDamage data={{ image: bodyImage, info: bodyDamage ?? [] }} />
                         </Box>
                     </Box>
                     <Box>

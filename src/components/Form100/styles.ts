@@ -50,3 +50,8 @@ export const dateNumberInputStyles: SxProps = {
     width: 18,
     p: 0,
 };
+
+export const severalInlineOptionsWrapperStyles: SxProps = {
+    display: 'flex',
+    gridColumnGap: 2,
+};

@@ -67,36 +67,6 @@ export const injuryWrapperStyles: SxProps = {
     gridTemplateColumns: '2fr 3fr',
 };
 
-export const bodyDamageInfoWrapperStyles: SxProps = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-};
-
-export const bodyDamageWrapperStyles: SxProps = {
-    ...bodyDamageInfoWrapperStyles,
-    width: 'min-content',
-};
-
-export const bodyImagesWrapperStyles: SxProps = {
-    position: 'relative',
-    display: 'flex',
-};
-
-export const bodyImageTipWrapperStyles: SxProps = {
-    position: 'absolute',
-    width: 'min-content',
-};
-
-export const bodyImageTipStyles: SxProps = {
-    textAlign: 'center',
-};
-
-export const severalInlineOptionsWrapperStyles: SxProps = {
-    display: 'flex',
-    gridColumnGap: 2,
-};
-
 export const sanitaryStatusWrapperStyles: SxProps = {
     width: 'fit-content',
     margin: 'auto',
