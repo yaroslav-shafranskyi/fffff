@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { IForm100 } from '../../api';
 
-import { CounterfoilFront } from './components/Counterfoil';
+import { CounterfoilFront, MainFront } from './components';
 
 import { initialForm100 } from './constants';
 import { form100Schema } from './schemas';
@@ -29,8 +29,7 @@ export const Form100: FC<IForm100Props> = (props) => {
     return <Box sx={containerStyles}>
         <Box sx={formWrapperStyles}>
             <CounterfoilFront />
-            <Box></Box>
-            <Box></Box>
+            <MainFront />
         </Box>
     </Box>
 }

@@ -26,9 +26,11 @@ import {
 import { ICounterfoilFrontState, ICounterfoilFrontProps } from './types';
 import { getDefaultCounterfoilFrontState } from './constants';
 
-export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
+export const CounterfoilFront: FC<ICounterfoilFrontProps> = (props) => {
+    const { data } = props;
+
     const { getValues, setValue, watch } = useForm<ICounterfoilFrontState>({
-        defaultValues: getDefaultCounterfoilFrontState(),
+        defaultValues: data ?? getDefaultCounterfoilFrontState(),
     });
 
     const values = getValues();
@@ -40,7 +42,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
     const updateValue = <T extends string>(name: keyof typeof values, value: T) => () => {
         setValue(name, value)
     };
-    const getNestedFieldOptionColor = <T extends string>(groupName: keyof typeof values, fieldName: string, option: T) => option === (values[groupName] as Record<string, T>)[fieldName] ? 'primary' : 'textPrimary';
+    const getNestedFieldOptionColor = <T extends string>(groupName: keyof typeof values, fieldName: string, option: T) => option === (values[groupName] as Record<string, T>)[fieldName] ? 'error' : 'textPrimary';
 
     return <>
         <Box sx={sectionStyles}>
@@ -128,8 +130,15 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = () => {
                     </Box>
                 </Box> 
             </Box>
+            <Box>
+            </Box>
             <Box sx={medicalHelpAndInjuryTypeWrapperStyles}>
-                <MedicalHelp />
+                <Box>
+                    <Typography sx={{ fontWeight: 'bold', ml: .5 }}>
+                        МЕДИЧНА ДОПОМОГА
+                    </Typography>
+                    <MedicalHelp />
+                </Box>
                 <Box sx={medicalHelpAndInjutyTypeTipStyles}>
                     <Typography>
                         Вид санітарних втрат (обвести)

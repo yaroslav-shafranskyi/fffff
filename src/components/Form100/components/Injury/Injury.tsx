@@ -28,7 +28,7 @@ export const Injury: FC<IInjuryProps> = (props) => {
     const updateInjury = (injuryType: keyof IInjury) => () => {
         setValue(injuryType, !injury[injuryType]);
     }
-    const getInjuryColor = (injuryType: keyof IInjury) => injury?.[injuryType] ? 'primary.main' : 'background.paper';
+    const getInjuryColor = (injuryType: keyof IInjury) => injury?.[injuryType] ? 'error.main' : 'background.paper';
 
 
     return (

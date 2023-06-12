@@ -41,13 +41,10 @@ export const MedicalHelp: FC<IMedicalHelpProps> = (props) => {
         setValue(`operations.${operation}`, !operations[operation]);
     };
 
-    const getOperationColor = (operation: keyof IMedicalOperations) => operations?.[operation] ? 'primary' : 'textPrimary';
+    const getOperationColor = (operation: keyof IMedicalOperations) => operations?.[operation] ? 'error' : 'textPrimary';
 
     return (
         <Box>
-            <Typography sx={{ fontWeight: 'bold', ml: .5 }}>
-                МЕДИЧНА ДОПОМОГА
-            </Typography>
             <Box sx={medicalHelpWrapperStyles}>
                 <Box>
                     <Box sx={preparationRowStyles}>

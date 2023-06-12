@@ -1,5 +1,5 @@
 export enum SanitaryTreatmentStatus {
-    FULL = 'Повна',
-    PARTICULAR = 'Часткова',
-    NONE = 'Не проводилась'
+    FULL = 'повна',
+    PARTICULAR = 'часткова',
+    NONE = 'не проводилась'
 }

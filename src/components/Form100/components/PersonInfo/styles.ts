@@ -48,11 +48,6 @@ export const injuryReasonWrapper: SxProps = {
     display: 'flex',
 };
 
-export const dateNumberInputStyles: SxProps = {
-    width: 18,
-    p: 0,
-};
-
 export const reasonWrapperStyles: SxProps = {
     ...displayFlexStyles,
     gridColumnGap: 2,
@@ -63,4 +58,9 @@ export const reasonAndNewRecordDateWrapperStyles: SxProps = {
     gridTemplateColumns: '1fr auto',
     gridColumnGap: 4,
     padding: '0 4px',
+};
+
+export const femaleWrapperStyles: SxProps = {
+    cursor: 'pointer',
+    mr: 2,
 };

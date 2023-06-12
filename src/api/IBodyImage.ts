@@ -1,4 +1,4 @@
 export interface IBodyImage {
-    front: SVGElement;
-    back: SVGElement;
+    front: JSX.Element;
+    back: JSX.Element;
 }

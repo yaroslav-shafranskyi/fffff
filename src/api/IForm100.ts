@@ -8,12 +8,13 @@ import { RecordType } from './IRecord';
 import { SanitaryTreatmentStatus } from './SanitaryTreatmentStatus';
 
 export interface IForm100 {
+    clinic: string;
     author: string;
     person: IPerson;
     date: Date;
     reason: RecordType;
     bodyImage: IBodyImage;
-    bodyDamage?: BodyDamageInfo;
+    bodyDamage?: BodyDamageInfo[];
     injury?: IInjury;
     medicalHelp: IMedicalHelp;
     plait?: Date;

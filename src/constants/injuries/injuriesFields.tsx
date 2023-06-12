@@ -1,4 +1,5 @@
-import { InjuryFieldType } from "../../interfaces";
+import { MappingFieldTypesWithIcons } from "../../interfaces";
+import { IInjury } from "../../api";
 
 import { FireArmIcon,
     BiologicalIcon,
@@ -10,9 +11,9 @@ import { FireArmIcon,
     NuclearIcon,
     ReactiveIcon,
     ThermalIcon
-} from "./icons"
+} from "../../assets/injuries"
 
-export const injuriesFields: InjuryFieldType = {
+export const injuriesFields: MappingFieldTypesWithIcons<IInjury> = {
     0: {
         name: 'Вогн',
         icon: <FireArmIcon />,

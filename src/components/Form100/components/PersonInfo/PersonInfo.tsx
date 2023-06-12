@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Input, Select } from '../../../../shared';
 import { ArmyRank, Gender, RecordType } from '../../../../api';
 
-import { cursorPointerStyles } from '../../styles';
+import { dateNumberInputStyles, cursorPointerStyles } from '../../styles';
 
 import { IPersonInfoProps, PersonDataType } from './types';
 import { getDefaultPersonData } from './constants';
@@ -18,9 +18,9 @@ import {
     singleElementRowStyles,
     severalFieldsRowStyles,
     injuryReasonWrapper,
-    dateNumberInputStyles,
     reasonWrapperStyles,
     reasonAndNewRecordDateWrapperStyles,
+    femaleWrapperStyles,
 } from './styles';
 
 export const PersonInfo: FC<IPersonInfoProps> = (props) => {
@@ -38,7 +38,7 @@ export const PersonInfo: FC<IPersonInfoProps> = (props) => {
     const updateValue = <T extends string>(name: keyof typeof values, value: T) => () => {
         setValue(name, value)
     };
-    const getOptionColor = <T extends string>(name: keyof typeof values, option: T) => option === values[name] ? 'primary' : 'textPrimary';
+    const getOptionColor = <T extends string>(name: keyof typeof values, option: T) => option === values[name] ? 'error' : 'textPrimary';
 
     return (
         <>
@@ -53,7 +53,7 @@ export const PersonInfo: FC<IPersonInfoProps> = (props) => {
                     <Box>
                         <Typography>в/ч, з’єднання</Typography>
                     </Box>
-                    <Input {...register('militaryBase')} />
+                    <Input {...register('militaryBase')} fullWidth={true} />
                 </Box>
             </Box>
             <Box sx={singleElementRowStyles}>
@@ -85,7 +85,7 @@ export const PersonInfo: FC<IPersonInfoProps> = (props) => {
                 <Box sx={cursorPointerStyles} onClick={updateValue('gender', Gender.MALE)}>
                     <Typography color={getOptionColor('gender', Gender.MALE)}>{Gender.MALE}</Typography> 
                 </Box>
-                <Box sx={cursorPointerStyles} onClick={updateValue('gender', Gender.FEMALE)}>
+                <Box sx={femaleWrapperStyles} onClick={updateValue('gender', Gender.FEMALE)}>
                     <Typography color={getOptionColor('gender', Gender.FEMALE)}>{Gender.FEMALE}</Typography> 
                 </Box>
             </Box>

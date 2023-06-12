@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { Input } from '../../../../shared';
 
 import { IDiagnosisProps } from './types';
-import { diagnosisInputStyles, diagnosisStyles, inputPropsStyles } from './styles';
+import { diagnosisInputStyles, diagnosisStyles, inputPropsStyles, titleWrapperStyles } from './styles';
 
 export const Diagnosis: FC<IDiagnosisProps> = (props) => {
     const { data, onChange } = props;
@@ -25,9 +25,11 @@ export const Diagnosis: FC<IDiagnosisProps> = (props) => {
 
     return (
         <Box sx={diagnosisStyles}>
-            <Typography sx={{ position: 'absolute'}}>
-                Діагноз
-            </Typography>
+            <Box sx={titleWrapperStyles}>
+                <Typography>
+                    Діагноз
+                </Typography>
+            </Box>
             <Input
                 value={diagnosis}
                 multiline={true}

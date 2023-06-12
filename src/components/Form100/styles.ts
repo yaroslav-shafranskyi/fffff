@@ -12,7 +12,7 @@ export const formWrapperStyles: SxProps = {
     border: '4px solid',
     borderColor: 'text.primary',
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)'
+    gridTemplateColumns: '1fr 2fr',
 };
 
 export const boldTextStyles: SxProps = {
@@ -44,4 +44,9 @@ export const cursorPointerStyles: SxProps = {
 
 export const displayFlexStyles: SxProps = {
     display: 'flex', 
+};
+
+export const dateNumberInputStyles: SxProps = {
+    width: 18,
+    p: 0,
 };

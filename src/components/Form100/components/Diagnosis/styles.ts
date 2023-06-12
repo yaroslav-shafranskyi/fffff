@@ -19,3 +19,10 @@ export const inputPropsStyles: SxProps = {
     p: 0,
     textIndent: 60,
 };
+
+export const titleWrapperStyles: SxProps<Theme> = (theme) => ({
+    position: 'absolute',
+    zIndex: (theme.zIndex as { tooltip: number }).tooltip,
+    background: theme.palette.background.paper,
+    paddingRight: theme.spacing(.5),
+});
