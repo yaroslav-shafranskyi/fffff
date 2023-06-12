@@ -10,4 +10,4 @@ export interface ICounterfoilFrontProps {
     data?: ICounterfoilFrontData;
 }
 
-export interface ICounterfoilFrontState extends Omit<ICounterfoilFrontData, 'person'>, PersonDataType {}
+export interface ICounterfoilFrontState extends Partial<Omit<ICounterfoilFrontData, 'person'>>, Partial<PersonDataType> {}

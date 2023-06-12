@@ -18,16 +18,6 @@ export const evacuationWrapperStyles: SxProps = {
     gridTemplateColumns: '2fr 3fr',
 };
 
-export const evacuationTransportWrapperStyles: SxProps = {
-    borderRight: '1.5px solid',
-    textAlign: 'center',
-};
-
-export const evacuationTransportOptionsRowWrapperStyles: SxProps = {
-    display: 'flex',
-    justifyContent: 'space-around',
-};
-
 export const evacuationClinicWrapperStyles: SxProps = {
     display: 'grid',
     gridTemplateRows: '1fr 3fr 1fr',
