@@ -8,7 +8,7 @@ import { IEvacuationClinicProps } from './types';
 import { evacuationClinicTitleWrapperStyles, evacuationClinicStyles, evacuationClinicOptionsWrapperStyles } from './styles';
 
 export const EvacuationClinicComponent: FC<IEvacuationClinicProps> = (props) => {
-    const { data } = props;
+    const { data, onChange } = props;
 
     const [selected, setSelected] = useState<EvacuationClinic>();
 
@@ -21,9 +21,11 @@ export const EvacuationClinicComponent: FC<IEvacuationClinicProps> = (props) => 
     const updateClinic = (clinic: EvacuationClinic) => () => {
         if (clinic === selected) {
             setSelected(undefined);
+            onChange?.(undefined);
             return;
         }
         setSelected(clinic);
+        onChange?.(clinic);
     }
 
     return (

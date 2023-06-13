@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { ChangeEvent, FC, useCallback } from 'react';
 import { Box, Input, Typography } from "@mui/material";
 import { useForm } from 'react-hook-form';
 
-import { IMedicalHelp, IMedicalOperations } from '../../../../api';
+import { IMedicalHelp, IMedicalOperations, ITreatments } from '../../../../api';
 
 import { cursorPointerStyles } from "../../styles";
 
@@ -20,26 +20,32 @@ import { IMedicalHelpProps } from './types';
 import { treatmentsFields } from '../../../../constants';
 
 export const MedicalHelp: FC<IMedicalHelpProps> = (props) => {
-    const { data } = props;
+    const { data, onChange } = props;
 
-    const { register, watch, getValues, setValue } = useForm<IMedicalHelp>({
+    const { register, watch, setValue } = useForm<IMedicalHelp>({
         defaultValues: data ?? {}
     });
 
-    const { operations } = getValues();
+    const { operations } = watch();
 
     watch('operations');
 
-    const updateOperation = (operation: keyof IMedicalOperations) => () => {
+    const updateStringValues = (field: keyof IMedicalOperations | keyof ITreatments) => (event: ChangeEvent<HTMLInputElement>) => {
+        const key = field === 'additionalInfo' ? 'operations' : 'treatments';
+        const value = event.target.value;
+        // @ts-expect-error we set only value for single treatment or additional info
+        setValue(`${key}.${field}`, value);
+        onChange?.(key, value, field );
+    }
+
+    const updateOperation = useCallback((operation: keyof IMedicalOperations) => () => {
         if (typeof operations?.[operation] === 'string') {
             return;
         }
-        if (!operations) {
-            setValue('operations', { [operation]: true });
-            return;
-        }
-        setValue(`operations.${operation}`, !operations[operation]);
-    };
+
+        setValue(`operations.${operation}`, !operations?.[operation]);
+        onChange?.('operations', operations?.[operation], operation)
+    }, [onChange, operations, setValue]);
 
     const getOperationColor = (operation: keyof IMedicalOperations) => operations?.[operation] ? 'error' : 'textPrimary';
 
@@ -72,7 +78,11 @@ export const MedicalHelp: FC<IMedicalHelpProps> = (props) => {
                             </Typography>
                         </Box>
                         <Box>
-                        <Input {...register(`treatments.${treatmentsFields[+key].fieldName}`)} sx={dozeInputStyles} />
+                        <Input
+                            {...register(`treatments.${treatmentsFields[+key].fieldName}`)}
+                            onChange={updateStringValues(treatmentsFields[+key].fieldName)}
+                            sx={dozeInputStyles}
+                        />
                         </Box>
                     </Box>)}
                 </Box>
@@ -136,6 +146,7 @@ export const MedicalHelp: FC<IMedicalHelpProps> = (props) => {
                     <Input 
                         multiline={true} 
                         {...register('operations.additionalInfo')}
+                        onChange={updateStringValues('additionalInfo')}
                         sx={{ width: '100%', bottom: '-0.5px', p: 0 }}
                     />
                 </Box>

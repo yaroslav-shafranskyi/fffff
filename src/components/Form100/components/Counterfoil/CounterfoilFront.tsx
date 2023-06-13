@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
@@ -10,6 +10,8 @@ import { PersonInfo, UpdatePersonDataType } from '../PersonInfo';
 import { Form100Date } from '../Date';
 import { EvacuationClinicComponent } from '../EvacuationClinic';
 import { EvacuationTransportText } from '../EvacuationTransportText';
+import { UpdateMedicalHelpType } from '../MedicalHelp/types';
+
 
 import { 
     titleStyles,
@@ -38,80 +40,32 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = (props) => {
         diagnosis,
         medicalHelp,
         injury,
-        reason, 
     } = values;
 
-    const {
-        id,
-        firstName,
-        secondName,
-        lastName,
-        tokenNumber,
-        rank,
-        militaryBase,
-        gender,
-        lastRecord,
-    } = person;
-
-    const { type: lastRecordType, date: lastRecordDate } = lastRecord ?? {};
-
-    useEffect(() => {
-        onChange?.('person', id, 'id')
-    }, [id, onChange]);
-
-    useEffect(() => {
-        onChange?.('person', firstName, 'firstName')
-    }, [firstName, onChange]);
-
-    useEffect(() => {
-        onChange?.('person', secondName, 'secondName')
-    }, [secondName, onChange]);
-
-    useEffect(() => {
-        onChange?.('person', lastName, 'lastName')
-    }, [lastName, onChange]);
-
-    useEffect(() => {
-        onChange?.('person', tokenNumber, 'tokenNumber')
-    }, [tokenNumber, onChange]);
-
-    useEffect(() => {
-        onChange?.('person', rank, 'rank')
-    }, [rank, onChange]);
-
-    useEffect(() => {
-        onChange?.('person', militaryBase, 'militaryBase')
-    }, [militaryBase, onChange]);
-
-    useEffect(() => {
-        onChange?.('person', gender, 'gender')
-    }, [gender, onChange]);
-    
-    useEffect(() => {
-        onChange?.('person', lastRecordType, 'lastRecord.type')
-    }, [lastRecordType, onChange]);
-
-    useEffect(() => {
-        onChange?.('person', lastRecordDate, 'lastRecord.date')
-    }, [lastRecordDate, onChange]);
-
-    console.log({ counterfoil: values });
-
-    const updatePerson: UpdatePersonDataType = useCallback((field, value, path) =>  {
+    const updateValue = useCallback(<T,>(field: keyof ICounterfoilFrontData, path?: string) => (value?: T) => {
         if (path) {
-            setValue(`person.${field}.${path}` as keyof ICounterfoilFrontData, value)
+            // @ts-expect-error TODO declare value type correctly
+            setValue(`${field}.${path}` as keyof ICounterfoilFrontData, value);
+            // @ts-expect-error TODO declare value type correctly
+            onChange?.(field, value, path);
             return;
         }
-        setValue(`person.${field}`, value);
-    }, [setValue]);
+        // @ts-expect-error TODO declare value type correctly
+        setValue(field, value);
+        // @ts-expect-error TODO declare value type correctly
+        onChange?.(field, value)
+    }, [setValue, onChange]);
 
-    // const updateValue = <T extends string>(groupName: keyof ICounterfoilFrontState, fieldName?: string) => (value?: T) => {
-    //     if (fieldName) {
-    //         setValue(`${groupName}.${fieldName}` as keyof ICounterfoilFrontState, value);
-    //         return;
-    //     }
-    //     setValue(groupName, value)
-    // };
+    const updatePerson: UpdatePersonDataType = useCallback((field, value, path) =>  {
+        updateValue('person', `${field}${path ? '.' + path : ''}`)(value);
+        if (field === 'lastRecord' && path === 'type') {
+            updateValue('reason')(value);
+        }
+    }, [updateValue]);
+
+    const updateMedicalHelp: UpdateMedicalHelpType = useCallback((key, value, path) => {
+        updateValue('medicalHelp', `${key}${path ? '.' + path : ''}`)(value);
+    }, [updateValue]);
 
     return <>
         <Box sx={sectionStyles}>
@@ -126,10 +80,9 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = (props) => {
             <Form100Date data={date} />
             <PersonInfo data={person} onChange={updatePerson} />
             <Box sx={evacuationWrapperStyles}>
-                {/* <EvacuationTransportText data={evacuation?.transport} onChange={updateValue('evacuation', 'transport')} /> */}
-                <EvacuationTransportText data={evacuation?.transport} />
+                <EvacuationTransportText data={evacuation?.transport} onChange={updateValue('evacuation', 'transport')} />
                 <Box sx={evacuationClinicWrapperStyles}>
-                    <EvacuationClinicComponent />
+                    <EvacuationClinicComponent data={evacuation?.clinic} onChange={updateValue('evacuation', 'clinic')} />
                     <Box sx={evacuationClinicTipWrapperStyles}>
                         <Typography>
                             потрібне обвести
@@ -144,16 +97,16 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = (props) => {
                     <Typography sx={{ fontWeight: 'bold', ml: .5 }}>
                         МЕДИЧНА ДОПОМОГА
                     </Typography>
-                    <MedicalHelp />
+                    <MedicalHelp data={medicalHelp} onChange={updateMedicalHelp} />
                 </Box>
                 <Box sx={medicalHelpAndInjutyTypeTipStyles}>
                     <Typography>
                         Вид санітарних втрат (обвести)
                     </Typography>
                 </Box>
-                <Injury />
+                <Injury data={injury} onChange={updateValue('injury')} />
             </Box>
-            <Diagnosis />
+            <Diagnosis data={diagnosis} onChange={updateValue('diagnosis')}  />
         </Box>
     </>
 };

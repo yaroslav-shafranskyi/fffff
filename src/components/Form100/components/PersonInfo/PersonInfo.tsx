@@ -66,7 +66,6 @@ export const PersonInfo: FC<IPersonInfoProps> = (props) => {
             return;
         }
         const newRecordDate = new Date(`${newRecordMonth}.${newRecordDay}.${newRecordYear}, ${newRecordHour}:${newRecordMinute}`);
-        // @ts-expect-error TODO: declare value correctly
         onChange('lastRecord', newRecordDate, 'date');
     }, [
         newRecordHour,

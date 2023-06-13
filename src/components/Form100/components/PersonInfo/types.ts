@@ -15,7 +15,7 @@ export interface IPersonState extends Pick<IPerson, 'id' | 'tokenNumber' | 'rank
 export type PersonDataValuesType = string | Rank | Gender | IRecord
 export type PersonStateValues = string | Date | Rank | Gender | RecordType;
 
-export type UpdatePersonDataType = (key: keyof PersonDataType, value: PersonDataValuesType & PersonStateValues, path?: string) => void;
+export type UpdatePersonDataType = (key: keyof PersonDataType, value: PersonDataValuesType | PersonStateValues, path?: string) => void;
 
 export interface IPersonInfoProps {
     data?: PersonDataType;

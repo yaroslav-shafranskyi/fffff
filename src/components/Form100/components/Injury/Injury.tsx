@@ -15,21 +15,19 @@ import {
 } from './styles';
 
 export const Injury: FC<IInjuryProps> = (props) => {
-    const { data } = props;
+    const { data, onChange } = props;
     
-    const { watch, getValues, setValue } = useForm<IInjury>({
+    const { watch, setValue } = useForm<IInjury>({
         defaultValues: data ?? {}
     });
 
-    watch();
-
-    const injury = getValues();
+    const injury = watch();
 
     const updateInjury = (injuryType: keyof IInjury) => () => {
         setValue(injuryType, !injury[injuryType]);
+        onChange?.(injuryType, !injury?.[injuryType]);
     }
     const getInjuryColor = (injuryType: keyof IInjury) => injury?.[injuryType] ? 'error.main' : 'background.paper';
-
 
     return (
         <Box>

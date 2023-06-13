@@ -17,7 +17,7 @@ export const Diagnosis: FC<IDiagnosisProps> = (props) => {
         }
     }, [data])
 
-    const handlChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         onChange?.(value);
         setDiagnosis(value);
@@ -36,7 +36,7 @@ export const Diagnosis: FC<IDiagnosisProps> = (props) => {
                 inputProps={{ sx: inputPropsStyles }}
                 fullWidth={true}
                 sx={diagnosisInputStyles}
-                onChange={handlChange}
+                onChange={handleChange}
             />
         </Box>
     )
