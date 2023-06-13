@@ -13,4 +13,5 @@ export interface IPerson {
     gender: Gender;
     militaryBase: string; // TODO declare type
     records: IRecord[];
+    lastRecord: IRecord;
 }

@@ -1,12 +1,12 @@
 import { EvacuationTransport, EvacuationClinic, RecordType } from '../../../../api';
 
-import { getDefaultPersonData } from '../PersonInfo';
+import { defaultPersonData } from '../PersonInfo';
 
-import { ICounterfoilFrontState } from './types';
+import { ICounterfoilFrontData } from './types';
 
-export const getDefaultCounterfoilFrontState = ():ICounterfoilFrontState => ({
+export const getDefaultCounterfoilFrontState = ():ICounterfoilFrontData => ({
     date: new Date(),
-    ...getDefaultPersonData(),
+    person: defaultPersonData,
     reason: '' as RecordType,
     evacuation: {
         transport: '' as EvacuationTransport,

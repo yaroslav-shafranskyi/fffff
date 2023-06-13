@@ -14,9 +14,9 @@ export interface IForm100 {
     date: Date;
     reason: RecordType;
     bodyImage: IBodyImage;
-    bodyDamage?: BodyDamageInfo[];
+    bodyDamage: BodyDamageInfo[];
     injury?: IInjury;
-    medicalHelp: IMedicalHelp;
+    medicalHelp?: IMedicalHelp;
     plait?: Date;
     sanitaryTreatment?: SanitaryTreatmentStatus;
     evacuation: IEvacuation;
@@ -29,6 +29,6 @@ export interface IForm100 {
     result: string;
     selfLeave?: boolean;
     carriedBy?: string;
-    timeAfterAccident: number;
+    timeAfterAccident?: number;
     firstAidInfo: string;
 }
