@@ -46,49 +46,6 @@ export const injuryWrapperStyles: SxProps = {
     gridTemplateColumns: '2fr 3fr',
 };
 
-export const sanitaryStatusWrapperStyles: SxProps = {
-    width: 'fit-content',
-    margin: 'auto',
-};
-
-export const evacuationTypeWrapperStyles: SxProps = {
-    border: '1.5px solid',
-    borderRight: 'none',
-    display: 'flex',
-};
-
-export const evacuationTypeTipStyles: SxProps = {
-    lineHeight: 0,
-};
-
-export const evacuationPriorityWrapperStyles: SxProps = {
-    borderBottom: '1.5px solid',
-    display: 'flex',
-    gap: .5,
-    justifyContent: 'center',
-};
-
-export const evacuationPriorityOptionsWrapperStyles: SxProps = {
-    display: 'flex',
-    gap: .5,
-};
-
-export const evacuationTransportWrapperStyles: SxProps = {
-    display: 'flex',
-    border: '1.5px solid',
-    borderRight: 'none',
-    '& :last-child': {
-        borderRight: 'none',
-    },
-    mt: .5,
-};
-
-export const evacuationTransportCellStyles:SxProps = {
-    borderRight: '1.5px solid',
-    cursor: 'pointer',
-    width: '100%',
-};
-
 export const signatureWrapperStyles: SxProps = {
     display: 'flex',
     justifyContent: 'end',

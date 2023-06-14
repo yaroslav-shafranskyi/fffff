@@ -1,49 +1,29 @@
-import { FC, useState, useEffect, useCallback } from 'react';
 import { Box, Typography } from '@mui/material';
 
-import { BodyDamageInfo, IBodyImage } from '../../../../api';
+import { BodyDamageInfo, IForm100 } from '../../../../api';
 
 import { boldTextStyles, cursorPointerStyles, displayFlexStyles, severalInlineOptionsWrapperStyles } from '../../styles';
 
-import { IBodyDamageProps, BodyDamageDataType } from './types';
 import {
     bodyDamageInfoWrapperStyles,
     bodyDamageWrapperStyles,
     bodyImageTipWrapperStyles,
     bodyImagesWrapperStyles
 } from './styles';
-import { defaultBodyDamageData } from './constants';
+import { useFormContext } from 'react-hook-form';
 
-export const BodyDamage: FC<IBodyDamageProps> = (props) => {
-    const { data, onChange } = props;
-    const { image: propsImage, info: propsInfo } = data ?? defaultBodyDamageData;
+export const BodyDamage = () => {
+    const { watch, setValue } = useFormContext<IForm100>();
 
-    const [state, setState] = useState<BodyDamageDataType>(defaultBodyDamageData);
-
-    const { info, image } = state;
-
-    const updateState = useCallback((key: keyof BodyDamageDataType, value: IBodyImage | BodyDamageInfo[]) => {
-        setState((prevState: BodyDamageDataType) => ({ ...prevState, [key]: value }))
-    }, []); 
-
-    useEffect(() => {
-        updateState('image', propsImage);
-    }, [propsImage, updateState]);
-
-    useEffect(() => {
-        updateState('info', propsInfo ?? []);
-    }, [propsInfo, updateState]);
+    const { bodyDamage: info, bodyImage } = watch();
+    const { front, back } = bodyImage;
 
     const getBodyDamageColor = (damage: BodyDamageInfo) => info.includes(damage) ? 'error' : 'textPrimary';
 
     const updateBodyDamage = (damage: BodyDamageInfo) => () => {
         const damageIdx = info.findIndex(d => d === damage) ?? -1;
-            setState(prevState => {
-                const newInfo = damageIdx < 0 ? [...prevState.info, damage] : [...info.slice(0, damageIdx), ...info.slice(damageIdx + 1)];
-                const newState = { ...prevState, info: newInfo };
-                onChange?.(newState);
-                return newState;
-            });
+        const newInfo = damageIdx < 0 ? [...info, damage] : [...info.slice(0, damageIdx), ...info.slice(damageIdx + 1)];
+        setValue('bodyDamage', newInfo);
     };
 
     return (
@@ -55,10 +35,10 @@ export const BodyDamage: FC<IBodyDamageProps> = (props) => {
             </Box>
             <Box sx={bodyImagesWrapperStyles}>
                 <Box sx={cursorPointerStyles}>
-                    {image?.front ?? null}
+                    {front ?? null}
                 </Box>
                 <Box sx={cursorPointerStyles}>
-                    {image?.back ?? null}
+                    {back ?? null}
                 </Box>
             </Box>
             <Box sx={bodyDamageInfoWrapperStyles}>

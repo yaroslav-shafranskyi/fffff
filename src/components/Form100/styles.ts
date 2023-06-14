@@ -49,6 +49,7 @@ export const displayFlexStyles: SxProps = {
 export const dateNumberInputStyles: SxProps = {
     width: 18,
     p: 0,
+    h: 3,
 };
 
 export const severalInlineOptionsWrapperStyles: SxProps = {

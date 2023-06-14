@@ -15,7 +15,7 @@ export const getInitialForm100 = (): IForm100 => {
         },
         bodyDamage: [],
         date: newDate,
-        reason: RecordType.INJURY,
+        reason: '' as RecordType,
         medicalHelp: {
             treatments: {},
             operations: {}

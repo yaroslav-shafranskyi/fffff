@@ -1,7 +1,7 @@
-import { FC, useState, useEffect, ChangeEvent } from 'react';
+import { ChangeEvent } from 'react';
 import { Box, Input, Typography } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 
-import { IClinicProps } from './types';
 import {
     clinicCaptionWrapperStyles,
     clinicInputPropsSx,
@@ -9,18 +9,13 @@ import {
     clinicWrapperStyles,
 } from './styles';
 
-export const Clinic: FC<IClinicProps> = (props) => {
-    const { data, onChange } = props;
+export const Clinic = () => {
+    const { watch, setValue } = useFormContext();
 
-    const [clinic, setClinic] = useState<string>('');
-    useEffect(() => {
-        setClinic(data ?? '');
-    }, [data]);
+    const clinic = watch('clinic');
 
     const hanleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const clinic = event.target.value;
-        setClinic(clinic);
-        onChange?.(clinic);
+        setValue('clinic', event.target.value);
     }
 
     return (

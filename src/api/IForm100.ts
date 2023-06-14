@@ -1,3 +1,4 @@
+import { IPlait } from './IPlait';
 import { BodyDamageInfo } from './BodyDamageInfo';
 import { IBodyImage } from './IBodyImage';
 import { IEvacuation } from './IEvacuation';
@@ -17,7 +18,7 @@ export interface IForm100 {
     bodyDamage: BodyDamageInfo[];
     injury?: IInjury;
     medicalHelp?: IMedicalHelp;
-    plait?: Date;
+    plait?: IPlait;
     sanitaryTreatment?: SanitaryTreatmentStatus;
     evacuation: IEvacuation;
     diagnosis: string;
