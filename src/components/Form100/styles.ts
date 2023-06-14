@@ -3,16 +3,8 @@ import { Theme } from '@mui/system';
 
 export const containerStyles: SxProps = {
     border: 'none',
-    width: '100vw',
     bgcolor: 'background.paper',
     color: 'text.primary',
-};
-
-export const formWrapperStyles: SxProps = {
-    border: '4px solid',
-    borderColor: 'text.primary',
-    display: 'grid',
-    gridTemplateColumns: '1fr 2fr',
 };
 
 export const boldTextStyles: SxProps = {
@@ -55,4 +47,10 @@ export const dateNumberInputStyles: SxProps = {
 export const severalInlineOptionsWrapperStyles: SxProps = {
     display: 'flex',
     gridColumnGap: 2,
+};
+
+export const commonWrapperStyles: SxProps = {
+    border: '4px solid',
+    borderColor: 'text.primary',
+    display: 'grid', 
 };

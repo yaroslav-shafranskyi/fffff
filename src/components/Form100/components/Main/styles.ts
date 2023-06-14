@@ -1,6 +1,8 @@
 import { SxProps } from '@mui/material';
 import { Theme } from '@mui/system';
 
+import { commonWrapperStyles } from '../../styles';
+
 export const containerStyles: SxProps<Theme> = (theme) => ({
     display: 'grid',
     gridTemplateColumns: `${theme.spacing(4)} auto ${theme.spacing(4)}`,
@@ -70,4 +72,13 @@ export const rightBorderStyles: SxProps = {
     justifyContent: 'center',
     alignItems: 'center',
     borderLeft: '1.5px solid',
+};
+
+export const backWrapperStyles: SxProps = {
+    ...commonWrapperStyles,   
+};
+
+export const backHeaderStyles: SxProps = {
+    display: 'grid',
+    gridTemplateColumns: '1fr 2fr',
 };

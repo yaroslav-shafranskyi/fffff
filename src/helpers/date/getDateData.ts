@@ -8,6 +8,6 @@ export const getDateData = (date: Date): IDateData => ({
     minutes: convertDateField(date.getMinutes()),
     day: convertDateField(date.getDate()),
     month: convertDateField(date.getMonth() + 1),
-    monthName: monthNames[date.getMonth() + 1],
+    monthName: monthNames[date.getMonth()],
     year: convertDateField(date.getFullYear() % 2000),
 });
