@@ -1,26 +1,19 @@
-import { FC, ChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent } from 'react';
 import { Box, Typography } from '@mui/material';
 
 import { Input } from '../../../../shared';
 
-import { IDiagnosisProps } from './types';
 import { diagnosisInputStyles, diagnosisStyles, inputPropsStyles, titleWrapperStyles } from './styles';
+import { useFormContext } from 'react-hook-form';
+import { IForm100 } from '../../../../api';
 
-export const Diagnosis: FC<IDiagnosisProps> = (props) => {
-    const { data, onChange } = props;
+export const Diagnosis = () => {
+    const { watch, setValue } = useFormContext<IForm100>();
 
-    const [diagnosis, setDiagnosis] = useState<string>('');
-
-    useEffect(() => {
-        if (data !== undefined) {
-            setDiagnosis(data)
-        }
-    }, [data])
+    const diagnosis = watch('diagnosis');
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const { value } = event.target;
-        onChange?.(value);
-        setDiagnosis(value);
+        setValue('diagnosis', event.target.value);
     };
 
     return (

@@ -1,26 +1,20 @@
-import { FC, useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 
-import { EvacuationTransport } from '../../../../api';
+import { EvacuationTransport, IForm100 } from '../../../../api';
 
 import { cursorPointerStyles, displayFlexStyles } from '../../styles';
 
-import { IEvacuationTransportTextProps } from './types';
 import { evacuationTransportOptionsRowWrapperStyles, evacuationTransportWrapperStyles } from './styles';
 
-export const EvacuationTransportText: FC<IEvacuationTransportTextProps> = (props) => {
-    const { data, onChange } = props;
+export const EvacuationTransportText = () => {
+    const { watch, setValue } = useFormContext<IForm100>();
 
-    const [selected, setSelected] = useState<EvacuationTransport>();
-
-    useEffect(() => {
-        setSelected(data);
-    }, [data]);
+    const selected = watch('evacuation.transport');
 
     const updateSelected = (transport?: EvacuationTransport) => () => {
         const newSelected = transport === selected ? undefined : transport;
-        setSelected(newSelected);
-        onChange?.(newSelected);      
+        setValue('evacuation.transport', newSelected as EvacuationTransport);      
     };
 
     const getOptionColor = (option: EvacuationTransport) => option === selected ? 'primary' : 'textPrimary';

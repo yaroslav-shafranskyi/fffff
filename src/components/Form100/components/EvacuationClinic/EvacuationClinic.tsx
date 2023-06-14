@@ -1,32 +1,26 @@
-import { FC, Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import { Box, Typography } from '@mui/material';
 
-import { EvacuationClinic } from '../../../../api';
+import { EvacuationClinic, IForm100 } from '../../../../api';
 import { evacuationClinicFieldNames } from '../../../../constants';
 
-import { IEvacuationClinicProps } from './types';
 import { evacuationClinicTitleWrapperStyles, evacuationClinicStyles, evacuationClinicOptionsWrapperStyles } from './styles';
+import { useFormContext } from 'react-hook-form';
 
-export const EvacuationClinicComponent: FC<IEvacuationClinicProps> = (props) => {
-    const { data, onChange } = props;
+export const EvacuationClinicComponent = () => {
+    const { watch, setValue } = useFormContext<IForm100>();
 
-    const [selected, setSelected] = useState<EvacuationClinic>();
-
-    useEffect(() => {
-        setSelected(data);
-    }, [data]);
+    const selected = watch('evacuation.clinic');
 
     const getClinicBgColor = (option: EvacuationClinic) => option === selected ? 'primary.main' : 'background.paper';
 
     const updateClinic = (clinic: EvacuationClinic) => () => {
         if (clinic === selected) {
-            setSelected(undefined);
-            onChange?.(undefined);
+            setValue('evacuation.clinic', undefined as unknown as EvacuationClinic);
             return;
         }
-        setSelected(clinic);
-        onChange?.(clinic);
-    }
+        setValue('evacuation.clinic', clinic);
+    };
 
     return (
         <>

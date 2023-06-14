@@ -14,9 +14,9 @@ import {
     displayFlexStyles,
     severalInlineOptionsWrapperStyles
 } from '../../styles';
-import { PersonInfo, UpdatePersonDataType } from '../PersonInfo';
+import { PersonInfo } from '../PersonInfo';
 import { Injury } from '../Injury';
-import { MedicalHelp, UpdateMedicalHelpType } from '../MedicalHelp';
+import { MedicalHelp } from '../MedicalHelp';
 import { EvacuationClinicComponent } from '../EvacuationClinic';
 import { Diagnosis } from '../Diagnosis';
 import { BodyDamage } from '../BodyDamage';
@@ -75,10 +75,6 @@ export const MainFront: FC<IMainFrontProps> = (props) => {
         // // @ts-expect-error TODO declare value type correctly
         // onChange?.(field, value) 
     }, [setValue]);
-
-    const updateMedicalHelp: UpdateMedicalHelpType = useCallback((key, value, path) => {
-        updateValue('medicalHelp', `${key}${path ? '.' + path : ''}`)(value);
-    }, [updateValue]);
 
     const updateSanitaryTreatmentStatus = (type: SanitaryTreatmentStatus) => () => {
         setValue('sanitaryTreatment', type);

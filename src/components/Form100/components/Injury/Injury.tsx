@@ -1,31 +1,24 @@
-import { FC } from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import {  useFormContext } from 'react-hook-form';
 
-import { IInjury } from '../../../../api';
+import { IForm100, IInjury } from '../../../../api';
 import { injuriesFields } from '../../../../constants';
 
 import { cursorPointerStyles, iconStyles } from '../../styles';
 
-import { IInjuryProps } from "./types";
 import {
     injuryTypeTitleCellStyles,
     injuryCellStyles,
     injuryTypeCellStyles,
 } from './styles';
 
-export const Injury: FC<IInjuryProps> = (props) => {
-    const { data, onChange } = props;
-    
-    const { watch, setValue } = useForm<IInjury>({
-        defaultValues: data ?? {}
-    });
+export const Injury = () => {   
+    const { watch, setValue } = useFormContext<IForm100>();
 
-    const injury = watch();
+    const injury = watch('injury');
 
     const updateInjury = (injuryType: keyof IInjury) => () => {
-        setValue(injuryType, !injury[injuryType]);
-        onChange?.(injuryType, !injury?.[injuryType]);
+        setValue(`injury.${injuryType}`, !injury?.[injuryType]);
     }
     const getInjuryColor = (injuryType: keyof IInjury) => injury?.[injuryType] ? 'error.main' : 'background.paper';
 
