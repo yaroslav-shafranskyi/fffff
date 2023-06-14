@@ -1,12 +1,12 @@
-import { FC, useCallback } from 'react';
+import { useCallback } from 'react';
 import { Box, Typography } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import { sectionStyles } from '../../styles';
 import { MedicalHelp } from '../MedicalHelp';
 import { Injury } from '../Injury';
 import { Diagnosis } from '../Diagnosis';
-import { PersonInfo, UpdatePersonDataType } from '../PersonInfo';
+import { PersonInfo } from '../PersonInfo';
 import { Form100Date } from '../Date';
 import { EvacuationClinicComponent } from '../EvacuationClinic';
 import { EvacuationTransportText } from '../EvacuationTransportText';
@@ -22,21 +22,17 @@ import {
     medicalHelpAndInjuryTypeWrapperStyles,
     medicalHelpAndInjutyTypeTipStyles,
 } from './styles';
-import { ICounterfoilFrontProps, ICounterfoilFrontData } from './types';
-import { getDefaultCounterfoilFrontState } from './constants';
+import { ICounterfoilFrontData } from './types';
 
-export const CounterfoilFront: FC<ICounterfoilFrontProps> = (props) => {
-    const { data, onChange } = props;
+export const CounterfoilFront = () => {
 
-    const { setValue, watch } = useForm<ICounterfoilFrontData>({
-        defaultValues: data ?? getDefaultCounterfoilFrontState(),
-    });
+    const { setValue, watch } = useFormContext();
 
     const values = watch();
+
     const { 
         evacuation,
         date,
-        person,
         diagnosis,
         medicalHelp,
         injury,
@@ -44,24 +40,10 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = (props) => {
 
     const updateValue = useCallback(<T,>(field: keyof ICounterfoilFrontData, path?: string) => (value?: T) => {
         if (path) {
-            // @ts-expect-error TODO declare value type correctly
-            setValue(`${field}.${path}` as keyof ICounterfoilFrontData, value);
-            // @ts-expect-error TODO declare value type correctly
-            onChange?.(field, value, path);
-            return;
+            setValue(`${field}.${path}`, value);
         }
-        // @ts-expect-error TODO declare value type correctly
         setValue(field, value);
-        // @ts-expect-error TODO declare value type correctly
-        onChange?.(field, value)
-    }, [setValue, onChange]);
-
-    const updatePerson: UpdatePersonDataType = useCallback((field, value, path) =>  {
-        updateValue('person', `${field}${path ? '.' + path : ''}`)(value);
-        if (field === 'lastRecord' && path === 'type') {
-            updateValue('reason')(value);
-        }
-    }, [updateValue]);
+    }, [setValue]);
 
     const updateMedicalHelp: UpdateMedicalHelpType = useCallback((key, value, path) => {
         updateValue('medicalHelp', `${key}${path ? '.' + path : ''}`)(value);
@@ -78,7 +60,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = (props) => {
                 </Typography>
             </Box>
             <Form100Date data={date} />
-            <PersonInfo data={person} onChange={updatePerson} />
+            <PersonInfo />
             <Box sx={evacuationWrapperStyles}>
                 <EvacuationTransportText data={evacuation?.transport} onChange={updateValue('evacuation', 'transport')} />
                 <Box sx={evacuationClinicWrapperStyles}>

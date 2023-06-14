@@ -10,7 +10,7 @@ import { SanitaryTreatmentStatus } from './SanitaryTreatmentStatus';
 export interface IForm100 {
     clinic: string;
     author: string;
-    person: IPerson;
+    person: Omit<IPerson, 'birthDate' | 'records'>;
     date: Date;
     reason: RecordType;
     bodyImage: IBodyImage;

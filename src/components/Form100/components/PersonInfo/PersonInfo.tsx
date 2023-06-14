@@ -1,15 +1,14 @@
-import { ChangeEvent, FC, useCallback, useEffect, useMemo } from 'react';
+import { ChangeEvent, useMemo } from 'react';
 import { Box, Typography } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import { Input, Select } from '../../../../shared';
-import { ArmyRank, Gender, RecordType } from '../../../../api';
-import { splitFullName } from '../../../../helpers';
+import { ArmyRank, Gender, IForm100, RecordType } from '../../../../api';
+import { getDateData, updateDay, updateHour, updateMinute, updateMonth, updateYear } from '../../../../helpers';
 
 import { dateNumberInputStyles, cursorPointerStyles } from '../../styles';
 
-import { IPersonInfoProps, IPersonState, PersonDataType, UpdatePersonStateType } from './types';
-import { getDefaultPersonState } from './constants';
+import { PersonDataType, UpdatePersonDataType } from './types';
 import {
     columnStyles,
     fieldNameStyles,
@@ -23,93 +22,55 @@ import {
     reasonAndNewRecordDateWrapperStyles,
     femaleWrapperStyles,
 } from './styles';
-import { convertPersonDataTypeToIPersonState } from './helpers';
 
-export const PersonInfo: FC<IPersonInfoProps> = (props) => {
-    const { data, onChange } = props;
-
-    const stateFromProps = useMemo(() => data ? convertPersonDataTypeToIPersonState(data) : getDefaultPersonState(), [data]);
-
-    const { register, setValue, watch } = useForm<IPersonState>({
-        defaultValues: stateFromProps,
-    });
+export const PersonInfo = () => {
+    const { register, setValue, watch } = useFormContext<IForm100>();
 
     const values = watch();
-    const {
+    const { person } = values;
+    const { 
+        fullName,
+        militaryBase,
         rank,
-        gender,
-        newRecordHour,
-        newRecordMinute,
-        newRecordDay,
-        newRecordMonth,
-        newRecordYear,
-        newRecordReason,
-    } = values;
+        id,
+        tokenNumber,
+        lastRecord,
+    } = person;
 
-    useEffect(() => {
-        onChange?.('gender', gender);
-    }, [gender, onChange]);
+    const {
+        hours: newRecordHour,
+        minutes: newRecordMinute,
+        day: newRecordDay,
+        month: newRecordMonth,
+        year: newRecordYear,
+    } = useMemo(() => getDateData(lastRecord.date), [lastRecord.date]);
 
-    useEffect(() => {
-        if (newRecordReason) {
-            onChange?.('lastRecord', newRecordReason, 'type')
-        }
-    }, [newRecordReason, onChange]);
+    const handleNewRecordDateChange = (updator: (date: Date, v: number) => void) => (event: ChangeEvent<HTMLInputElement>) => {
+        const newDate = new Date(lastRecord.date ?? new Date());
+        updator(newDate, +event.target.value);
+        setValue('person.lastRecord.date', newDate);
+    };
 
-    useEffect(() => {
-        onChange?.('rank', rank);
-    }, [rank, onChange]);
-
-    useEffect(() => {
-        const someFieldsMissing = !newRecordHour || !newRecordMinute || !newRecordDay || !newRecordMonth || !newRecordYear;
-        if (someFieldsMissing || !onChange) {
-            return;
-        }
-        const newRecordDate = new Date(`${newRecordMonth}.${newRecordDay}.${newRecordYear}, ${newRecordHour}:${newRecordMinute}`);
-        onChange('lastRecord', newRecordDate, 'date');
-    }, [
-        newRecordHour,
-        newRecordMinute,
-        newRecordDay,
-        newRecordMonth,
-        newRecordYear,
-        onChange
-    ])
-
-    const handleCommonFieldChange = (field: keyof PersonDataType | keyof IPersonState, disableParentUpdate = false) =>
+    const handleCommonFieldChange = (field: keyof PersonDataType) =>
         (event: ChangeEvent<HTMLInputElement>) => {
             const newValue = event.target.value;
-            setValue(field as keyof IPersonState, newValue);
-            if (!disableParentUpdate) {
-                onChange?.(field as keyof PersonDataType, newValue);
-            }
+            setValue(`person.${field}`, newValue);
         };
 
-    const handleFullNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        const newFullName = event.target.value;
-        setValue('personFullName', newFullName);
-
-        const { firstName, secondName, lastName, error } = splitFullName(newFullName);
-        
-        if (error) {
+    const updatePersonData: UpdatePersonDataType = (key, value, path) => () => {
+        if (path) {
+            // @ts-expect-error TODO: declare value type correctly
+            setValue(`person.${key}.${path}`, value);
             return;
         }
-
-        if (firstName !== data?.firstName) {
-            onChange?.('firstName', firstName);
-        }
-        if (secondName !== data?.secondName) {
-            onChange?.('secondName', secondName);
-        }
-        if (lastName !== data?.lastName) {
-            onChange?.('lastName', lastName);
-        }
-    }, [data?.firstName, data?.secondName, data?.lastName, onChange, setValue]);
-
-    const updatePersonState: UpdatePersonStateType = (key, value) => () => {
-        setValue(key, value)
+        setValue(`person.${key}`, value);
     };
-    const getOptionColor = <T extends string>(name: keyof typeof values, option: T) => option === values[name] ? 'error' : 'textPrimary';
+
+    const getOptionColor = <T extends string>(option: T, getCurrentValue: (person: PersonDataType) => T) => 
+        option === getCurrentValue(person) ? 'error' : 'textPrimary';
+
+    const getCurrentGender = (p: PersonDataType) => p.gender;
+    const getCurrentReason = (p: PersonDataType) => p.lastRecord.type;
 
     return (
         <>
@@ -118,20 +79,20 @@ export const PersonInfo: FC<IPersonInfoProps> = (props) => {
                     <Box sx={fieldNameStyles}>
                         <Typography>в/звання</Typography>
                     </Box>
-                    <Select { ...register('rank')} options={Object.values(ArmyRank)} />
+                    <Select { ...register('person.rank')} value={rank} options={Object.values(ArmyRank)} />
                 </Box>
                 <Box sx={columnStyles}>
                     <Box>
                         <Typography>в/ч, з’єднання</Typography>
                     </Box>
-                    <Input {...register('militaryBase')} onChange={handleCommonFieldChange('militaryBase')} fullWidth={true} />
+                    <Input value={militaryBase} onChange={handleCommonFieldChange('militaryBase')} fullWidth={true} />
                 </Box>
             </Box>
             <Box sx={singleElementRowStyles}>
                 <Input
-                    {...register('personFullName')}
-                    onChange={handleFullNameChange}
+                    value={fullName}
                     sx={fullWidthInputStyles}
+                    onChange={handleCommonFieldChange('fullName')}
                 />
                 <Box sx={fullNameTitleStyles}>
                     <Typography>
@@ -149,39 +110,39 @@ export const PersonInfo: FC<IPersonInfoProps> = (props) => {
                 <Box sx={fieldNameStyles}>
                     <Typography>Посвідчення особи</Typography>
                 </Box>
-                <Input {...register('id')} onChange={handleCommonFieldChange('id')} sx={fullWidthInputStyles} />
+                <Input value={id} onChange={handleCommonFieldChange('id')} sx={fullWidthInputStyles} />
             </Box>
             <Box sx={severalFieldsRowStyles}>
                 <Box sx={fieldNameStyles}>
                     <Typography>Особистий №</Typography>
                 </Box>
-                <Input {...register('tokenNumber')} onChange={handleCommonFieldChange('tokenNumber')} sx={fullWidthInputStyles} />
+                <Input value={tokenNumber} onChange={handleCommonFieldChange('tokenNumber')} sx={fullWidthInputStyles} />
                 <Typography>Стать: </Typography>
-                <Box sx={cursorPointerStyles} onClick={updatePersonState('gender', Gender.MALE)}>
-                    <Typography color={getOptionColor('gender', Gender.MALE)}>{Gender.MALE}</Typography> 
+                <Box sx={cursorPointerStyles} onClick={updatePersonData('gender', Gender.MALE)}>
+                    <Typography color={getOptionColor(Gender.MALE, getCurrentGender)}>{Gender.MALE}</Typography> 
                 </Box>
-                <Box sx={femaleWrapperStyles} onClick={updatePersonState('gender', Gender.FEMALE)}>
-                    <Typography color={getOptionColor('gender', Gender.FEMALE)}>{Gender.FEMALE}</Typography> 
+                <Box sx={femaleWrapperStyles} onClick={updatePersonData('gender', Gender.FEMALE)}>
+                    <Typography color={getOptionColor(Gender.FEMALE, getCurrentGender)}>{Gender.FEMALE}</Typography> 
                 </Box>
             </Box>
             
             <Box sx={reasonAndNewRecordDateWrapperStyles}>
                 <Box sx={reasonWrapperStyles}>
-                    <Box sx={injuryReasonWrapper} onClick={updatePersonState('newRecordReason', RecordType.INJURY)}>
-                        <Typography color={getOptionColor('newRecordReason', RecordType.INJURY)}>Поранений</Typography>
+                    <Box sx={injuryReasonWrapper} onClick={updatePersonData('lastRecord', RecordType.INJURY, 'type')}>
+                        <Typography color={getOptionColor(RecordType.INJURY, getCurrentReason)}>Поранений</Typography>
                         <Typography>,</Typography>
                     </Box>
-                    <Box sx={cursorPointerStyles} onClick={updatePersonState('newRecordReason', RecordType.SICK)}>
-                        <Typography color={getOptionColor('newRecordReason', RecordType.SICK)}>захворів</Typography>
+                    <Box sx={cursorPointerStyles} onClick={updatePersonData('lastRecord', RecordType.SICK, 'type')}>
+                        <Typography color={getOptionColor(RecordType.SICK, getCurrentReason)}>захворів</Typography>
                     </Box>
                 </Box>
                 <Box>
                     <Typography>
-                        <Input {...register('newRecordHour')} onChange={handleCommonFieldChange('newRecordHour', true)} sx={dateNumberInputStyles} /> год. 
-                        <Input { ...register('newRecordHour')} onChange={handleCommonFieldChange('newRecordMinute', true)} sx={dateNumberInputStyles} /> {`хв. `}
-                        <Input { ...register('newRecordDay')} onChange={handleCommonFieldChange('newRecordDay', true)} sx={dateNumberInputStyles} />. 
-                        <Input { ...register('newRecordMonth')} onChange={handleCommonFieldChange('newRecordMonth', true)} sx={dateNumberInputStyles} />.
-                        20<Input { ...register('newRecordYear')} onChange={handleCommonFieldChange('newRecordYear', true)} sx={dateNumberInputStyles} />р. 
+                        <Input value={newRecordHour} onChange={handleNewRecordDateChange(updateHour)} sx={dateNumberInputStyles} /> год. 
+                        <Input value={newRecordMinute} onChange={handleNewRecordDateChange(updateMinute)} sx={dateNumberInputStyles} /> {`хв. `}
+                        <Input value={newRecordDay} onChange={handleNewRecordDateChange(updateDay)} sx={dateNumberInputStyles} />. 
+                        <Input value={newRecordMonth} onChange={handleNewRecordDateChange(updateMonth)} sx={dateNumberInputStyles} />.
+                        20<Input value={newRecordYear} onChange={handleNewRecordDateChange(updateYear(true))} sx={dateNumberInputStyles} />р. 
                     </Typography>
                 </Box>
             </Box>

@@ -1,9 +1,9 @@
 import { IEvacuation } from '../../../../api';
 import { BodyImageBack, BodyImageFront } from '../../../../assets';
 import { getDefaultCounterfoilFrontState } from '../Counterfoil/constants';
-import { IMainFrontData } from './types';
+import { IMainFrontState } from './types';
 
-export const defaultMainFrontData: IMainFrontData = {
+export const defaultMainFrontState: IMainFrontState = {
     clinic: '',
     ...getDefaultCounterfoilFrontState(),
     bodyImage: {

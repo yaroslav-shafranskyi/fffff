@@ -4,9 +4,7 @@ import { Rank } from './Rank';
 
 export interface IPerson {
     id: string;
-    firstName: string;
-    secondName: string;
-    lastName: string;
+    fullName: string;
     tokenNumber: string;
     birthDate: Date;
     rank: Rank;

@@ -1,1 +1,1 @@
-export const convertDay = (day: number) => day < 10 ? `0${day}` : String(day);
+export const convertDateField = (date: number) => date < 10 ? `0${date}` : String(date);

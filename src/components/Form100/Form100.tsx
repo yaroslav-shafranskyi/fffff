@@ -1,13 +1,13 @@
 import { FC, useCallback } from 'react';
 import { Box } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { IForm100 } from '../../api';
 
 import { CounterfoilFront, MainFront } from './components';
 
-import { initialForm100 } from './constants';
+import { getInitialForm100 } from './constants';
 import { form100Schema } from './schemas';
 import { containerStyles, formWrapperStyles } from './styles';
 import { UpdateForm100Type } from './types';
@@ -19,12 +19,15 @@ export interface IForm100Props {
 export const Form100: FC<IForm100Props> = (props) => {
     const { data } = props;
 
-    const { getValues, setValue, watch } = useForm<IForm100>({
+    const methods = useForm<IForm100>({
         resolver: yupResolver(form100Schema),
-        defaultValues: data ?? initialForm100,
+        defaultValues: data ?? getInitialForm100(),
     });
 
+    const { setValue, watch } = methods;
+
     const {
+        clinic,
         date,
         person,
         diagnosis,
@@ -32,37 +35,37 @@ export const Form100: FC<IForm100Props> = (props) => {
         injury,
         reason,
         evacuation,
+        bodyImage,
+        bodyDamage,
+        plait,
+        sanitaryTreatment,
+        signature,
     } = watch();
 
-    const { transport, clinic } = evacuation;
-
-    const updateForm100: UpdateForm100Type = useCallback((field, value, path) => {
-        if (path) {
-            setValue(`${field}.${path}` as keyof IForm100, value);
-            return;
-        }
-        setValue(field, value);
-    }, [setValue]);
-
-    const counterfoilFrontData = {
+    console.log({ 
+        clinic,
         date,
         person,
         diagnosis,
-        injury,
         medicalHelp,
+        injury,
         reason,
-        evacuation: {
-            transport,
-            clinic,
-        },
-    };
+        evacuation,
+        bodyImage,
+        bodyDamage,
+        plait,
+        sanitaryTreatment,
+        signature,
+     });
 
-    console.log({ counterfoilFrontData });
-
-    return <Box sx={containerStyles}>
-        <Box sx={formWrapperStyles}>
-            <CounterfoilFront data={counterfoilFrontData} onChange={updateForm100} />
-            <MainFront />
-        </Box>
-    </Box>
-}
+    return (
+        <FormProvider {...methods}>
+            <Box sx={containerStyles}>
+                <Box sx={formWrapperStyles}>
+                    <CounterfoilFront />
+                    <MainFront />
+                </Box>
+            </Box>
+        </FormProvider>
+    )
+};

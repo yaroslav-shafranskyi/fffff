@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { Box, Typography } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { useForm, useFormContext } from 'react-hook-form';
 
 import { Input } from '../../../../shared';
 import { EvacuationLayIcon, EvacuationSitIcon } from '../../../../assets';
@@ -14,20 +14,16 @@ import {
     displayFlexStyles,
     severalInlineOptionsWrapperStyles
 } from '../../styles';
-import { PersonInfo } from '../PersonInfo';
+import { PersonInfo, UpdatePersonDataType } from '../PersonInfo';
 import { Injury } from '../Injury';
-import { MedicalHelp } from '../MedicalHelp';
+import { MedicalHelp, UpdateMedicalHelpType } from '../MedicalHelp';
 import { EvacuationClinicComponent } from '../EvacuationClinic';
 import { Diagnosis } from '../Diagnosis';
 import { BodyDamage } from '../BodyDamage';
 
-import { IMainFrontProps } from './types';
+import { IMainFrontProps, IMainFrontState } from './types';
 import {
     centralSectionWraperStyles,
-    clinicCaptionWrapperStyles,
-    clinicInputPropsSx,
-    clinicInputWrapperStyles,
-    clinicWrapperStyles,
     containerStyles,
     injuryWrapperStyles,
     leftBorderStyles,
@@ -45,26 +41,44 @@ import {
     bottomBorderStyles,
     rightBorderStyles
 } from './styles';
-import { defaultMainFrontData } from './constants';
+import { defaultMainFrontState } from './constants';
+import { Clinic } from '../Clinic';
 
 export const MainFront: FC<IMainFrontProps> = (props) => {
-    const { data } = props;
+    const { register, setValue, watch } = useFormContext();
 
-    const { register, getValues, setValue, watch } = useForm({
-        defaultValues: data ?? defaultMainFrontData,
-    });
-
-    const values = getValues();
+    const values = watch();
     const {
-        bodyDamage,
+        clinic,
+        date,
+        reason,
         bodyImage,
+        bodyDamage,
+        injury,
+        medicalHelp,
+        plait,
         sanitaryTreatment,
-        evacuation
+        evacuation,
+        diagnosis,
+        signature,
+        person,
     } = values;
 
-    watch('bodyDamage');
-    watch('sanitaryTreatment');
-    watch('evacuation');
+    const updateValue = useCallback(<T,>(field: keyof IMainFrontState, path?: string) => (value?: T) => {
+        if (path) {
+            setValue(`${field}.${path}`, value);
+            // // @ts-expect-error TODO declare value type correctly
+            // onChange?.(field, value, path);
+            // return;
+        }
+        setValue(field, value);
+        // // @ts-expect-error TODO declare value type correctly
+        // onChange?.(field, value) 
+    }, [setValue]);
+
+    const updateMedicalHelp: UpdateMedicalHelpType = useCallback((key, value, path) => {
+        updateValue('medicalHelp', `${key}${path ? '.' + path : ''}`)(value);
+    }, [updateValue]);
 
     const updateSanitaryTreatmentStatus = (type: SanitaryTreatmentStatus) => () => {
         setValue('sanitaryTreatment', type);
@@ -95,27 +109,7 @@ export const MainFront: FC<IMainFrontProps> = (props) => {
                         <Typography sx={mainTitleStyles}>
                             Первинна медична картка
                         </Typography>
-                        <Box sx={clinicWrapperStyles}>
-                            <Typography>
-                                Видана:
-                            </Typography>
-                            <Box sx={clinicInputWrapperStyles}>
-                                <Input
-                                    {...register('clinic')}
-                                    fullWidth={true}
-                                    multiline={true}
-                                    rows={2}
-                                    inputProps={{
-                                        sx: clinicInputPropsSx,
-                                    }}
-                                />
-                                <Box sx={clinicCaptionWrapperStyles}>
-                                    <Typography variant='caption'>
-                                        найменування мед. пункту (закладу), або їх штамп
-                                    </Typography>
-                                </Box>
-                            </Box>
-                        </Box>
+                        <Clinic data={clinic} onChange={updateValue('clinic')} />
                         <PersonInfo />
                         <Box sx={injuryWrapperStyles}>
                             <Injury />

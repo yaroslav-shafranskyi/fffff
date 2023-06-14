@@ -40,27 +40,6 @@ export const mainTitleStyles: SxProps = {
     fontWeight: 'bold',
 };
 
-export const clinicWrapperStyles: SxProps = {
-    display: 'flex',
-    p: .5,
-    gap: 4,
-};
-
-export const clinicInputWrapperStyles: SxProps = {
-    width: '100%',
-};
-
-export const clinicInputPropsSx: SxProps = {
-    width: '100%',
-    p: 0,
-    overflow: 'hidden',
-};
-
-export const clinicCaptionWrapperStyles: SxProps = {
-    textAlign: 'center',
-    mt: -1,
-};
-
 export const injuryWrapperStyles: SxProps = {
     display: 'grid',
     width: '80%',
