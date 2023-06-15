@@ -75,10 +75,17 @@ export const rightBorderStyles: SxProps = {
 };
 
 export const backWrapperStyles: SxProps = {
-    ...commonWrapperStyles,   
+    ...commonWrapperStyles,
+    pl: 2,
 };
 
 export const backHeaderStyles: SxProps = {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
+};
+
+export const footerStyles: SxProps = {
+    display: 'flex',
+    px: 3,
+    gap: 1,
 };

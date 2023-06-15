@@ -26,7 +26,7 @@ export const Stage = () => {
                 }}
                 onChange={updateStage}
             />
-            <Typography>
+            <Typography sx={{ textAlign: 'center' }}>
                 Найменування етапу
             </Typography>
         </Box>

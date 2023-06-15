@@ -1,7 +1,5 @@
 import { Box, Typography } from '@mui/material';
 
-import { Input } from '../../../../shared';
-
 import {
     boldTextStyles,
     displayFlexStyles,
@@ -18,6 +16,7 @@ import { SanitaryStatus } from '../SanitaryStatus';
 import { EvacuationTypeComponent } from '../EvacuationType';
 import { EvacuationPriorityComponent } from '../EvacuationPriority';
 import { EvacuationTransportComponent } from '../EvacuationTransport';
+import { Signature } from '../Signature';
 
 import {
     centralSectionWraperStyles,
@@ -89,12 +88,7 @@ export const MainFront = () => {
                         <Typography>
                             Лікар
                         </Typography>
-                        <Box sx={{ textAlign: 'center' }}>
-                            <Input fullWidth={true} />
-                            <Typography variant='caption'>
-                                підпис (розбірливо)
-                            </Typography>
-                        </Box>
+                        <Signature />
                     </Box>
                 <Box sx={bottomBorderStyles}>
                     <Typography variant='h4'>

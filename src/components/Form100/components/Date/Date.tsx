@@ -5,15 +5,15 @@ import { getDateData } from '../../../../helpers';
 
 import { IForm100DateProps } from './types';
 
-export const Form100Date: FC<IForm100DateProps> = (props) => {
-    const date = props.data ?? new Date();
+export const Form100Date: FC<IForm100DateProps> = ({ data, withoutTime }) => {
+    const date = data ?? new Date();
 
     const { hours: dateHours, minutes: dateMinutes, day: dateDay, monthName: dateMonth, year: dateYear } = getDateData(date);
 
     return (
         <Box sx={{ textAlign: 'center' }}>
             <Typography>
-                {dateHours} год. {dateMinutes} хв. "{dateDay}" {dateMonth} 20{dateYear}р. 
+                {!withoutTime && <>{dateHours} год. {dateMinutes} хв. </>}"{dateDay}" {dateMonth} 20{dateYear}р. 
             </Typography>
         </Box>
     )
