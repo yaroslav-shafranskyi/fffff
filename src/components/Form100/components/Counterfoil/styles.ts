@@ -40,3 +40,21 @@ export const medicalHelpAndInjutyTypeTipStyles: SxProps= {
     mt: 3,
     borderBlock: '1.5px solid',
 };
+
+export const backWrapperStyles: SxProps = {
+    p:2,
+    pt: 3,
+};
+
+export const backTitleStyles: SxProps = {
+    ...titleStyles,
+    textAlign: 'center',
+    borderBottom: '4px solid',
+    pb: 2,
+};
+
+export const carriedByStyles: SxProps = {
+    position: 'absolute',
+    pr: 1.5,
+    left: 0,
+};

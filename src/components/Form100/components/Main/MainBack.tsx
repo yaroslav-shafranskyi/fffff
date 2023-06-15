@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 
-import { boldTextStyles, displayFlexStyles } from "../../styles";
+import { boldTextStyles } from "../../styles";
 
 import { Stage } from "../Stage";
 import { Form100Date } from '../Date';

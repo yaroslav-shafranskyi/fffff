@@ -7,10 +7,10 @@ import { Input } from '../../../../shared';
 import { IForm100 } from '../../../../api';
 
 import { IBackFieldProps } from './types';
-import { MIN_TEXT_INDENT, inputStyles, titleStyles, wrapperStyles } from './styles';
+import { inputStyles, titleStyles, wrapperStyles } from './styles';
 
 export const BackField: FC<IBackFieldProps> = (props) => {
-    const { title, field, rows = 3 } = props;
+    const { title, field, rows = 3, titleStyles: propsTitleStyles } = props;
     const { watch, setValue } = useFormContext<IForm100>();
 
     const fullDiagnosis = watch(field);
@@ -23,7 +23,7 @@ export const BackField: FC<IBackFieldProps> = (props) => {
 
     return (
         <Box sx={wrapperStyles}>
-            <Box sx={titleStyles} ref={titleRef}>
+            <Box sx={propsTitleStyles ?? titleStyles} ref={titleRef}>
                 <Typography>
                     {title}
                 </Typography>
@@ -33,7 +33,7 @@ export const BackField: FC<IBackFieldProps> = (props) => {
                 multiline={true}
                 rows={rows}
                 sx={inputStyles}
-                inputProps={{ sx: { textIndent: titleRef.current?.clientWidth ?? MIN_TEXT_INDENT }}}
+                inputProps={{ sx: { textIndent: titleRef.current?.clientWidth ?? '100%' }}}
                 onChange={handleChange}
             />
         </Box>

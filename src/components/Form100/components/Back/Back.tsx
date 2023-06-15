@@ -1,6 +1,8 @@
 import { Box, Typography } from '@mui/material';
 
 import { MainBack } from '../Main';
+import { CounterfoilBack } from '../Counterfoil';
+
 import { containerStyles, tipWrapperStyles } from './styles';
 
 export const Back = () =>
@@ -13,5 +15,5 @@ export const Back = () =>
             </Box>
             <MainBack />
         </Box>
-        <Box></Box>
+        <CounterfoilBack />
     </Box>

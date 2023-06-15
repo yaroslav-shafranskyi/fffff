@@ -18,5 +18,3 @@ export const wrapperStyles: SxProps = {
     position: 'relative',
     display: 'flex',
 };
-
-export const MIN_TEXT_INDENT = 200;
