@@ -62,12 +62,12 @@ export const MedicalHelp = () => {
                         </Box>
                     </Box>
                     {Object.keys(treatmentsFields).slice().sort().map(key => <Box sx={preparationRowStyles}>
-                        <Box sx={{ borderRight: '1.5px solid' }}>
+                        <Box sx={{ pl: .5, borderRight: '1.5px solid',  }}>
                             <Typography>
                                 {treatmentsFields[+key].name}
                             </Typography>
                         </Box>
-                        <Box>
+                        <Box sx={{ pl: .5 }}>
                         <Input
                             value={treatments?.[treatmentsFields[+key]?.fieldName] ?? ''}
                             onChange={updateStringValues(treatmentsFields[+key].fieldName)}

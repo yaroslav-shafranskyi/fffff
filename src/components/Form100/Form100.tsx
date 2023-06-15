@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Box } from '@mui/material';
+import { Box, Card } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -24,10 +24,10 @@ export const Form100: FC<IForm100Props> = (props) => {
 
     return (
         <FormProvider {...methods}>
-            <Box sx={containerStyles}>
-                {/* <Front /> */}
+            <Card sx={containerStyles}>
+                <Front />
                 <Back />
-            </Box>
+            </Card>
         </FormProvider>
     )
 };

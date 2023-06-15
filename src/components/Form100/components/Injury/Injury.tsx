@@ -30,7 +30,7 @@ export const Injury = () => {
             </Box>
             <Box sx={injuryCellStyles}>
                 {Object.keys(injuriesFields).slice().sort().map(key => <Box sx={injuryTypeCellStyles}>
-                        <Box>
+                        <Box sx={{ pl: .5 }}>
                             <Typography key={key}>
                                 {injuriesFields[+key].name}
                             </Typography>

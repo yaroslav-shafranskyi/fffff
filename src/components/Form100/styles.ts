@@ -2,9 +2,7 @@ import { SxProps } from '@mui/material';
 import { Theme } from '@mui/system';
 
 export const containerStyles: SxProps = {
-    border: 'none',
-    bgcolor: 'background.paper',
-    color: 'text.primary',
+    m: 2,
 };
 
 export const boldTextStyles: SxProps = {
