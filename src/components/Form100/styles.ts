@@ -20,7 +20,7 @@ export const iconStyles: SxProps<Theme> = (theme) => ({
     height: theme.spacing(3),
     p: 0,
     margin: 'auto',
-    '& :first-child': {
+    '& svg:first-of-type': {
         ':focus': {
             outline: 'none',
             border: 'none'

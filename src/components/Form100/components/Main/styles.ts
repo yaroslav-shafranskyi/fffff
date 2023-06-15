@@ -54,15 +54,15 @@ export const signatureWrapperStyles: SxProps = {
     gap: .5,
 };
 
-export const bottomBorderStyles: SxProps<Theme> = (theme) => ({
+export const bottomBorderStyles: SxProps = {
     display: 'flex',
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: '#2F58CD',
     alignItems: 'baseline',
     justifyContent: 'center',
     borderTop: '1.5px solid',
     fontWeight: 'bold',
     alignSelf: 'end',
-});
+};
 
 export const rightBorderStyles: SxProps = {
     background: 'yellow',
