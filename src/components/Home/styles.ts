@@ -4,9 +4,10 @@ import { Theme } from '@mui/system';
 export const containerStyles: SxProps = {
     height: '100%',
     borderRadius: 0,
-    p: 2,
-    display: 'grid',
-    pb: 8,
+    p: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    pb: 11,
 };
 
 export const headerStyles: SxProps<Theme> = (theme) => ({
@@ -23,16 +24,18 @@ export const iconWrapperStyles: SxProps = {
 
 export const titleWrapperStyles: SxProps = {
     textAlign: 'center',
-    p: 8, 
+    px: 8, 
     display: 'grid',
     gap: 2,
-    height: 'fitContent'
+    height: 'fit-content',
+    py: 4,
 };
 
 export const mainWrapperStyles: SxProps = {
     display: 'grid',
     gridTemplateRows: '2fr 1fr',
     gap: 1,
+    mt: 7.5,
 };
 
 export const mainButtonStyles: SxProps = {
@@ -41,6 +44,14 @@ export const mainButtonStyles: SxProps = {
     textTransform: 'capitalize',
     alignItems: 'baseline',
     width: '100%',
+    height: '100%',
+    p: 4,
+};
+
+export const form100ButtonStyles: SxProps = {
+    ...mainButtonStyles,
+    justifyContent: 'start',
+    p: 3,
 };
 
 export const buttonDescStyles: SxProps = {

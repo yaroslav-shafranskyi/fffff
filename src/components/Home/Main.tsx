@@ -1,8 +1,10 @@
 import { Box, Button, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+
+import { useOpenForm100Dialog } from '../Form100';
 
 import { 
     buttonDescStyles,
+    form100ButtonStyles,
     lightButtonStyles,
     mainButtonStyles,
     mainLowerButtonsStyles,
@@ -12,16 +14,12 @@ import {
 } from './styles';
 
 export const Main = () => {
-    const navigate = useNavigate()
-
-    const goToForm100 = () => {
-        navigate('/form100')
-    }
+    const [Form100Dialog, openForm100Dialog] = useOpenForm100Dialog();
 
     return (
         <Box sx={mainWrapperStyles}>
             <Box sx={mainUpperButtonsStyles}>
-                <Button variant='contained' sx={mainButtonStyles} onClick={goToForm100}>
+                <Button variant='contained' sx={form100ButtonStyles} onClick={openForm100Dialog}>
                     <Typography variant='h4'>
                         Форма 100
                     </Typography>
@@ -50,21 +48,22 @@ export const Main = () => {
             </Box>
             <Box sx={mainLowerButtonsStyles}>
                 <Button variant='contained' sx={lightButtonStyles}>
-                    <Typography>
+                    <Typography variant='h5' sx={{ textAlign: 'left' }}>
                         Консультативний висновок
                     </Typography>
                 </Button>
                 <Button variant='contained' sx={lightButtonStyles}>
-                    <Typography>
+                    <Typography variant='h5'>
                         Виписка
                     </Typography>
                 </Button>
                 <Button variant='contained' sx={lightButtonStyles}>
-                    <Typography>
+                    <Typography variant='h5'>
                         Направлення
                     </Typography>
                 </Button>
             </Box>
+            {Form100Dialog}
         </Box>
     );
 };

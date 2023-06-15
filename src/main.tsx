@@ -1,5 +1,6 @@
 // import { AppRegistry } from 'react-native';
-import ReactDOM from 'react-dom';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
 import App from './App'
 import './index.css'
@@ -10,4 +11,10 @@ import './index.css'
 //   rootTag: document.getElementById("root")
 // });
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement as HTMLElement);
+root.render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );

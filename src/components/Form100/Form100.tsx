@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Box, Card } from '@mui/material';
+import { Card } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
