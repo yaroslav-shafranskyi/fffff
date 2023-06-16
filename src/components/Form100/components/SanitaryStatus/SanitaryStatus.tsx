@@ -6,9 +6,11 @@ import { cursorPointerStyles, displayFlexStyles, severalInlineOptionsWrapperStyl
 import { sanitaryStatusWrapperStyles } from "./styles";
 
 export const SanitaryStatus = () => {
-    const { watch, setValue } = useFormContext<IForm100>();
+    const { formState, watch, setValue } = useFormContext<IForm100>();
 
     const sanitaryTreatment = watch('sanitaryTreatment');
+
+    const error = formState.errors.sanitaryTreatment?.message;
 
     const updateSanitaryTreatmentStatus = (type: SanitaryTreatmentStatus) => () => {
         setValue('sanitaryTreatment', type);
@@ -42,6 +44,7 @@ export const SanitaryStatus = () => {
                     </Typography>
                 </Box>
             </Box>
+            {error && <Typography color='error'>{error}</Typography>}
             <Typography>
                 Евакуйований (потрібне обвести)
             </Typography>

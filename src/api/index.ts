@@ -11,3 +11,4 @@ export * from './Rank';
 export * from './SanitaryTreatmentStatus';
 export * from './IEvacuation';
 export * from './IExtendedDate';
+export * from './IPlait';

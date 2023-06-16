@@ -1,6 +1,8 @@
 import { ChangeEvent } from 'react';
-import { Box, Input, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
+
+import { Input } from '../../../../shared';
 
 import {
     clinicCaptionWrapperStyles,
@@ -10,9 +12,11 @@ import {
 } from './styles';
 
 export const Clinic = () => {
-    const { watch, setValue } = useFormContext();
+    const { formState, watch, setValue } = useFormContext();
 
     const clinic = watch('clinic');
+
+    const error = formState.errors.clinic?.message;
 
     const hanleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setValue('clinic', event.target.value);
@@ -29,6 +33,7 @@ export const Clinic = () => {
                     fullWidth={true}
                     multiline={true}
                     rows={2}
+                    error={error as string}
                     inputProps={{
                         sx: clinicInputPropsSx,
                     }}

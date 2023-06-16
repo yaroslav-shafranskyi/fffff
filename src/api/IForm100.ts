@@ -4,6 +4,7 @@ import { IEvacuation } from './IEvacuation';
 import { IInjury } from './IInjury';
 import { IMedicalHelp } from './IMedicalHelp';
 import { IPerson } from './IPerson';
+import { IPlait } from './IPlait';
 import { RecordType } from './IRecord';
 import { SanitaryTreatmentStatus } from './SanitaryTreatmentStatus';
 
@@ -17,8 +18,8 @@ export interface IForm100 {
     bodyDamage: BodyDamageInfo[];
     injury?: IInjury;
     medicalHelp?: IMedicalHelp;
-    plait?: Date;
-    sanitaryTreatment?: SanitaryTreatmentStatus;
+    plait?: IPlait;
+    sanitaryTreatment: SanitaryTreatmentStatus;
     evacuation: IEvacuation;
     diagnosis: string;
     signature?: string;

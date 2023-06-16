@@ -1,4 +1,6 @@
-import { string, object, date, array, number, StringSchema } from 'yup';
+import { string, object, date, array, number, StringSchema, lazy, addMethod } from 'yup';
+
+import { IPlait } from '../../api';
 
 export const REQUIRED_FIELD_MESSAGE = `Обов'язкове поле`;
 export const MIN_3_SYMBOLS_MESSAGE = 'Це поле не може бути меншим, ніж 3 символи';
@@ -10,11 +12,23 @@ export const min3SymbolsStringSchema = (schema: StringSchema) => schema.min(3, M
 export const defaultStringSchema = fieldRequiredStringSchema(min3SymbolsStringSchema(string()));
 export const defaultDateSchema = date().required(REQUIRED_FIELD_MESSAGE);
 
+addMethod(string, 'validateFullName', function() {
+    return this.test('full-name', 'Неправильний формат імені', (value) => {
+        if (!value) {
+            return false;
+        }
+        const splittedValue = value.split(' ');
+        const isLengthValid = splittedValue.length === 3;
+        const areElementsValid = !splittedValue.some(el => el.length < 3);
+        return isLengthValid && areElementsValid;
+    })
+})
+
 export const personSchema = object().shape({
     id: defaultStringSchema,
-    fullName: defaultStringSchema,
+    // @ts-expect-error custom method
+    fullName: string().required(REQUIRED_FIELD_MESSAGE).validateFullName(),
     tokenNumber: defaultStringSchema,
-    birthDate: defaultDateSchema,
     rank: string().required(REQUIRED_FIELD_MESSAGE),
     gender: string().required(REQUIRED_FIELD_MESSAGE),
     militaryBase: string().required(REQUIRED_FIELD_MESSAGE),
@@ -30,19 +44,29 @@ export const personSchema = object().shape({
 }).required();
 
 export const evacuationSchema = object().shape({
-    type: defaultStringSchema,
+    type: string().required(REQUIRED_FIELD_MESSAGE),
     clinic: defaultStringSchema,
-    priority: defaultStringSchema,
-    transport: defaultStringSchema
+    priority: string().required(REQUIRED_FIELD_MESSAGE),
 }).required();
 
+export const plaitSchema = lazy((value?: IPlait) => {
+    if (!value?.status) {
+        return object().notRequired()
+    }
+    return object().shape({
+        date: date().required('Час не вказаний!')
+    }).required()
+});
+
 export const form100FrontSchema = object().shape({
-    author: defaultStringSchema,
+    clinic: string().required(REQUIRED_FIELD_MESSAGE),
     person: personSchema,
     date: defaultDateSchema,
     reason: string().required(REQUIRED_FIELD_MESSAGE),
     evacuation: evacuationSchema,
     diagnosis: defaultStringSchema,
+    plait: plaitSchema,
+    sanitaryTreatment: string().required(REQUIRED_FIELD_MESSAGE),
 });
 
 export const form100BackSchema = object().shape({

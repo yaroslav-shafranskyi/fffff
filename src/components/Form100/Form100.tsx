@@ -55,8 +55,6 @@ export const Form100: FC<IForm100Props> = (props) => {
         backMethods.reset();
     }, [frontMethods, backMethods]);
 
-    console.log(frontMethods.watch())
-
     return (
         <Card sx={containerStyles}>
             <ControlBar

@@ -9,6 +9,7 @@ export const clinicInputPropsSx: SxProps = {
     width: '100%',
     p: 0,
     overflow: 'hidden',
+    fontSize: '0.6rem',
 };
 
 export const clinicInputWrapperStyles: SxProps = {

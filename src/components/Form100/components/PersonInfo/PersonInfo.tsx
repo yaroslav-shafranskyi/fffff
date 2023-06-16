@@ -83,8 +83,6 @@ export const PersonInfo = () => {
     const getCurrentGender = (p: PersonDataType) => p.gender;
     const getCurrentReason = (p: PersonDataType) => p.lastRecord.type;
 
-    console.log({ errors })
-
     return (
         <>
         <Box sx={rowStyles}>

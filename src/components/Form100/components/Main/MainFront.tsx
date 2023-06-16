@@ -11,7 +11,7 @@ import { EvacuationClinicComponent } from '../EvacuationClinic';
 import { Diagnosis } from '../Diagnosis';
 import { BodyDamage } from '../BodyDamage';
 import { Clinic } from '../Clinic';
-import { PlaitDate } from '../PlaitDate';
+import { Plait } from '../Plait';
 import { SanitaryStatus } from '../SanitaryStatus';
 import { EvacuationTypeComponent } from '../EvacuationType';
 import { EvacuationPriorityComponent } from '../EvacuationPriority';
@@ -70,7 +70,7 @@ export const MainFront = () => {
                                 <MedicalHelp />
                             </Box>
                         </Box>
-                        <PlaitDate />
+                        <Plait />
                         <Box>
                             <SanitaryStatus />
                             <Box sx={displayFlexStyles}>
