@@ -18,6 +18,6 @@ export const Select: FC<ISelectProps> = (props) => {
         >
             {options.map(option => <MenuItem value={option} key={option}>{option}</MenuItem>)}
         </MuiSelect>
-        {error && <Typography color='error'>{error}</Typography>}
+        {error && <Typography color='error' sx={{ position: 'absolute' }}>{error}</Typography>}
     </>
 }

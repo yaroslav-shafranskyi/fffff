@@ -64,3 +64,8 @@ export const femaleWrapperStyles: SxProps = {
     cursor: 'pointer',
     mr: 2,
 };
+
+export const genderWrapperStyles: SxProps = {
+    display: 'flex',
+    gap: '2px',
+};

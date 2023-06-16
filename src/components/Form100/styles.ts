@@ -3,7 +3,7 @@ import { Theme } from '@mui/system';
 
 export const containerStyles: SxProps = {
     p: 2,
-    height: '100vh',
+    height: '100%',
 };
 
 export const boldTextStyles: SxProps = {
@@ -38,9 +38,9 @@ export const displayFlexStyles: SxProps = {
 };
 
 export const dateNumberInputStyles: SxProps = {
-    width: 18,
     p: 0,
-    h: 3,
+    width: 'min-content',
+    minWidth: 12,
 };
 
 export const severalInlineOptionsWrapperStyles: SxProps = {

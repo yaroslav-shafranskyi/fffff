@@ -23,6 +23,7 @@ export const Form100: FC<IForm100Props> = (props) => {
 
     const frontMethods = useForm<IForm100FrontState>({
         defaultValues: initialFrontState,
+        reValidateMode: 'onChange',
         resolver: yupResolver(form100FrontSchema),
     });
 
@@ -30,11 +31,6 @@ export const Form100: FC<IForm100Props> = (props) => {
         defaultValues: initialBackState,
         resolver: yupResolver(form100BackSchema),
     });
-
-    const state = {
-        ...frontMethods.watch(),
-        ...backMethods.watch(),
-    };
 
     const handleGoBack = useCallback(() => {
         if (!page) {
@@ -58,6 +54,8 @@ export const Form100: FC<IForm100Props> = (props) => {
         frontMethods.reset();
         backMethods.reset();
     }, [frontMethods, backMethods]);
+
+    console.log(frontMethods.watch())
 
     return (
         <Card sx={containerStyles}>

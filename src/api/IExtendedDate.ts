@@ -1,5 +1,5 @@
 import { IDateData } from "../interfaces";
 
-export interface IPlait extends Partial<IDateData> {
+export interface IExtendedDate extends Partial<IDateData> {
     date: Date;
 }

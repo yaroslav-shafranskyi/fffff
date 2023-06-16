@@ -1,12 +1,13 @@
-import { ChangeEvent, useMemo } from 'react';
-import { Box, Typography } from '@mui/material';
+import { ChangeEvent, useCallback } from 'react';
+import { Box, SelectChangeEvent, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
-import { Input, Select } from '../../../../shared';
-import { ArmyRank, Gender, IForm100, RecordType } from '../../../../api';
-import { getDateData, updateDay, updateHour, updateMinute, updateMonth, updateYear } from '../../../../helpers';
+import { DateInputWithSeparatedFields, Input, Select } from '../../../../shared';
+import { ArmyRank, Gender, Rank, RecordType } from '../../../../api';
+import { FieldErrorType } from '../../../../interfaces';
 
-import { dateNumberInputStyles, cursorPointerStyles } from '../../styles';
+import { cursorPointerStyles } from '../../styles';
+import { IForm100FrontState } from '../../types';
 
 import { PersonDataType, UpdatePersonDataType } from './types';
 import {
@@ -21,10 +22,11 @@ import {
     reasonWrapperStyles,
     reasonAndNewRecordDateWrapperStyles,
     femaleWrapperStyles,
+    genderWrapperStyles,
 } from './styles';
 
 export const PersonInfo = () => {
-    const { register, setValue, watch } = useFormContext<IForm100>();
+    const { formState, register, setValue, watch, clearErrors } = useFormContext<IForm100FrontState>();
 
     const values = watch();
     const { person } = values;
@@ -37,40 +39,51 @@ export const PersonInfo = () => {
         lastRecord,
     } = person;
 
-    const {
-        hours: newRecordHour,
-        minutes: newRecordMinute,
-        day: newRecordDay,
-        month: newRecordMonth,
-        year: newRecordYear,
-    } = useMemo(() => getDateData(lastRecord.date), [lastRecord.date]);
+    const { errors } = formState;
 
-    const handleNewRecordDateChange = (updator: (date: Date, v: number) => void) => (event: ChangeEvent<HTMLInputElement>) => {
-        const newDate = new Date(lastRecord.date ?? new Date());
-        updator(newDate, +event.target.value);
+    const handleNewRecordDateChange = useCallback((newDate: Date) => {
         setValue('person.lastRecord.date', newDate);
-    };
+        clearErrors('person.lastRecord.date');
+    }, [clearErrors, setValue]);
 
     const handleCommonFieldChange = (field: keyof PersonDataType) =>
         (event: ChangeEvent<HTMLInputElement>) => {
             const newValue = event.target.value;
             setValue(`person.${field}`, newValue);
+            clearErrors(`person.${field}`);
         };
 
     const updatePersonData: UpdatePersonDataType = (key, value, path) => () => {
         if (path) {
-            // @ts-expect-error TODO: declare value type correctly
+            // @ts-expect-error used for nested fields
             setValue(`person.${key}.${path}`, value);
+            // @ts-expect-error used for nested fields
+            clearErrors(`person.${key}.${path}`)
             return;
         }
         setValue(`person.${key}`, value);
+        clearErrors(`person.${key}`)
     };
+
+    const updateReason = (value: RecordType) => () => {
+        setValue('person.lastRecord.type', value);
+        setValue('reason', value);
+        clearErrors('person.lastRecord.type');
+        clearErrors('reason');
+    }
+
+    const handleRankChange = (event: SelectChangeEvent<unknown>) => {
+        setValue('person.rank', event.target.value as Rank);
+        clearErrors('person.rank');
+    }
 
     const getOptionColor = <T extends string>(option: T, getCurrentValue: (person: PersonDataType) => T) => 
         option === getCurrentValue(person) ? 'error' : 'textPrimary';
 
     const getCurrentGender = (p: PersonDataType) => p.gender;
     const getCurrentReason = (p: PersonDataType) => p.lastRecord.type;
+
+    console.log({ errors })
 
     return (
         <>
@@ -79,19 +92,36 @@ export const PersonInfo = () => {
                     <Box sx={fieldNameStyles}>
                         <Typography>в/звання</Typography>
                     </Box>
-                    <Select { ...register('person.rank')} value={rank} options={Object.values(ArmyRank)} sx={{ fontSize: '0.6rem' }} />
+                    <Box sx={{ width: '100% '}}>
+                        <Select
+                            { ...register('person.rank')}
+                            onChange={handleRankChange}
+                            value={rank}
+                            options={Object.values(ArmyRank)}
+                            sx={{ fontSize: '0.6rem' }}
+                            error={(errors.person as { rank?: FieldErrorType; })?.rank?.message}
+                        />
+                    </Box>
                 </Box>
                 <Box sx={columnStyles}>
                     <Box>
                         <Typography>в/ч, з’єднання</Typography>
                     </Box>
-                    <Input value={militaryBase} onChange={handleCommonFieldChange('militaryBase')} fullWidth={true} />
+                    <Box sx={{ width: '100%' }}>
+                        <Input
+                            value={militaryBase}
+                            fullWidth={true}
+                            error={(errors.person as {militaryBase?: FieldErrorType})?.militaryBase?.message}
+                            onChange={handleCommonFieldChange('militaryBase')}
+                        />
+                    </Box>
                 </Box>
             </Box>
             <Box sx={singleElementRowStyles}>
                 <Input
                     value={fullName}
                     sx={fullWidthInputStyles}
+                    error={errors.person?.fullName?.message}
                     onChange={handleCommonFieldChange('fullName')}
                 />
                 <Box sx={fullNameTitleStyles}>
@@ -110,40 +140,61 @@ export const PersonInfo = () => {
                 <Box sx={fieldNameStyles}>
                     <Typography>Посвідчення особи</Typography>
                 </Box>
-                <Input value={id} onChange={handleCommonFieldChange('id')} sx={fullWidthInputStyles} />
+                <Box sx={{ width: '100%' }}>
+                    <Input
+                        value={id}
+                        sx={fullWidthInputStyles}
+                        error={(errors.person as { id?: FieldErrorType })?.id?.message}
+                        onChange={handleCommonFieldChange('id')}
+                    />
+                </Box>
             </Box>
             <Box sx={severalFieldsRowStyles}>
                 <Box sx={fieldNameStyles}>
                     <Typography>Особистий №</Typography>
                 </Box>
-                <Input value={tokenNumber} onChange={handleCommonFieldChange('tokenNumber')} sx={fullWidthInputStyles} />
-                <Typography>Стать: </Typography>
-                <Box sx={cursorPointerStyles} onClick={updatePersonData('gender', Gender.MALE)}>
-                    <Typography color={getOptionColor(Gender.MALE, getCurrentGender)}>{Gender.MALE}</Typography> 
-                </Box>
-                <Box sx={femaleWrapperStyles} onClick={updatePersonData('gender', Gender.FEMALE)}>
-                    <Typography color={getOptionColor(Gender.FEMALE, getCurrentGender)}>{Gender.FEMALE}</Typography> 
-                </Box>
-            </Box>
-            
-            <Box sx={reasonAndNewRecordDateWrapperStyles}>
-                <Box sx={reasonWrapperStyles}>
-                    <Box sx={injuryReasonWrapper} onClick={updatePersonData('lastRecord', RecordType.INJURY, 'type')}>
-                        <Typography color={getOptionColor(RecordType.INJURY, getCurrentReason)}>Поранений</Typography>
-                        <Typography>,</Typography>
-                    </Box>
-                    <Box sx={cursorPointerStyles} onClick={updatePersonData('lastRecord', RecordType.SICK, 'type')}>
-                        <Typography color={getOptionColor(RecordType.SICK, getCurrentReason)}>захворів</Typography>
-                    </Box>
+                <Box sx={{ width: '100%' }}>
+                    <Input
+                        value={tokenNumber}
+                        sx={fullWidthInputStyles}
+                        error={(errors.person as { tokenNumber?: FieldErrorType })?.tokenNumber?.message}
+                        onChange={handleCommonFieldChange('tokenNumber')}
+                    />
                 </Box>
                 <Box>
-                    <Typography>
-                        <Input value={newRecordHour} onChange={handleNewRecordDateChange(updateHour)} sx={dateNumberInputStyles} /> год. 
-                        <Input value={newRecordMinute} onChange={handleNewRecordDateChange(updateMinute)} sx={dateNumberInputStyles} /> {`хв. `}
-                        <Input value={newRecordDay} onChange={handleNewRecordDateChange(updateDay)} sx={dateNumberInputStyles} />. 
-                        <Input value={newRecordMonth} onChange={handleNewRecordDateChange(updateMonth)} sx={dateNumberInputStyles} />.
-                        20<Input value={newRecordYear} onChange={handleNewRecordDateChange(updateYear(true))} sx={dateNumberInputStyles} />р. 
+                    <Box sx={genderWrapperStyles}>
+                        <Typography>Стать: </Typography>
+                        <Box sx={cursorPointerStyles} onClick={updatePersonData('gender', Gender.MALE)}>
+                            <Typography color={getOptionColor(Gender.MALE, getCurrentGender)}>{Gender.MALE}</Typography> 
+                        </Box>
+                        <Box sx={femaleWrapperStyles} onClick={updatePersonData('gender', Gender.FEMALE)}>
+                            <Typography color={getOptionColor(Gender.FEMALE, getCurrentGender)}>{Gender.FEMALE}</Typography> 
+                        </Box>
+                    </Box>
+                    <Typography color='error'>
+                        {(errors.person as { gender: FieldErrorType})?.gender?.message}
                     </Typography>
+                </Box>
+            </Box>
+            <Box sx={reasonAndNewRecordDateWrapperStyles}>
+                <Box>
+                    <Box sx={reasonWrapperStyles}>
+                        <Box sx={injuryReasonWrapper} onClick={updateReason(RecordType.INJURY)}>
+                            <Typography color={getOptionColor(RecordType.INJURY, getCurrentReason)}>Поранений</Typography>
+                            <Typography>,</Typography>
+                        </Box>
+                        <Box sx={cursorPointerStyles} onClick={updateReason(RecordType.SICK)}>
+                            <Typography color={getOptionColor(RecordType.SICK, getCurrentReason)}>захворів</Typography>
+                        </Box>
+                    </Box>
+                    <Typography color='error'>
+                        {errors.reason?.message}
+                    </Typography>
+                </Box>
+                <Box>
+                    <DateInputWithSeparatedFields date={lastRecord?.date} onChange={handleNewRecordDateChange} />
+                    {(errors.person as { lastRecord?: { date?: FieldErrorType}})?.lastRecord?.date?.message &&
+                        <Typography color='error'>{errors.person?.lastRecord?.date?.message}</Typography>}
                 </Box>
             </Box>
         </>
