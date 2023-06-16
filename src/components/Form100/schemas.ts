@@ -10,34 +10,42 @@ export const min3SymbolsStringSchema = (schema: StringSchema) => schema.min(3, M
 export const defaultStringSchema = fieldRequiredStringSchema(min3SymbolsStringSchema(string()));
 export const defaultDateSchema = date().required(REQUIRED_FIELD_MESSAGE);
 
-export const form100Schema = object().shape({
+export const personSchema = object().shape({
+    id: defaultStringSchema,
+    firstName: defaultStringSchema,
+    secondName: defaultStringSchema,
+    lastName: defaultStringSchema,
+    tokenNumber: defaultStringSchema,
+    birthDate: defaultDateSchema,
+    rank: defaultStringSchema,
+    gender: defaultStringSchema,
+    militaryBase: defaultStringSchema,
+    records: array().of(object().shape({
+        type: defaultStringSchema,
+        date: defaultDateSchema,
+        author: defaultStringSchema,
+        resume: defaultStringSchema,
+    }))
+}).required();
+
+export const evacuationSchema = object().shape({
+    type: defaultStringSchema,
+    clinic: defaultStringSchema,
+    priority: defaultStringSchema,
+    transport: defaultStringSchema
+}).required();
+
+export const form100FrontSchema = object().shape({
     author: defaultStringSchema,
-    person: object().shape({
-        id: defaultStringSchema,
-        firstName: defaultStringSchema,
-        secondName: defaultStringSchema,
-        lastName: defaultStringSchema,
-        tokenNumber: defaultStringSchema,
-        birthDate: defaultDateSchema,
-        rank: defaultStringSchema,
-        gender: defaultStringSchema,
-        militaryBase: defaultStringSchema,
-        records: array().of(object().shape({
-            type: defaultStringSchema,
-            date: defaultDateSchema,
-            author: defaultStringSchema,
-            resume: defaultStringSchema,
-        })),
-    }).required(),
+    person: personSchema,
     date: defaultDateSchema,
     reason: defaultStringSchema,
-    evacuation: object().shape({
-        type: defaultStringSchema,
-        clinic: defaultStringSchema,
-        priority: defaultStringSchema,
-        transport: defaultStringSchema
-    }).required(),
+    evacuation: evacuationSchema,
     diagnosis: defaultStringSchema,
+});
+
+export const form100BackSchema = object().shape({
+    date: defaultDateSchema,
     stage: defaultStringSchema,
     fullDiagnosis: defaultStringSchema,
     treatmentInfo: defaultStringSchema,

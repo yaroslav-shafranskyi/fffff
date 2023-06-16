@@ -1,33 +1,78 @@
-import { FC } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { Card } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigate } from 'react-router-dom';
 
-import { IForm100 } from '../../api';
+import { ControlBar } from '../../shared';
 
-import { getInitialForm100 } from './constants';
-import { form100Schema } from './schemas';
+import { form100FrontSchema, form100BackSchema } from './schemas';
 import { containerStyles } from './styles';
 import { Front, Back } from './components';
-
-export interface IForm100Props {
-    data?: IForm100;
-}
+import { convertIForm100ToIForm100State } from './convertIForm100ToIForm100State';
+import { IForm100BackState, IForm100FrontState, IForm100Props } from './types';
 
 export const Form100: FC<IForm100Props> = (props) => {
     const { data } = props;
 
-    const methods = useForm<IForm100>({
-        resolver: yupResolver(form100Schema),
-        defaultValues: data ?? getInitialForm100(),
+    const [page, setPage] = useState<number>(0);
+
+    const navigate = useNavigate()
+
+    const { front: initialFrontState, back: initialBackState} = useMemo(() => convertIForm100ToIForm100State(data), [data]);
+
+    const frontMethods = useForm<IForm100FrontState>({
+        defaultValues: initialFrontState,
+        resolver: yupResolver(form100FrontSchema),
     });
 
+    const backMethods = useForm<IForm100BackState>({
+        defaultValues: initialBackState,
+        resolver: yupResolver(form100BackSchema),
+    });
+
+    const state = {
+        ...frontMethods.watch(),
+        ...backMethods.watch(),
+    };
+
+    const handleGoBack = useCallback(() => {
+        if (!page) {
+            navigate(-1);
+            return;
+        }
+        setPage(0);
+    }, [navigate, page]);
+
+    const handleSubmit = useCallback(async () => {
+        if (!page) {
+            const result = await frontMethods.trigger();
+            if (result) {
+                setPage(1)
+            }
+            return;
+        }
+    }, [page, frontMethods]);
+
+    const handleClear = useCallback(() => {
+        frontMethods.reset();
+        backMethods.reset();
+    }, [frontMethods, backMethods]);
+
     return (
-        <FormProvider {...methods}>
-            <Card sx={containerStyles}>
-                <Front />
-                {/* <Back /> */}
-            </Card>
-        </FormProvider>
-    )
+        <Card sx={containerStyles}>
+            <ControlBar
+                onClear={handleClear}
+                onSubmit={handleSubmit}
+                onBack={handleGoBack}
+            />
+            {!page ? 
+                <FormProvider {...frontMethods}>
+                    <Front />
+                </FormProvider> : 
+                <FormProvider {...backMethods}>
+                    <Back />
+                </FormProvider>}
+        </Card>
+    );
 };
