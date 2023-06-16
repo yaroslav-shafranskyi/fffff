@@ -8,13 +8,15 @@ import { useFormContext } from 'react-hook-form';
 import { IForm100 } from '../../../../api';
 
 export const Diagnosis = () => {
-    const { watch, setValue } = useFormContext<IForm100>();
+    const { formState, watch, setValue } = useFormContext<IForm100>();
 
     const diagnosis = watch('diagnosis');
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setValue('diagnosis', event.target.value);
     };
+
+    const error = formState.errors?.diagnosis?.message;
 
     return (
         <Box sx={diagnosisStyles}>
@@ -23,14 +25,17 @@ export const Diagnosis = () => {
                     Діагноз
                 </Typography>
             </Box>
-            <Input
-                value={diagnosis}
-                multiline={true}
-                inputProps={{ sx: inputPropsStyles }}
-                fullWidth={true}
-                sx={diagnosisInputStyles}
-                onChange={handleChange}
-            />
+            <Box sx={{ width: '100%' }}>
+                <Input
+                    value={diagnosis}
+                    multiline={true}
+                    inputProps={{ sx: inputPropsStyles }}
+                    fullWidth={true}
+                    sx={diagnosisInputStyles}
+                    error={error}
+                    onChange={handleChange}
+                />
+            </Box>
         </Box>
     )
 };

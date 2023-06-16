@@ -4,7 +4,8 @@ import { SxProps } from '@mui/material';
 export const diagnosisStyles: SxProps<Theme> = (theme) => ({
     pl: .5,
     display: 'flex',
-    height: theme.spacing(8)
+    height: theme.spacing(8),
+    position: 'relative',
 });
 
 export const diagnosisInputStyles: SxProps<Theme> = (theme) => ({
@@ -17,7 +18,9 @@ export const diagnosisInputStyles: SxProps<Theme> = (theme) => ({
 
 export const inputPropsStyles: SxProps = {
     p: 0,
-    textIndent: 60,
+    textIndent: 42,
+    m: -.5,
+    fontSize: '0.6rem',
 };
 
 export const titleWrapperStyles: SxProps<Theme> = (theme) => ({
@@ -25,4 +28,5 @@ export const titleWrapperStyles: SxProps<Theme> = (theme) => ({
     zIndex: (theme.zIndex as { tooltip: number }).tooltip,
     background: theme.palette.background.paper,
     paddingRight: theme.spacing(.5),
+    top: .5
 });

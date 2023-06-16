@@ -51,7 +51,8 @@ export const severalInlineOptionsWrapperStyles: SxProps = {
 export const commonWrapperStyles: SxProps = {
     border: '4px solid',
     borderColor: 'text.primary',
-    display: 'grid', 
+    display: 'grid',
+    width: 'fit-content',
 };
 
 export const dialogActionsStyles: SxProps = {

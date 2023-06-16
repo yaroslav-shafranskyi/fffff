@@ -1,6 +1,9 @@
 import { Box, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
+import { FieldErrorType } from '../../../../interfaces';
+
+import { IForm100FrontState } from '../../types';
 import { sectionStyles } from '../../styles';
 import { MedicalHelp } from '../MedicalHelp';
 import { Injury } from '../Injury';
@@ -22,9 +25,13 @@ import {
 
 export const CounterfoilFront = () => {
 
-    const { watch } = useFormContext();
+    const { watch, formState } = useFormContext<IForm100FrontState>();
 
     const date = watch('date');
+
+    const { errors } = formState;
+
+    const evacuationClinicError = (errors.evacuation as { clinic: FieldErrorType})?.clinic?.message;
 
     return <>
         <Box sx={sectionStyles}>
@@ -43,7 +50,7 @@ export const CounterfoilFront = () => {
                 <Box sx={evacuationClinicWrapperStyles}>
                     <EvacuationClinicComponent />
                     <Box sx={evacuationClinicTipWrapperStyles}>
-                        <Typography>
+                        <Typography color={evacuationClinicError ? 'error' : 'textPrimary'}>
                             потрібне обвести
                         </Typography>
                     </Box>

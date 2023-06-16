@@ -39,7 +39,7 @@ export const PersonInfo = () => {
         lastRecord,
     } = person;
 
-    const { errors } = formState;
+    const {person: errors, reason: reasonError } = formState.errors;
 
     const handleNewRecordDateChange = useCallback((newDate: Date) => {
         setValue('person.lastRecord.date', newDate);
@@ -99,7 +99,7 @@ export const PersonInfo = () => {
                             value={rank}
                             options={Object.values(ArmyRank)}
                             sx={{ fontSize: '0.6rem' }}
-                            error={(errors.person as { rank?: FieldErrorType; })?.rank?.message}
+                            error={errors?.rank?.message}
                         />
                     </Box>
                 </Box>
@@ -111,7 +111,7 @@ export const PersonInfo = () => {
                         <Input
                             value={militaryBase}
                             fullWidth={true}
-                            error={(errors.person as {militaryBase?: FieldErrorType})?.militaryBase?.message}
+                            error={errors?.militaryBase?.message}
                             onChange={handleCommonFieldChange('militaryBase')}
                         />
                     </Box>
@@ -121,7 +121,7 @@ export const PersonInfo = () => {
                 <Input
                     value={fullName}
                     sx={fullWidthInputStyles}
-                    error={errors.person?.fullName?.message}
+                    error={errors?.fullName?.message}
                     onChange={handleCommonFieldChange('fullName')}
                 />
                 <Box sx={fullNameTitleStyles}>
@@ -144,7 +144,7 @@ export const PersonInfo = () => {
                     <Input
                         value={id}
                         sx={fullWidthInputStyles}
-                        error={(errors.person as { id?: FieldErrorType })?.id?.message}
+                        error={errors?.id?.message}
                         onChange={handleCommonFieldChange('id')}
                     />
                 </Box>
@@ -157,7 +157,7 @@ export const PersonInfo = () => {
                     <Input
                         value={tokenNumber}
                         sx={fullWidthInputStyles}
-                        error={(errors.person as { tokenNumber?: FieldErrorType })?.tokenNumber?.message}
+                        error={errors?.tokenNumber?.message}
                         onChange={handleCommonFieldChange('tokenNumber')}
                     />
                 </Box>
@@ -172,7 +172,7 @@ export const PersonInfo = () => {
                         </Box>
                     </Box>
                     <Typography color='error'>
-                        {(errors.person as { gender: FieldErrorType})?.gender?.message}
+                        {errors?.gender?.message}
                     </Typography>
                 </Box>
             </Box>
@@ -188,13 +188,13 @@ export const PersonInfo = () => {
                         </Box>
                     </Box>
                     <Typography color='error'>
-                        {errors.reason?.message}
+                        {reasonError?.message}
                     </Typography>
                 </Box>
                 <Box>
                     <DateInputWithSeparatedFields date={lastRecord?.date} onChange={handleNewRecordDateChange} />
-                    {(errors.person as { lastRecord?: { date?: FieldErrorType}})?.lastRecord?.date?.message &&
-                        <Typography color='error'>{errors.person?.lastRecord?.date?.message}</Typography>}
+                    {(errors as { lastRecord?: { date?: FieldErrorType}})?.lastRecord?.date?.message &&
+                        <Typography color='error'>{errors?.lastRecord?.date?.message}</Typography>}
                 </Box>
             </Box>
         </>

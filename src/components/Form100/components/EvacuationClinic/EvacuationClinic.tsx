@@ -8,13 +8,14 @@ import { evacuationClinicTitleWrapperStyles, evacuationClinicStyles, evacuationC
 import { useFormContext } from 'react-hook-form';
 
 export const EvacuationClinicComponent = () => {
-    const { watch, setValue } = useFormContext<IForm100>();
+    const { watch, setValue, clearErrors } = useFormContext<IForm100>();
 
     const selected = watch('evacuation.clinic');
 
     const getClinicBgColor = (option: EvacuationClinic) => option === selected ? 'primary.main' : 'background.paper';
 
     const updateClinic = (clinic: EvacuationClinic) => () => {
+        clearErrors('evacuation.clinic');
         if (clinic === selected) {
             setValue('evacuation.clinic', undefined as unknown as EvacuationClinic);
             return;
