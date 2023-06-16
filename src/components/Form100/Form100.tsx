@@ -15,7 +15,7 @@ import { IForm100BackState, IForm100FrontState, IForm100Props } from './types';
 export const Form100: FC<IForm100Props> = (props) => {
     const { data } = props;
 
-    const [page, setPage] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
 
     const navigate = useNavigate()
 
@@ -48,7 +48,8 @@ export const Form100: FC<IForm100Props> = (props) => {
             }
             return;
         }
-    }, [page, frontMethods]);
+        await backMethods.trigger();
+    }, [page, frontMethods, backMethods]);
 
     const handleClear = useCallback(() => {
         frontMethods.reset();

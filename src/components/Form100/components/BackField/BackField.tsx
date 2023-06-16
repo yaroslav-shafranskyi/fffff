@@ -4,38 +4,45 @@ import { useFormContext } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 
 import { Input } from '../../../../shared';
-import { IForm100 } from '../../../../api';
+
+import { IForm100BackState } from '../../types';
 
 import { IBackFieldProps } from './types';
 import { inputStyles, titleStyles, wrapperStyles } from './styles';
 
 export const BackField: FC<IBackFieldProps> = (props) => {
-    const { title, field, rows = 3, titleStyles: propsTitleStyles } = props;
-    const { watch, setValue } = useFormContext<IForm100>();
+    const { title, field, rows, titleStyles: propsTitleStyles } = props;
+    const { formState, clearErrors, watch, setValue } = useFormContext<IForm100BackState>();
 
-    const fullDiagnosis = watch(field);
+    const value = watch(field);
+
+    const error = formState.errors[field]?.message;
 
     const titleRef = useRef<HTMLDivElement>(null)
     
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setValue(field, event.target.value);
+        clearErrors(field);
     }
 
     return (
-        <Box sx={wrapperStyles}>
-            <Box sx={propsTitleStyles ?? titleStyles} ref={titleRef}>
-                <Typography>
-                    {title}
-                </Typography>
+        <Box>
+            <Box sx={wrapperStyles}>
+                <Box sx={propsTitleStyles ?? titleStyles} ref={titleRef}>
+                    <Typography>
+                        {title}
+                    </Typography>
+                </Box>
+                <Input 
+                    value={value}
+                    multiline={true}
+                    rows={rows}
+                    sx={inputStyles}
+                    inputProps={{ sx: { textIndent: titleRef.current?.clientWidth ?? '100%' }}}
+                    onChange={handleChange}
+                />
             </Box>
-            <Input 
-                value={fullDiagnosis}
-                multiline={true}
-                rows={rows}
-                sx={inputStyles}
-                inputProps={{ sx: { textIndent: titleRef.current?.clientWidth ?? '100%' }}}
-                onChange={handleChange}
-            />
+            {error && <Typography color='error'>{error}</Typography>}
         </Box>
     );
 };

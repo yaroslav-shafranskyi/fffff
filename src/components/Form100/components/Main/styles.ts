@@ -77,11 +77,16 @@ export const rightBorderStyles: SxProps = {
 export const backWrapperStyles: SxProps = {
     ...commonWrapperStyles,
     pl: 2,
+    width: '100%',
+    gridTemplateRows: '48px auto',
+    height: '100%',
+    gap: 2,
 };
 
 export const backHeaderStyles: SxProps = {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr',
+    height: 'min-content',
 };
 
 export const footerStyles: SxProps = {

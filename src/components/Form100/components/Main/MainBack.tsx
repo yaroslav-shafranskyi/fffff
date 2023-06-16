@@ -19,10 +19,12 @@ export const MainBack = () => {
                     <Form100Date />
                 </Box>
             </Box>
-            <BackField title='Уточнений діагноз' field='fullDiagnosis' />
-            <BackField title='Надана допомога' field='treatmentInfo' rows={7} />
+            <Box sx={{ mt: 1 }}>
+                <BackField title='Уточнений діагноз' field='fullDiagnosis' />
+            </Box>
+            <BackField title='Надана допомога' field='treatmentInfo' />
             <BackField title='Евакуювати (куди, коли)' field='fullEvacuationInfo' />
-            <BackField title='Результат (який, коли)' field='fullDiagnosis' />
+            <BackField title='Результат (який, коли)' field='result' />
             <Box sx={footerStyles}>
                 <Typography>
                     ЛІКАР

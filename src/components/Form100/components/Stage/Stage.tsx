@@ -8,9 +8,12 @@ import { Input } from '../../../../shared';
 import { containerStyles, textFieldStyles } from './styles';
 
 export const Stage = () => {
-    const { watch, setValue } = useFormContext<IForm100>();
+    const { formState, watch, setValue } = useFormContext<IForm100>();
 
     const stage = watch('stage');
+
+    const error = formState.errors.stage?.message;
+
     const updateStage = (event: ChangeEvent<HTMLInputElement>) => {
         setValue('stage', event.target.value);
     }
@@ -21,6 +24,7 @@ export const Stage = () => {
                 fullWidth={true}
                 value={stage}
                 sx={textFieldStyles}
+                error={error}
                 inputProps={{
                     sx: { pl: .5, pb: 0 }
                 }}

@@ -4,6 +4,7 @@ import { Theme } from '@mui/system';
 export const containerStyles: SxProps = {
     p: 2,
     height: '100%',
+    minHeight: '100vh',
 };
 
 export const boldTextStyles: SxProps = {

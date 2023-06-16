@@ -5,6 +5,7 @@ export const containerStyles: SxProps = {
     borderRight: '1.5px solid',
     borderBottom: '1.5px solid',
     pl: .5,
+    minHeight: 'min-content',
 };
 
 export const textFieldStyles: SxProps<Theme> = (theme) => ({

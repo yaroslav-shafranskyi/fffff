@@ -9,7 +9,7 @@ export const INVALID_DATA_MESSAGE = 'Некоректні дані';
 export const fieldRequiredStringSchema = (schema: StringSchema) => schema.required(REQUIRED_FIELD_MESSAGE);
 export const min3SymbolsStringSchema = (schema: StringSchema) => schema.min(3, MIN_3_SYMBOLS_MESSAGE);
 
-export const defaultStringSchema = fieldRequiredStringSchema(min3SymbolsStringSchema(string()));
+export const defaultStringSchema = min3SymbolsStringSchema(fieldRequiredStringSchema(string()));
 export const defaultDateSchema = date().required(REQUIRED_FIELD_MESSAGE);
 
 addMethod(string, 'validateFullName', function() {

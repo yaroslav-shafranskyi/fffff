@@ -5,4 +5,5 @@ export interface IBackFieldProps {
     title: string;
     rows?: number;
     titleStyles?: SxProps;
+    error?: string;
 }
