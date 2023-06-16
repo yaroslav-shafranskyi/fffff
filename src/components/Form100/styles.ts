@@ -2,7 +2,8 @@ import { SxProps } from '@mui/material';
 import { Theme } from '@mui/system';
 
 export const containerStyles: SxProps = {
-    m: 2,
+    p: 2,
+    height: '100vh',
 };
 
 export const boldTextStyles: SxProps = {

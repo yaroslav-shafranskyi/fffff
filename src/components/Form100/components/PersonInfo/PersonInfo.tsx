@@ -79,7 +79,7 @@ export const PersonInfo = () => {
                     <Box sx={fieldNameStyles}>
                         <Typography>в/звання</Typography>
                     </Box>
-                    <Select { ...register('person.rank')} value={rank} options={Object.values(ArmyRank)} />
+                    <Select { ...register('person.rank')} value={rank} options={Object.values(ArmyRank)} sx={{ fontSize: '0.6rem' }} />
                 </Box>
                 <Box sx={columnStyles}>
                     <Box>

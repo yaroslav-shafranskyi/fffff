@@ -41,6 +41,6 @@ export const preparationNamesTitleStyles: SxProps = {
 };
 
 export const dozeInputStyles: SxProps = {
-    bottom: '-.5px',
     height: '100%',
+    width: '100%',
 };

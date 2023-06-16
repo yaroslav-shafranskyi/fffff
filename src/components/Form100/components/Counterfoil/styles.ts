@@ -37,7 +37,7 @@ export const medicalHelpAndInjuryTypeWrapperStyles: SxProps = {
 export const medicalHelpAndInjutyTypeTipStyles: SxProps= {
     writingMode: 'vertical-lr',
     textOrientation: 'upright',
-    mt: 3,
+    mt: 2,
     borderBlock: '1.5px solid',
 };
 

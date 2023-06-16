@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { EvacuationType, IForm100 } from "../../../../api";
 import { EvacuationLayIcon, EvacuationSitIcon } from "../../../../assets";
 
-import { evacuationTypeTipStyles, evacuationTypeWrapperStyles } from "./styles";
+import { evacuationTypeWrapperStyles } from "./styles";
 
 export const EvacuationTypeComponent = () => {
     const { watch, setValue } = useFormContext<IForm100>();
@@ -23,7 +23,7 @@ export const EvacuationTypeComponent = () => {
                 onClick={updateEvacuationType(EvacuationType.LAY)}
             >
                 <EvacuationLayIcon />
-                <Typography sx={evacuationTypeTipStyles}>
+                <Typography>
                     лежачи
                 </Typography>
             </Box>
@@ -32,7 +32,7 @@ export const EvacuationTypeComponent = () => {
                 onClick={updateEvacuationType(EvacuationType.SIT)}
             >
                 <EvacuationSitIcon />
-                <Typography sx={evacuationTypeTipStyles}>
+                <Typography>
                     сидячи
                 </Typography>
             </Box>

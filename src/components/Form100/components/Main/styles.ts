@@ -89,3 +89,12 @@ export const footerStyles: SxProps = {
     px: 3,
     gap: 1,
 };
+
+export const evacuationClinicWrapperStyles: SxProps = {
+    width: '-webkit-fill-available',
+    border: '1.5px solid',
+    borderRight: 'none',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+};

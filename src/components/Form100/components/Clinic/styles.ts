@@ -2,7 +2,7 @@ import { SxProps } from "@mui/system";
 
 export const clinicCaptionWrapperStyles: SxProps = {
     textAlign: 'center',
-    mt: -1,
+    mt: -.5,
 };
 
 export const clinicInputPropsSx: SxProps = {

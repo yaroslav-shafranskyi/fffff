@@ -29,7 +29,7 @@ export const BodyDamage = () => {
     return (
         <Box sx={bodyDamageWrapperStyles}>
             <Box sx={bodyImageTipWrapperStyles}>
-                <Typography sx={{ textAlign: 'center' }} variant='subtitle2'>
+                <Typography sx={{ textAlign: 'center', fontSize: '0.6rem' }} variant='subtitle2'>
                     локалізацію обвести
                 </Typography>
             </Box>

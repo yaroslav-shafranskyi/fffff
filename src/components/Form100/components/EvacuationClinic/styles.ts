@@ -15,7 +15,8 @@ export const evacuationClinicStyles: SxProps = {
 export const evacuationClinicOptionsWrapperStyles: SxProps = {
     display: 'grid',
     gridTemplateColumns: 'repeat(5, 1fr)',
-    '& :last-child': {
+    height: '100%',
+    '& div:last-of-type': {
         borderRight: 'none'
     },
 };

@@ -7,7 +7,7 @@ export const containerStyles: SxProps = {
     p: 4,
     display: 'flex',
     flexDirection: 'column',
-    pb: 11,
+    pb: '43px',
 };
 
 export const headerStyles: SxProps<Theme> = (theme) => ({

@@ -5,7 +5,3 @@ export const evacuationTypeWrapperStyles: SxProps = {
     borderRight: 'none',
     display: 'flex',
 };
-
-export const evacuationTypeTipStyles: SxProps = {
-    lineHeight: 0,
-};

@@ -28,7 +28,8 @@ import {
     topBorderStyles,
     signatureWrapperStyles,
     bottomBorderStyles,
-    rightBorderStyles
+    rightBorderStyles,
+    evacuationClinicWrapperStyles
 } from './styles';
 
 export const MainFront = () => {
@@ -74,7 +75,7 @@ export const MainFront = () => {
                             <SanitaryStatus />
                             <Box sx={displayFlexStyles}>
                                 <EvacuationTypeComponent />
-                                <Box sx={{ border: '1.5px solid', borderRight: 'none' }}>
+                                <Box sx={evacuationClinicWrapperStyles}>
                                     <EvacuationClinicComponent />
                                 </Box>
                             </Box>

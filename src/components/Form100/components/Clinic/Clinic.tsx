@@ -35,7 +35,7 @@ export const Clinic = () => {
                     onChange={hanleInputChange}
                 />
             <Box sx={clinicCaptionWrapperStyles}>
-                <Typography variant='caption'>
+                <Typography variant='caption' sx={{ fontSize: '0.4rem' }}>
                     найменування мед. пункту (закладу), або їх штамп
                 </Typography>
             </Box>

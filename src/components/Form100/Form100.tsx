@@ -26,7 +26,7 @@ export const Form100: FC<IForm100Props> = (props) => {
         <FormProvider {...methods}>
             <Card sx={containerStyles}>
                 <Front />
-                <Back />
+                {/* <Back /> */}
             </Card>
         </FormProvider>
     )
