@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
@@ -22,8 +23,9 @@ import {
     medicalHelpAndInjuryTypeWrapperStyles,
     medicalHelpAndInjutyTypeTipStyles,
 } from './styles';
+import { ICounterfoilFrontProps } from './types';
 
-export const CounterfoilFront = () => {
+export const CounterfoilFront: FC<ICounterfoilFrontProps> = ({ readonly }) => {
 
     const { watch, formState } = useFormContext<IForm100FrontState>();
 

@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { Box, Typography } from '@mui/material';
 
 import {
@@ -31,8 +32,9 @@ import {
     rightBorderStyles,
     evacuationClinicWrapperStyles
 } from './styles';
+import { IMainFrontProps } from './types';
 
-export const MainFront = () => {
+export const MainFront: FC<IMainFrontProps> = ({ readonly }) => {
     return (
         <Box sx={containerStyles}>
             <Box sx={leftBorderStyles}>

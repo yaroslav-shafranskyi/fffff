@@ -1,13 +1,12 @@
-import { Gender, IRecord, Rank } from "../../../../api";
+import { Gender, IPerson, IRecord, Rank } from "../../../../api";
 
-import { PersonDataType } from "./types";
-
-export const getDefaultPersonData = (): PersonDataType => ({
+export const defaultPersonData: IPerson = {
     rank: '' as Rank,
     militaryBase: '',
     fullName: '',
     id: '',
     tokenNumber: '',
     gender: '' as Gender,
+    records: [],
     lastRecord: {} as IRecord,
-});
+};

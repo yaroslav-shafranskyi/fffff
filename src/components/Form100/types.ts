@@ -16,4 +16,5 @@ export interface IForm100State {
 
 export interface IForm100Props {
     data?: IForm100;
+    readonly?: boolean;
 }

@@ -1,14 +1,14 @@
-import { IForm100, RecordType, IEvacuation } from "../../api";
+import { IForm100, RecordType, IEvacuation, SanitaryTreatmentStatus } from "../../api";
 import { BodyImageFront, BodyImageBack } from "../../assets";
 
-import { getDefaultPersonData } from "./components/PersonInfo";
+import { defaultPersonData } from "./components/PersonInfo";
 
 export const getInitialForm100 = (): IForm100 => {
     const newDate = new Date();
     return {
         author: '',
         clinic: '',
-        person: getDefaultPersonData(newDate), 
+        person: defaultPersonData, 
         bodyImage: {
             back: <BodyImageBack />,
             front: <BodyImageFront />,
@@ -28,5 +28,6 @@ export const getInitialForm100 = (): IForm100 => {
         fullEvacuationInfo: '',
         result: '',
         firstAidInfo: '',
+        sanitaryTreatment: '' as SanitaryTreatmentStatus
     };
 };

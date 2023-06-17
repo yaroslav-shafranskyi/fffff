@@ -6,7 +6,7 @@ export interface IPerson {
     id: string;
     fullName: string;
     tokenNumber: string;
-    birthDate: Date;
+    birthDate?: Date;
     rank: Rank;
     gender: Gender;
     militaryBase: string; // TODO declare type

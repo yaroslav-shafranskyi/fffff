@@ -43,11 +43,6 @@ export const severalFieldsRowStyles: SxProps = {
     padding: '0px 4px',
 };
 
-export const injuryReasonWrapper: SxProps = {
-    cursor: 'pointer',
-    display: 'flex',
-};
-
 export const reasonWrapperStyles: SxProps = {
     ...displayFlexStyles,
     gridColumnGap: 2,
