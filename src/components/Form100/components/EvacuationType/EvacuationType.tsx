@@ -24,7 +24,7 @@ export const EvacuationTypeComponent: FC<IFCPropsWithReadonly> = ({ readonly }) 
     }, [clearErrors, readonly, setValue]);
     
     const getEvacuationFieldStyles = useCallback((value: EvacuationType) => {
-        const bgcolor = value === evacuationType ? 'primary.main' : 'background.paper';
+        const bgcolor = value === evacuationType ? 'success.light' : 'background.paper';
         const cursor = readonly ? 'inherit' : 'pointer';
         return { cursor, bgcolor };
     }, [evacuationType, readonly]);
