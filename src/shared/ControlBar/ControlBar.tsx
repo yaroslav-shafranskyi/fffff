@@ -7,7 +7,7 @@ import { IControlBarProps } from './types';
 import { actionsWrapperStyles, containerStyles } from './styles';
 
 export const ControlBar: FC<IControlBarProps> = (props) => {
-    const { onSubmit, onClear, onBack } = props;
+    const { submitButtonText = 'Зберегти', onSubmit, onClear, onBack } = props;
 
     const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ export const ControlBar: FC<IControlBarProps> = (props) => {
                     Очистити
                 </Button>
                 <Button variant='contained' onClick={handleSubmit}>
-                    Прийняти
+                    {submitButtonText}
                 </Button>
             </Box>
         </Box>

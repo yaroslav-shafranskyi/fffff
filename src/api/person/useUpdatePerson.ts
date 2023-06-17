@@ -1,7 +1,9 @@
+import { useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
+import { snackbar } from "../../shared";
+
 import { IPerson } from "../IPerson";
-import { useCallback } from "react";
 
 export const useUpdatePerson = () => {
     const queryClient = useQueryClient();

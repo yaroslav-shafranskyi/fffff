@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 
 import { EvacuationType, IForm100 } from "../../../../api";
 import { EvacuationLayIcon, EvacuationSitIcon } from "../../../../assets";
-import { IFCPropsWithReadonly } from '../../../../interfaces';
+import { FieldErrorType, IFCPropsWithReadonly } from '../../../../interfaces';
 
 import { evacuationTypeWrapperStyles } from "./styles";
 
@@ -13,7 +13,7 @@ export const EvacuationTypeComponent: FC<IFCPropsWithReadonly> = ({ readonly }) 
 
     const evacuationType = watch('evacuation.type');
 
-    const error = formState.errors.evacuation?.clinic?.message;
+    const error = (formState.errors.evacuation as { type?: FieldErrorType})?.type?.message;
 
     const updateEvacuationType = useCallback((value: EvacuationType) => () => {
         if (readonly) {
