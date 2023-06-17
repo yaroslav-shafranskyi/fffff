@@ -1,5 +1,6 @@
 import { ChangeEvent, useCallback, FC, useMemo } from 'react';
 import { Box, SelectChangeEvent, Typography, SxProps } from '@mui/material';
+import { Theme } from '@mui/system';
 import { useFormContext } from 'react-hook-form';
 
 import { DateInputWithSeparatedFields, Input, Select } from '../../../../shared';
@@ -97,7 +98,7 @@ export const PersonInfo: FC<IPersonInfoProps> = ({ readonly }) => {
     const getCurrentGender = (p: IPerson) => p.gender;
     const getCurrentReason = (p: IPerson) => p.lastRecord.reason;
 
-    const optionWrapperSx: SxProps = useMemo(() => readonly ? {} : cursorPointerStyles, [readonly]);
+    const optionWrapperSx: SxProps<Theme> = useMemo(() => readonly ? {} : cursorPointerStyles, [readonly]);
 
     return (
         <>

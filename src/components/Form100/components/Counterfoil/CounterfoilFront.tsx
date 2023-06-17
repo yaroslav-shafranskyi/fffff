@@ -46,7 +46,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = ({ readonly }) => {
                 </Typography>
             </Box>
             <Form100Date data={date} />
-            <PersonInfo />
+            <PersonInfo readonly={readonly} />
             <Box sx={evacuationWrapperStyles}>
                 <EvacuationTransportText />
                 <Box sx={evacuationClinicWrapperStyles}>

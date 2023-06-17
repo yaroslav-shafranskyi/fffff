@@ -13,8 +13,3 @@ export interface IForm100State {
     front: IForm100FrontState;
     back: IForm100BackState;
 }
-
-export interface IForm100Props {
-    data?: IForm100;
-    readonly?: boolean;
-}

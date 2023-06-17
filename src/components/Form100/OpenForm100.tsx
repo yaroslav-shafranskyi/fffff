@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useMemo, useState } from 'react';
 import { 
     Button,
     DialogActions,
@@ -11,22 +11,44 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { dialogActionsStyles, dialogContentStyles, dialogButtonStyles } from './styles';
+import { useQueryPersons } from '../../api';
 
-const options = ['Вася', 'Петя', 'Коля']
+import { dialogActionsStyles, dialogContentStyles, dialogButtonStyles } from './styles';
 
 export const OpenForm100Dialog: FC<{onClose : () => void;}> = ({ onClose }) => {
     const [personName, setPersonName] = useState<string>('');
+    const [personId, setPersonId] = useState<string>();
+    const [value, setValue] = useState<string | null>(null);
 
     const navigate = useNavigate();
 
-    const goToForm100 = () => {
-        navigate('/form100');
+    const persons = useQueryPersons(personName);
+
+    const convertedPersons = useMemo(
+        () => persons.reduce((acc: Record<string, string>, {fullName, id, rank, militaryBase}) => {
+            acc[id] = `${fullName}, ID: ${id}, ${rank}, в/ч(з’єднання): ${militaryBase}`;
+            return acc;
+            }, {}), [persons]);
+
+    const goToForm100 = (readonly?: boolean) => () => {
+        const url = personId ? `/form100/${personId}` : '/form100';
+        navigate(url, { state: { readonly } });
     };
 
     const handleChange = (_event: SyntheticEvent<Element, Event>, value: string | null) => {
-        setPersonName(value ?? '');
+        setValue(value);
+        if (!value) {
+            return;
+        }
+        const selectedPersonId = Object.keys(convertedPersons).find(id => convertedPersons[id] === value);
+        if (selectedPersonId) {
+            setPersonId(selectedPersonId);
+        }
     };
+
+    const handleInputChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
+        setPersonName(value);
+    }
 
     return (
         <Dialog
@@ -41,11 +63,12 @@ export const OpenForm100Dialog: FC<{onClose : () => void;}> = ({ onClose }) => {
                 </Typography>
                 <Box>
                     <Autocomplete
-                        value={personName}
+                        value={value}
                         renderInput={params => <TextField {...params} placeholder='Почніть вводити прізвище' />}
-                        options={options}
+                        options={Object.values(convertedPersons)}
                         noOptionsText='Збігів не знайдено'
                         onChange={handleChange}
+                        onInputChange={handleInputChange}
                     />
                 </Box>
             </DialogContent>
@@ -54,7 +77,7 @@ export const OpenForm100Dialog: FC<{onClose : () => void;}> = ({ onClose }) => {
                     variant='contained'
                     sx={dialogButtonStyles}
                     size='large'
-                    onClick={goToForm100}
+                    onClick={goToForm100()}
                 >
                     Створити
                 </Button>
@@ -63,7 +86,7 @@ export const OpenForm100Dialog: FC<{onClose : () => void;}> = ({ onClose }) => {
                     color='secondary'
                     sx={dialogButtonStyles}
                     size='large'
-                    onClick={goToForm100}
+                    onClick={goToForm100(true)}
                 >
                     Переглянути
                 </Button>

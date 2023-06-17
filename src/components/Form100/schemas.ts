@@ -45,7 +45,7 @@ export const personSchema = object().shape({
 
 export const evacuationSchema = object().shape({
     type: string().required(REQUIRED_FIELD_MESSAGE),
-    clinic: defaultStringSchema,
+    clinic: string().required(REQUIRED_FIELD_MESSAGE),
     priority: string().required(REQUIRED_FIELD_MESSAGE),
 }).required();
 
@@ -71,11 +71,11 @@ export const form100FrontSchema = object().shape({
 
 export const form100BackSchema = object().shape({
     date: defaultDateSchema,
-    stage: defaultStringSchema,
+    stage: string().required(REQUIRED_FIELD_MESSAGE),
     fullDiagnosis: defaultStringSchema,
     treatmentInfo: defaultStringSchema,
     fullEvacuationInfo: defaultStringSchema,
     result: defaultStringSchema,
-    timeAfterAccident: number().required(),
+    // timeAfterAccident: number().required(),
     firstAidInfo: defaultStringSchema
 }).required();

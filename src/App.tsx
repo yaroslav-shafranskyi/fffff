@@ -18,6 +18,7 @@ const App = () => {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/form100' element={<Form100 />} />
+            <Route path='/form100/:id' element={<Form100 />} />
           </Routes>
         </Router>
       </QueryClientProvider>

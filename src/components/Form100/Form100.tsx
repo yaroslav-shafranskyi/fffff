@@ -1,47 +1,60 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Card } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ControlBar } from '../../shared';
+import { IRecord, useGetPerson, useUpdatePerson } from '../../api';
 
 import { form100FrontSchema, form100BackSchema } from './schemas';
 import { containerStyles } from './styles';
 import { Front, Back } from './components';
 import { convertIForm100ToIForm100State } from './convertIForm100ToIForm100State';
-import { IForm100BackState, IForm100FrontState, IForm100Props } from './types';
-import { IRecord } from '../../api';
+import { IForm100BackState, IForm100FrontState } from './types';
+import { getInitialForm100 } from './constants';
 
-export const Form100: FC<IForm100Props> = (props) => {
-    const { data, readonly } = props;
-
+export const Form100 = () => {
     const [page, setPage] = useState<number>(0);
 
-    const navigate = useNavigate()
+    const location = useLocation();
+    const { pathname, state: { readonly } } = location;
 
-    const { front: initialFrontState, back: initialBackState} = useMemo(() => convertIForm100ToIForm100State(data), [data]);
+    const navigate = useNavigate();
+
+    const id = useMemo(() => pathname.split('form100/')[1], [pathname]);
+
+    const { data: initialPerson} = useGetPerson(id);
+
+    const { front: initialFrontState, back: initialBackState} = useMemo(() => {
+        const initialData = !initialPerson?.lastRecord ? getInitialForm100() : { ...initialPerson.lastRecord, person: initialPerson };
+        if (readonly) {
+            return convertIForm100ToIForm100State(initialData);
+        }
+        return convertIForm100ToIForm100State({ ...initialData, person: { ...initialData.person, lastRecord: {} as IRecord }});
+    }, [initialPerson, readonly]);
 
     const frontMethods = useForm<IForm100FrontState>({
         defaultValues: initialFrontState,
         resolver: yupResolver(form100FrontSchema),
     });
 
-    const { watch: watchFront, setValue: setFrontValue, reset: resetFront, trigger: triggerFront } = frontMethods;
-    const { records, lastRecord } = watchFront('person');
+    const { watch: watchFront, reset: resetFront, trigger: triggerFront } = frontMethods;
+    const frontState = watchFront();
+    const { person, ...restFrontState } = frontState;
+
+    const { records, lastRecord } = person;
 
     const backMethods = useForm<IForm100BackState>({
         defaultValues: initialBackState,
         resolver: yupResolver(form100BackSchema),
     });
 
-    const { reset: resetBack, trigger: triggerBack } = backMethods;
+    const { watch: watchBack, reset: resetBack, trigger: triggerBack } = backMethods;
 
-    useEffect(() => {
-        if (!readonly) {
-            setFrontValue('person.lastRecord', {} as IRecord);
-        }
-    }, [readonly, setFrontValue]);
+    const backState = watchBack();
+
+    const { mutate } = useUpdatePerson();
 
     const handleGoBack = useCallback(() => {
         if (!page) {
@@ -63,19 +76,20 @@ export const Form100: FC<IForm100Props> = (props) => {
             return;
         }
         const result = await triggerBack();
-        if (!result) {
-            return;
+        if (result) {
+            const updatedLastRecord = { ...lastRecord, ...restFrontState, ...backState };
+            mutate({...person, records: [...records, updatedLastRecord], lastRecord: updatedLastRecord });
         }
-        setFrontValue('person.records', [...records, lastRecord]);
-    }, [lastRecord, readonly, records, setFrontValue, triggerBack])
+    }, [backState, lastRecord, mutate, person, readonly, records, restFrontState, triggerBack])
 
     const handleSubmit = useCallback(async () => {
         if (!page) {
             navigateToBack();
             return;
         }
-        submitForm();
-    }, [navigateToBack, page, submitForm]);
+        await submitForm();
+        navigate('/');
+    }, [navigate, navigateToBack, page, submitForm]);
 
     const handleClear = useCallback(() => {
         resetFront();
