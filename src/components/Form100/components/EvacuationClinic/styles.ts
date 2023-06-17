@@ -5,12 +5,12 @@ export const evacuationClinicTitleWrapperStyles: SxProps = {
     textAlign: 'center',
 };
 
-export const evacuationClinicStyles: SxProps = {
+export const getEvacuationClinicStyles = (readonly?: boolean): SxProps => ({
     borderRight: '1.5px solid',
     textAlign: 'center',
     wordBreak: 'break-all',
-    cursor: 'pointer',
-};
+    cursor: !readonly ? 'pointer' : 'inherit',
+});
 
 export const evacuationClinicOptionsWrapperStyles: SxProps = {
     display: 'grid',

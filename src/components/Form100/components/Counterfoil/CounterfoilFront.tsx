@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
-import { FieldErrorType } from '../../../../interfaces';
+import { FieldErrorType, IFCPropsWithReadonly } from '../../../../interfaces';
 
 import { IForm100FrontState } from '../../types';
 import { sectionStyles } from '../../styles';
@@ -23,9 +23,8 @@ import {
     medicalHelpAndInjuryTypeWrapperStyles,
     medicalHelpAndInjutyTypeTipStyles,
 } from './styles';
-import { ICounterfoilFrontProps } from './types';
 
-export const CounterfoilFront: FC<ICounterfoilFrontProps> = ({ readonly }) => {
+export const CounterfoilFront: FC<IFCPropsWithReadonly> = ({ readonly }) => {
 
     const { watch, formState } = useFormContext<IForm100FrontState>();
 
@@ -48,9 +47,9 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = ({ readonly }) => {
             <Form100Date data={date} />
             <PersonInfo readonly={readonly} />
             <Box sx={evacuationWrapperStyles}>
-                <EvacuationTransportText />
+                <EvacuationTransportText readonly={readonly} />
                 <Box sx={evacuationClinicWrapperStyles}>
-                    <EvacuationClinicComponent />
+                    <EvacuationClinicComponent readonly={readonly} />
                     <Box sx={evacuationClinicTipWrapperStyles}>
                         <Typography color={evacuationClinicError ? 'error' : 'textPrimary'}>
                             потрібне обвести
@@ -65,7 +64,7 @@ export const CounterfoilFront: FC<ICounterfoilFrontProps> = ({ readonly }) => {
                     <Typography sx={{ fontWeight: 'bold', ml: .5 }}>
                         МЕДИЧНА ДОПОМОГА
                     </Typography>
-                    <MedicalHelp />
+                    <MedicalHelp readonly={readonly} />
                 </Box>
                 <Box sx={medicalHelpAndInjutyTypeTipStyles}>
                     <Typography>

@@ -1,10 +1,15 @@
 import { FC } from 'react';
 import { Box, Typography } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
+
+import { FieldErrorType, IFCPropsWithReadonly } from '../../../../interfaces';
 
 import {
     boldTextStyles,
     displayFlexStyles,
 } from '../../styles';
+import { IForm100FrontState } from '../../types';
+
 import { PersonInfo } from '../PersonInfo';
 import { Injury } from '../Injury';
 import { MedicalHelp } from '../MedicalHelp';
@@ -32,9 +37,13 @@ import {
     rightBorderStyles,
     evacuationClinicWrapperStyles
 } from './styles';
-import { IMainFrontProps } from './types';
 
-export const MainFront: FC<IMainFrontProps> = ({ readonly }) => {
+export const MainFront: FC<IFCPropsWithReadonly> = ({ readonly }) => {
+    const { formState } = useFormContext<IForm100FrontState>(); 
+    const { errors } = formState;
+
+    const evacuationClinicError = (errors.evacuation as { clinic?: FieldErrorType })?.clinic?.message;
+
     return (
         <Box sx={containerStyles}>
             <Box sx={leftBorderStyles}>
@@ -53,11 +62,11 @@ export const MainFront: FC<IMainFrontProps> = ({ readonly }) => {
                         <Typography sx={mainTitleStyles}>
                             Первинна медична картка
                         </Typography>
-                        <Clinic />
-                        <PersonInfo />
+                        <Clinic readonly={readonly} />
+                        <PersonInfo readonly={readonly} />
                         <Box sx={injuryWrapperStyles}>
-                            <Injury />
-                            <BodyDamage />
+                            <Injury readonly={readonly} />
+                            <BodyDamage readonly={readonly} />
                         </Box>
                     </Box>
                     <Box>
@@ -69,24 +78,27 @@ export const MainFront: FC<IMainFrontProps> = ({ readonly }) => {
                                 МЕДИЧНА ДОПОМОГА
                             </Typography>
                             <Box sx={{ borderLeft: '1px solid' }}>
-                                <MedicalHelp />
+                                <MedicalHelp readonly={readonly} />
                             </Box>
                         </Box>
                         <Plait />
                         <Box>
-                            <SanitaryStatus />
+                            <SanitaryStatus readonly={readonly} />
                             <Box sx={displayFlexStyles}>
-                                <EvacuationTypeComponent />
+                                <EvacuationTypeComponent readonly={readonly} />
                                 <Box sx={evacuationClinicWrapperStyles}>
-                                    <EvacuationClinicComponent />
+                                    <EvacuationClinicComponent readonly={readonly} />
                                 </Box>
                             </Box>
-                                <EvacuationPriorityComponent />
-                                <EvacuationTransportComponent />
+                                {evacuationClinicError && <Typography sx={{ textAlign: 'center' }} color='error'>
+                                        {evacuationClinicError}
+                                </Typography>}
+                                <EvacuationPriorityComponent readonly={readonly} />
+                                <EvacuationTransportComponent readonly={readonly} />
                         </Box>
                     </Box>
                 </Box>
-                    <Diagnosis />
+                    <Diagnosis readonly={readonly} />
                     <Box sx={signatureWrapperStyles}>
                         <Typography>
                             Лікар

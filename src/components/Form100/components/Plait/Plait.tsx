@@ -1,15 +1,16 @@
-import { useCallback } from "react";
-import {  useFormContext } from "react-hook-form";
+import { useCallback, FC } from "react";
+import { useFormContext } from "react-hook-form";
 import { Box, Typography } from '@mui/material';
 
 import { IForm100 } from "../../../../api";
 import { DateInputWithSeparatedFields } from "../../../../shared";
+import { IFCPropsWithReadonly } from "../../../../interfaces";
 
 import { displayFlexStyles, boldTextStyles } from "../../styles";
 
-import { plaitStatusWrapperStyles } from "./styles";
+import { getPlaitStatusWrapperStyles } from "./styles";
 
-export const Plait = () => {
+export const Plait: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { formState, watch, setValue } = useFormContext<IForm100>();
     
     const { date: plaitDate, status: plaitStatus} = watch('plait') ?? {};
@@ -17,17 +18,23 @@ export const Plait = () => {
     const error = formState.errors.plait?.date?.message;
 
     const handlePlaitStatusChange = useCallback(() => {
-            if (plaitStatus) {
-                setValue('plait', undefined);
-                return;
-            }
-            setValue('plait.status', true)
-    }, [plaitStatus, setValue]);
+        if (readonly) {
+            return;
+        }
+        if (plaitStatus) {
+            setValue('plait', undefined);
+            return;
+        }
+        setValue('plait.status', true)
+    }, [plaitStatus, readonly, setValue]);
 
     const handleChange = useCallback((date: Date) => {
+        if (readonly) {
+            return;
+        }
         setValue('plait.date', date);
         setValue('plait.status', true)
-    }, [setValue]);
+    }, [readonly, setValue]);
 
     return (
         <Box>
@@ -35,7 +42,7 @@ export const Plait = () => {
                 <Typography sx={boldTextStyles}>
                     Джгут
                 </Typography>
-                <Box sx={plaitStatusWrapperStyles} onClick={handlePlaitStatusChange}>
+                <Box sx={getPlaitStatusWrapperStyles(readonly)} onClick={handlePlaitStatusChange}>
                     <Typography sx={boldTextStyles} color={plaitStatus ? 'error' : 'textPrimary'}>
                         накладений
                     </Typography>

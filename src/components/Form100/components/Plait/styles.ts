@@ -1,6 +1,6 @@
 import { SxProps } from '@mui/material';
 
-export const plaitStatusWrapperStyles: SxProps = {
+export const getPlaitStatusWrapperStyles = (readonly?: boolean): SxProps => ({
     marginLeft: '2px',
-    cursor: 'pointer',
-};
+    cursor: readonly ? 'inherit' : 'pointer',
+});

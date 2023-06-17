@@ -3,13 +3,13 @@ import { Box, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
 import { EvacuationTransport, IForm100 } from '../../../../api';
+import { IFCPropsWithReadonly } from '../../../../interfaces';
 
 import { cursorPointerStyles, displayFlexStyles } from '../../styles';
 
 import { evacuationTransportOptionsRowWrapperStyles, evacuationTransportWrapperStyles } from './styles';
-import { IEvacuationTransportText } from './types';
 
-export const EvacuationTransportText: FC<IEvacuationTransportText> = ({ readonly }) => {
+export const EvacuationTransportText: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { watch, setValue } = useFormContext<IForm100>();
 
     const selected = watch('evacuation.transport');
@@ -22,7 +22,7 @@ export const EvacuationTransportText: FC<IEvacuationTransportText> = ({ readonly
         setValue('evacuation.transport', newSelected as EvacuationTransport);      
     }, [readonly, selected, setValue]);
 
-    const getOptionColor = (option: EvacuationTransport) => option === selected ? 'primary' : 'textPrimary';
+    const getOptionColor = (option: EvacuationTransport) => option === selected ? 'success.light' : 'textPrimary';
 
     const optionsWrapperSx = useMemo(() => readonly ? {} : cursorPointerStyles, [readonly]);
 

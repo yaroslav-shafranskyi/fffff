@@ -55,12 +55,17 @@ export const reasonAndNewRecordDateWrapperStyles: SxProps = {
     padding: '0 4px',
 };
 
-export const femaleWrapperStyles: SxProps = {
-    cursor: 'pointer',
+export const getFemaleWrapperStyles = (readonly?: boolean): SxProps => ({
+    cursor: readonly ? 'inherit' : 'pointer',
     mr: 2,
-};
+});
 
 export const genderWrapperStyles: SxProps = {
     display: 'flex',
     gap: '2px',
 };
+
+export const getReasonWrapperStyles = (readonly?: boolean): SxProps => ({
+    cursor: readonly ? 'inherit' : 'pointer',
+    display: 'flex',
+});

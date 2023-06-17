@@ -1,8 +1,10 @@
+import { FC } from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import {  useFormContext } from 'react-hook-form';
 
 import { IForm100, IInjury } from '../../../../api';
 import { injuriesFields } from '../../../../constants';
+import { IFCPropsWithReadonly } from '../../../../interfaces';
 
 import { cursorPointerStyles, iconStyles } from '../../styles';
 
@@ -12,15 +14,19 @@ import {
     injuryTypeCellStyles,
 } from './styles';
 
-export const Injury = () => {   
+export const Injury: FC<IFCPropsWithReadonly> = ({ readonly }) => {   
     const { watch, setValue } = useFormContext<IForm100>();
 
     const injury = watch('injury');
 
     const updateInjury = (injuryType: keyof IInjury) => () => {
-        setValue(`injury.${injuryType}`, !injury?.[injuryType]);
+        if (!readonly) {
+            setValue(`injury.${injuryType}`, !injury?.[injuryType]);
+        }
     }
     const getInjuryColor = (injuryType: keyof IInjury) => injury?.[injuryType] ? 'error.main' : 'background.paper';
+
+    const clickableBoxStyles = readonly ? {} : cursorPointerStyles;
 
     return (
         <Box>
@@ -36,7 +42,7 @@ export const Injury = () => {
                             </Typography>
                         </Box>
                         <Box
-                            sx={cursorPointerStyles}
+                            sx={clickableBoxStyles}
                             onClick={updateInjury(`${injuriesFields[+key].fieldName}`)}
                             bgcolor={getInjuryColor(injuriesFields[+key].fieldName)}
                         >

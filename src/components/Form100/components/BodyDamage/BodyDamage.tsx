@@ -1,4 +1,6 @@
+import { FC, useCallback } from 'react';
 import { Box, Typography } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 
 import { BodyDamageInfo, IForm100 } from '../../../../api';
 
@@ -10,9 +12,10 @@ import {
     bodyImageTipWrapperStyles,
     bodyImagesWrapperStyles
 } from './styles';
-import { useFormContext } from 'react-hook-form';
 
-export const BodyDamage = () => {
+import { IFCPropsWithReadonly } from '../../../../interfaces';
+
+export const BodyDamage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { watch, setValue } = useFormContext<IForm100>();
 
     const { bodyDamage: info, bodyImage } = watch();
@@ -20,11 +23,16 @@ export const BodyDamage = () => {
 
     const getBodyDamageColor = (damage: BodyDamageInfo) => info.includes(damage) ? 'error' : 'textPrimary';
 
-    const updateBodyDamage = (damage: BodyDamageInfo) => () => {
+    const updateBodyDamage = useCallback((damage: BodyDamageInfo) => () => {
+        if (readonly) {
+            return;
+        }
         const damageIdx = info.findIndex(d => d === damage) ?? -1;
         const newInfo = damageIdx < 0 ? [...info, damage] : [...info.slice(0, damageIdx), ...info.slice(damageIdx + 1)];
         setValue('bodyDamage', newInfo);
-    };
+    }, [info, readonly, setValue]);
+
+    const clickableBoxStyles = readonly ? {} : cursorPointerStyles;
 
     return (
         <Box sx={bodyDamageWrapperStyles}>
@@ -34,10 +42,10 @@ export const BodyDamage = () => {
                 </Typography>
             </Box>
             <Box sx={bodyImagesWrapperStyles}>
-                <Box sx={cursorPointerStyles}>
+                <Box sx={clickableBoxStyles}>
                     {front ?? null}
                 </Box>
-                <Box sx={cursorPointerStyles}>
+                <Box sx={clickableBoxStyles}>
                     {back ?? null}
                 </Box>
             </Box>
@@ -46,7 +54,7 @@ export const BodyDamage = () => {
                     підкреслити
                 </Typography>
                 <Box sx={displayFlexStyles}>
-                    <Box sx={cursorPointerStyles} onClick={updateBodyDamage(BodyDamageInfo.SOFT_TISSUES)}>
+                    <Box sx={clickableBoxStyles} onClick={updateBodyDamage(BodyDamageInfo.SOFT_TISSUES)}>
                         <Typography color={getBodyDamageColor(BodyDamageInfo.SOFT_TISSUES)}>
                             {BodyDamageInfo.SOFT_TISSUES}
                         </Typography>
@@ -54,14 +62,14 @@ export const BodyDamage = () => {
                 </Box>
                 <Box sx={severalInlineOptionsWrapperStyles}>
                     <Box sx={displayFlexStyles}>
-                        <Box sx={cursorPointerStyles} onClick={updateBodyDamage(BodyDamageInfo.BONES)}>
+                        <Box sx={clickableBoxStyles} onClick={updateBodyDamage(BodyDamageInfo.BONES)}>
                             <Typography color={getBodyDamageColor(BodyDamageInfo.BONES)}>
                                 {BodyDamageInfo.BONES}
                             </Typography>
                         </Box>,
                     </Box>
                     <Box sx={displayFlexStyles}>
-                        <Box sx={cursorPointerStyles} onClick={updateBodyDamage(BodyDamageInfo.VESSELS)}>
+                        <Box sx={clickableBoxStyles} onClick={updateBodyDamage(BodyDamageInfo.VESSELS)}>
                             <Typography color={getBodyDamageColor(BodyDamageInfo.VESSELS)}>
                                 {BodyDamageInfo.VESSELS}
                             </Typography>
@@ -69,13 +77,13 @@ export const BodyDamage = () => {
                     </Box>
                 </Box>
                 <Box sx={displayFlexStyles}>
-                    <Box sx={cursorPointerStyles} onClick={updateBodyDamage(BodyDamageInfo.CAVITY_WOUNDS)}>
+                    <Box sx={clickableBoxStyles} onClick={updateBodyDamage(BodyDamageInfo.CAVITY_WOUNDS)}>
                         <Typography color={getBodyDamageColor(BodyDamageInfo.CAVITY_WOUNDS)}>
                             {BodyDamageInfo.CAVITY_WOUNDS}
                         </Typography>
                     </Box>,
                 </Box>
-                <Box sx={cursorPointerStyles} onClick={updateBodyDamage(BodyDamageInfo.BURN)}>
+                <Box sx={clickableBoxStyles} onClick={updateBodyDamage(BodyDamageInfo.BURN)}>
                     <Typography color={getBodyDamageColor(BodyDamageInfo.BURN)}>
                         {BodyDamageInfo.BURN}
                     </Typography>

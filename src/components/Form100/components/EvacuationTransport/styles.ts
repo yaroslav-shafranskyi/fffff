@@ -10,8 +10,8 @@ export const evacuationTransportWrapperStyles: SxProps = {
     mt: .5,
 };
 
-export const evacuationTransportCellStyles:SxProps = {
+export const getEvacuationTransportCellStyles = (readonly?: boolean):SxProps => ({
     borderRight: '1.5px solid',
-    cursor: 'pointer',
+    cursor: readonly ? 'inherit' : 'pointer',
     width: '100%',
-};
+});

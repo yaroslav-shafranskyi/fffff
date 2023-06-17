@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback } from 'react';
+import { ChangeEvent, FC, useCallback, useMemo } from 'react';
 import { Box, Input, Typography } from "@mui/material";
 import { useFormContext } from 'react-hook-form';
 
@@ -17,27 +17,35 @@ import {
     twoOperationsCellWrapperStyles
 } from "./styles";
 import { treatmentsFields } from '../../../../constants';
+import { IFCPropsWithReadonly } from '../../../../interfaces';
 
-export const MedicalHelp = () => {
+export const MedicalHelp: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { watch, setValue } = useFormContext<IForm100>();
 
     const { operations, treatments } = watch('medicalHelp') ?? {};
 
-    const updateStringValues = (field: keyof IMedicalOperations | keyof ITreatments) => (event: ChangeEvent<HTMLInputElement>) => {
-        const key = field === 'additionalInfo' ? 'operations' : 'treatments';
-        const value = event.target.value;
-        // @ts-expect-error we set only value for single treatment or additional info
-        setValue(`medicalHelp.${key}.${field}`, value);
-    }
+    const updateStringValues = useCallback((field: keyof IMedicalOperations | keyof ITreatments) =>
+        (event: ChangeEvent<HTMLInputElement>) => {
+            if (readonly) {
+                return;
+            }
+            const key = field === 'additionalInfo' ? 'operations' : 'treatments';
+            const value = event.target.value;
+            // @ts-expect-error we set only value for single treatment or additional info
+            setValue(`medicalHelp.${key}.${field}`, value);
+        }, [readonly, setValue]);
 
-    const updateOperation = useCallback((operation: keyof IMedicalOperations) => () => {
-        if (typeof operations?.[operation] === 'string') {
-            return;
-        }
-        setValue(`medicalHelp.operations.${operation}`, !operations?.[operation]);
-    }, [operations, setValue]);
+    const updateOperation = useCallback((operation: keyof IMedicalOperations) => 
+        () => {
+            if (readonly || typeof operations?.[operation] === 'string') {
+                return;
+            }
+            setValue(`medicalHelp.operations.${operation}`, !operations?.[operation]);
+        }, [readonly, operations, setValue]);
 
     const getOperationColor = (operation: keyof IMedicalOperations) => operations?.[operation] ? 'error' : 'textPrimary';
+
+    const clickableBoxStyles = useMemo(() => readonly ? {} : cursorPointerStyles, [readonly]); 
 
     return (
         <Box>
@@ -84,7 +92,7 @@ export const MedicalHelp = () => {
                     </Typography>
                 </Box>
                 <Box sx={operationCellWrapperStyles}>
-                    <Box sx={cursorPointerStyles} onClick={updateOperation('bloodTransfusion')}>
+                    <Box sx={clickableBoxStyles} onClick={updateOperation('bloodTransfusion')}>
                         <Typography color={getOperationColor('bloodTransfusion')}>
                             Переливання крові
                         </Typography>
@@ -92,7 +100,7 @@ export const MedicalHelp = () => {
                     <Typography>,</Typography>
                 </Box>
                 <Box sx={operationCellWrapperStyles}>
-                    <Box sx={cursorPointerStyles} onClick={updateOperation('bloodSubstitute')}>
+                    <Box sx={clickableBoxStyles} onClick={updateOperation('bloodSubstitute')}>
                         <Typography color={getOperationColor('bloodSubstitute')}>
                             кровозамінників
                         </Typography>
@@ -101,7 +109,7 @@ export const MedicalHelp = () => {
                 </Box>
                 <Box sx={twoOperationsCellWrapperStyles}>
                     <Box sx={{ display: 'flex' }}>
-                        <Box sx={cursorPointerStyles} onClick={updateOperation('immobilization')}>
+                        <Box sx={clickableBoxStyles} onClick={updateOperation('immobilization')}>
                             <Typography color={getOperationColor('immobilization')}>
                                 іммобілізація
                             </Typography>
@@ -109,7 +117,7 @@ export const MedicalHelp = () => {
                         <Typography>,</Typography>
                     </Box>
                     <Box sx={{ display: 'flex' }}>
-                        <Box sx={cursorPointerStyles} onClick={updateOperation('dressing')}>
+                        <Box sx={clickableBoxStyles} onClick={updateOperation('dressing')}>
                             <Typography color={getOperationColor('dressing')}>
                                 {`перев’язка`}
                             </Typography>
@@ -119,14 +127,14 @@ export const MedicalHelp = () => {
                 </Box>
                 <Box sx={twoOperationsCellWrapperStyles}>
                     <Box sx={{ display: 'flex' }}>
-                        <Box sx={cursorPointerStyles} onClick={updateOperation('bandage')}>
+                        <Box sx={clickableBoxStyles} onClick={updateOperation('bandage')}>
                             <Typography color={getOperationColor('bandage')}>
                                 накладений джгут
                             </Typography>
                         </Box>
                         <Typography>,</Typography>
                     </Box>
-                    <Box sx={cursorPointerStyles} onClick={updateOperation('sanitary')}>
+                    <Box sx={clickableBoxStyles} onClick={updateOperation('sanitary')}>
                         <Typography color={getOperationColor('sanitary')}>
                             санобробка
                         </Typography>

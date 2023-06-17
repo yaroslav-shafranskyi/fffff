@@ -4,3 +4,4 @@ export * from './MappingFieldTypesWithIcons';
 export * from './MappingFieldsTypes';
 export * from './NamesDataType';
 export * from './FieldErrorType';
+export * from './IFCPropsWithReadonly';

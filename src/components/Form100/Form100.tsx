@@ -31,7 +31,7 @@ export const Form100 = () => {
         if (readonly) {
             return convertIForm100ToIForm100State(initialData);
         }
-        return convertIForm100ToIForm100State({ ...initialData, person: { ...initialData.person, lastRecord: {} as IRecord }});
+        return convertIForm100ToIForm100State({ ...getInitialForm100(), person: { ...initialData.person, lastRecord: {} as IRecord }});
     }, [initialPerson, readonly]);
 
     const frontMethods = useForm<IForm100FrontState>({

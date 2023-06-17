@@ -5,12 +5,12 @@ import { useFormContext } from 'react-hook-form';
 
 import { DateInputWithSeparatedFields, Input, Select } from '../../../../shared';
 import { ArmyRank, Gender, IPerson, Rank, RecordType } from '../../../../api';
-import { FieldErrorType } from '../../../../interfaces';
+import { FieldErrorType, IFCPropsWithReadonly } from '../../../../interfaces';
 
-import { cursorPointerStyles, displayFlexStyles } from '../../styles';
+import { cursorPointerStyles } from '../../styles';
 import { IForm100FrontState } from '../../types';
 
-import { IPersonInfoProps, UpdatePersonDataType } from './types';
+import { UpdatePersonDataType } from './types';
 import {
     columnStyles,
     fieldNameStyles,
@@ -21,11 +21,12 @@ import {
     severalFieldsRowStyles,
     reasonWrapperStyles,
     reasonAndNewRecordDateWrapperStyles,
-    femaleWrapperStyles,
+    getFemaleWrapperStyles,
     genderWrapperStyles,
+    getReasonWrapperStyles,
 } from './styles';
 
-export const PersonInfo: FC<IPersonInfoProps> = ({ readonly }) => {
+export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { formState, register, setValue, watch, clearErrors } = useFormContext<IForm100FrontState>();
 
     const values = watch();
@@ -92,8 +93,11 @@ export const PersonInfo: FC<IPersonInfoProps> = ({ readonly }) => {
         clearErrors('person.rank');
     }, [clearErrors, readonly, setValue]);
 
-    const getOptionColor = <T extends string>(option: T, getCurrentValue: (person: IPerson) => T) => 
+    const getReasonColor = <T extends string>(option: T, getCurrentValue: (person: IPerson) => T) => 
         option === getCurrentValue(person) ? 'error' : 'textPrimary';
+    
+    const getGenderColor = <T extends string>(option: T, getCurrentValue: (person: IPerson) => T) => 
+        option === getCurrentValue(person) ? 'success.light' : 'textPrimary';
 
     const getCurrentGender = (p: IPerson) => p.gender;
     const getCurrentReason = (p: IPerson) => p.lastRecord.reason;
@@ -180,10 +184,10 @@ export const PersonInfo: FC<IPersonInfoProps> = ({ readonly }) => {
                     <Box sx={genderWrapperStyles}>
                         <Typography>Стать: </Typography>
                         <Box sx={optionWrapperSx} onClick={updatePersonData('gender', Gender.MALE)}>
-                            <Typography color={getOptionColor(Gender.MALE, getCurrentGender)}>{Gender.MALE}</Typography> 
+                            <Typography color={getGenderColor(Gender.MALE, getCurrentGender)}>{Gender.MALE}</Typography> 
                         </Box>
-                        <Box sx={{...femaleWrapperStyles, ...optionWrapperSx}} onClick={updatePersonData('gender', Gender.FEMALE)}>
-                            <Typography color={getOptionColor(Gender.FEMALE, getCurrentGender)}>{Gender.FEMALE}</Typography> 
+                            <Box sx={getFemaleWrapperStyles(readonly)} onClick={updatePersonData('gender', Gender.FEMALE)}>
+                            <Typography color={getGenderColor(Gender.FEMALE, getCurrentGender)}>{Gender.FEMALE}</Typography> 
                         </Box>
                     </Box>
                     <Typography color='error'>
@@ -194,12 +198,12 @@ export const PersonInfo: FC<IPersonInfoProps> = ({ readonly }) => {
             <Box sx={reasonAndNewRecordDateWrapperStyles}>
                 <Box>
                     <Box sx={reasonWrapperStyles}>
-                        <Box sx={{...displayFlexStyles, ...optionWrapperSx}} onClick={updateReason(RecordType.INJURY)}>
-                            <Typography color={getOptionColor(RecordType.INJURY, getCurrentReason)}>Поранений</Typography>
+                        <Box sx={getReasonWrapperStyles(readonly)} onClick={updateReason(RecordType.INJURY)}>
+                            <Typography color={getReasonColor(RecordType.INJURY, getCurrentReason)}>Поранений</Typography>
                             <Typography>,</Typography>
                         </Box>
                         <Box sx={optionWrapperSx} onClick={updateReason(RecordType.SICK)}>
-                            <Typography color={getOptionColor(RecordType.SICK, getCurrentReason)}>захворів</Typography>
+                            <Typography color={getReasonColor(RecordType.SICK, getCurrentReason)}>захворів</Typography>
                         </Box>
                     </Box>
                     <Typography color='error'>

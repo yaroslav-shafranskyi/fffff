@@ -1,8 +1,9 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useCallback, FC } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
 import { Input } from '../../../../shared';
+import { IFCPropsWithReadonly } from '../../../../interfaces';
 
 import {
     clinicCaptionWrapperStyles,
@@ -11,16 +12,20 @@ import {
     clinicWrapperStyles,
 } from './styles';
 
-export const Clinic = () => {
-    const { formState, watch, setValue } = useFormContext();
+export const Clinic: FC<IFCPropsWithReadonly> = ({ readonly }) => {
+    const { formState, watch, setValue, clearErrors } = useFormContext();
 
     const clinic = watch('clinic');
 
     const error = formState.errors.clinic?.message;
 
-    const hanleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const hanleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        if (readonly) {
+            return;
+        }
         setValue('clinic', event.target.value);
-    }
+        clearErrors('clinic');
+    }, [clearErrors, readonly, setValue])
 
     return (
         <Box sx={clinicWrapperStyles}>

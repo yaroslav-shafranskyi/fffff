@@ -1,24 +1,32 @@
+import { FC, useCallback } from 'react';
 import { useFormContext } from "react-hook-form";
 import { Box, Typography } from '@mui/material';
 
 import { EvacuationPriority, IForm100 } from "../../../../api";
+import { IFCPropsWithReadonly } from "../../../../interfaces";
 
 import { cursorPointerStyles, displayFlexStyles } from "../../styles";
 
 import { evacuationPriorityOptionsWrapperStyles, evacuationPriorityWrapperStyles } from "./styles";
 
-export const EvacuationPriorityComponent = () => {
-    const { formState, watch, setValue } = useFormContext<IForm100>();
+export const EvacuationPriorityComponent: FC<IFCPropsWithReadonly> = ({ readonly }) => {
+    const { formState, watch, setValue, clearErrors } = useFormContext<IForm100>();
 
     const priority = watch('evacuation.priority');
 
-    const updatePriority = (value: EvacuationPriority) => () => {
+    const updatePriority = useCallback((value: EvacuationPriority) => () => {
+        if (readonly) {
+            return;
+        }
         setValue('evacuation.priority', value)
-    }
+        clearErrors('evacuation.priority');
+    }, [clearErrors, readonly, setValue])
 
     const getEvacuationFieldColor = (value: EvacuationPriority) => value === priority ? 'error' : 'textPrimary';
 
     const error = formState.errors.evacuation?.priority?.message;
+
+    const clickableBoxStyles = readonly ? {} : cursorPointerStyles;
 
     return (
         <Box>
@@ -28,20 +36,20 @@ export const EvacuationPriorityComponent = () => {
                 </Typography>
                 <Box sx={evacuationPriorityOptionsWrapperStyles}>
                     <Box sx={displayFlexStyles}>
-                        <Box sx={cursorPointerStyles} onClick={updatePriority('I')}>
+                        <Box sx={clickableBoxStyles} onClick={updatePriority('I')}>
                             <Typography color={getEvacuationFieldColor('I')}>
                                 I
                             </Typography>
                         </Box>{', '}
                     </Box>
                     <Box sx={displayFlexStyles}>
-                        <Box sx={cursorPointerStyles} onClick={updatePriority('II')}>
+                        <Box sx={clickableBoxStyles} onClick={updatePriority('II')}>
                             <Typography color={getEvacuationFieldColor('II')}>
                                 II
                             </Typography>
                         </Box>{', '}
                     </Box>
-                    <Box sx={cursorPointerStyles} onClick={updatePriority('III')}>
+                    <Box sx={clickableBoxStyles} onClick={updatePriority('III')}>
                         <Typography color={getEvacuationFieldColor('III')}>
                             III
                         </Typography>
