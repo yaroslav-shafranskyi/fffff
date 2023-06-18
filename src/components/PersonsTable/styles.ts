@@ -10,21 +10,7 @@ export const containerStyles: SxProps = {
     gap: 2,
 };
 
-export const tableStyles: SxProps = {
-    minHeight: 300,
-};
-
 export const backButtonStyles: SxProps<Theme> = (theme) => ({
     position: 'absolute',
     left: theme.spacing(2),
 });
-
-export const placeholderStyles = {
-    position: 'absolute',
-    borderBottom: 'none',
-    display: 'flex',
-    justifyContent: 'center',
-    width: '100%',
-    top: '50%',
-    transform: 'translateY(-50%)',
-}

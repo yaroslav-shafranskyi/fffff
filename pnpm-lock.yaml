@@ -23,6 +23,9 @@ dependencies:
   '@mui/system':
     specifier: ^5.13.2
     version: 5.13.2(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.0.37)(react@18.2.0)
+  '@tanstack/match-sorter-utils':
+    specifier: ^8.8.4
+    version: 8.8.4
   '@tanstack/react-query':
     specifier: ^4.29.12
     version: 4.29.12(react-dom@18.2.0)(react-native@0.71.10)(react@18.2.0)
@@ -2481,6 +2484,13 @@ packages:
     resolution: {integrity: sha512-OPwQlEdg40HAj5KNF8WW6q2KG4Z+cBCZb3m4ninfTZKaBmbIJodviQsDBoYMPHkOyJJMHnOJo5j2+LKDOhOACg==}
     dependencies:
       '@sinonjs/commons': 3.0.0
+    dev: false
+
+  /@tanstack/match-sorter-utils@8.8.4:
+    resolution: {integrity: sha512-rKH8LjZiszWEvmi01NR72QWZ8m4xmXre0OOwlRGnjU01Eqz/QnN+cqpty2PJ0efHblq09+KilvyR7lsbzmXVEw==}
+    engines: {node: '>=12'}
+    dependencies:
+      remove-accents: 0.4.2
     dev: false
 
   /@tanstack/query-core@4.29.11:
@@ -5903,6 +5913,10 @@ packages:
     hasBin: true
     dependencies:
       jsesc: 0.5.0
+    dev: false
+
+  /remove-accents@0.4.2:
+    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
     dev: false
 
   /repeat-element@1.1.4:

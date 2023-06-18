@@ -1,25 +1,29 @@
-import { FC } from 'react';
-import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { FC, useState } from 'react';
+import {
+    ColumnFiltersState,
+    FilterFn,
+    createColumnHelper,
+    getCoreRowModel,
+    getFilteredRowModel,
+    useReactTable,
+} from '@tanstack/react-table';
+import {
+    rankItem,
+  } from '@tanstack/match-sorter-utils';
 import {
     Typography,
-    Table,
-    TableHead,
-    TableBody,
-    TableRow,
-    TableCell,
     Card,
-    TableContainer,
-    Paper,
     Box,
-    IconButton
+    IconButton,
 } from '@mui/material';
 import { ArrowBack as BackIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 import { IPerson, useQueryPersons } from '../../api';
 
-import { backButtonStyles, containerStyles, placeholderStyles, tableStyles } from './styles';
+import { backButtonStyles, containerStyles } from './styles';
 import { formatDate } from '../../helpers';
+import { Table } from '../../shared/Table';
 
 export const PersonsTable: FC = () => {
     const navigate = useNavigate();
@@ -27,6 +31,8 @@ export const PersonsTable: FC = () => {
     const persons = useQueryPersons();
 
     const columnHelper = createColumnHelper<IPerson>();
+
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
     const columns = [
         columnHelper.accessor(p => p.fullName, {
@@ -76,10 +82,24 @@ export const PersonsTable: FC = () => {
         }),
     ];
 
+    const fuzzyFilter: FilterFn<IPerson> = (row, columnId, value, addMeta) => {
+        const itemRank = rankItem(row.getValue(columnId), value);
+        addMeta({
+          itemRank,
+        });
+      
+        return itemRank.passed;
+    };
+
     const table = useReactTable<IPerson>({
         data: persons,
         columns,
-        getCoreRowModel: getCoreRowModel(), 
+        filterFns: { fuzzy: fuzzyFilter },
+        state: { columnFilters },
+        globalFilterFn: fuzzyFilter,
+        onColumnFiltersChange: setColumnFilters,
+        getCoreRowModel: getCoreRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
     });
 
     const goBack = () => {
@@ -94,40 +114,7 @@ export const PersonsTable: FC = () => {
                 </IconButton>
                 <Typography variant='h4' sx={{ textAlign: 'center' }}>Список поранених військовослужбовців</Typography>
             </Box>
-            <TableContainer component={Paper}>
-                <Table sx={tableStyles}>
-                    <TableHead>
-                        {table.getHeaderGroups().map(headerGroup => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map(header => (
-                                    <TableCell key={header.id}>
-                                        {flexRender(header.column.columnDef.header, header.getContext())}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </TableHead>
-                    <TableBody>
-                        {!persons.length &&
-                            <TableRow sx={{ position: 'relative' }}>
-                                <TableCell sx={placeholderStyles}>
-                                    <Typography variant='h5' color='text.secondary'>
-                                        Нікого не знайдено
-                                    </Typography>
-                                </TableCell>
-                            </TableRow>}
-                        {persons.length > 0 && table.getRowModel().rows.map(row => (
-                            <TableRow key={row.id}>
-                                {row.getVisibleCells().map(cell => (
-                                    <TableCell key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Table table={table} data={persons} />
         </Card>
     );
 };
