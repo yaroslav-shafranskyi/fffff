@@ -1,4 +1,4 @@
-import { IForm100, RecordType, IEvacuation, SanitaryTreatmentStatus } from "../../api";
+import { IForm100, RecordType, IEvacuation, SanitaryTreatmentStatus, IEvacuationClinic } from "../../api";
 import { BodyImageFront, BodyImageBack } from "../../assets";
 
 import { defaultPersonData } from "./components/PersonInfo";
@@ -20,7 +20,9 @@ export const getInitialForm100 = (): IForm100 => {
             treatments: {},
             operations: {}
         },
-        evacuation: {} as IEvacuation,
+        evacuation: {
+            clinic: [] as IEvacuationClinic[],
+        } as IEvacuation,
         diagnosis: '',
         stage: '',
         fullDiagnosis: '',

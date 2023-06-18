@@ -11,6 +11,11 @@ export enum EvacuationClinic {
     CIVIL = 'Цив. заклад'
 }
 
+export interface IEvacuationClinic {
+    order: number;
+    clinic: EvacuationClinic;
+}
+
 export type EvacuationPriority = 'I' | 'II' | 'III';
 
 export enum EvacuationTransport {
@@ -25,7 +30,7 @@ export enum EvacuationTransport {
 
 export interface IEvacuation {
     type: EvacuationType;
-    clinic: EvacuationClinic;
+    clinic: IEvacuationClinic[];
     priority: EvacuationPriority;
     transport: EvacuationTransport;
 }

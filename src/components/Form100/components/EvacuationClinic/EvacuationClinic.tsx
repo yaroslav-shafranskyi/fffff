@@ -1,31 +1,68 @@
-import { FC, Fragment, useCallback } from 'react';
+import { FC, Fragment, useCallback, useMemo } from 'react';
 import { Box, Typography } from '@mui/material';
 
 import { EvacuationClinic, IForm100 } from '../../../../api';
-import { evacuationClinicFieldNames } from '../../../../constants';
 import { IFCPropsWithReadonly } from '../../../../interfaces';
 
 import { evacuationClinicTitleWrapperStyles, evacuationClinicOptionsWrapperStyles, getEvacuationClinicStyles } from './styles';
 import { useFormContext } from 'react-hook-form';
+
+const allClinics = Object.values(EvacuationClinic);
 
 export const EvacuationClinicComponent: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { watch, setValue, clearErrors } = useFormContext<IForm100>();
 
     const selected = watch('evacuation.clinic');
 
-    const getClinicBgColor = (option: EvacuationClinic) => option === selected ? 'success.light' : 'background.paper';
+    const { selectedNames, selectedOrders } = useMemo(() =>
+        selected.reduce((acc: { selectedNames: EvacuationClinic[]; selectedOrders: number[]; }, cur) => {
+                acc.selectedNames.push(cur.clinic);
+                acc.selectedOrders.push(cur.order);
+                return acc;
+            }, { selectedNames: [], selectedOrders: [] }),
+        [selected]);
+    
+    const maxOrder = useMemo(() => Math.max(...selectedOrders), [selectedOrders]);
+
+    const checkIfSelected = useCallback((option: EvacuationClinic) => selectedNames.includes(option), [selectedNames]);
+
+    const restClinics = useMemo(() => allClinics.filter(clinic => !checkIfSelected(clinic)), [checkIfSelected]);
+
+    const getClinicBgColor = (option: EvacuationClinic) => checkIfSelected(option) ? 'success.light' : 'background.paper';
+
+    const unSelectClinic = useCallback((clinic: EvacuationClinic) => {
+        const newClinics = selected
+                .filter(({ clinic: selectedClinic }) => selectedClinic !== clinic)
+                .map((c, i) => ({ order: i, clinic: c.clinic}));
+            setValue('evacuation.clinic', newClinics);
+    }, [selected, setValue])
 
     const updateClinic = useCallback((clinic: EvacuationClinic) => () => {
         if (readonly) {
             return;
         }
         clearErrors('evacuation.clinic');
-        if (clinic === selected) {
-            setValue('evacuation.clinic', undefined as unknown as EvacuationClinic);
+        const isSelected = checkIfSelected(clinic);
+        if (isSelected) {
+            unSelectClinic(clinic);
             return;
         }
-        setValue('evacuation.clinic', clinic);
-    }, [clearErrors, readonly, selected, setValue]);
+        setValue('evacuation.clinic', [...selected, { order: maxOrder + 1, clinic}]);
+    }, [checkIfSelected, clearErrors, maxOrder, readonly, selected, setValue, unSelectClinic]);
+
+    const getStylesOrder = useCallback((clinic: EvacuationClinic) => {
+        if (!checkIfSelected(clinic)) {
+            return false
+        }
+        const order = selected.find(({ clinic: selectedClinic }) => selectedClinic === clinic)?.order;
+        if (order === undefined) {
+            return false;
+        }
+        if (order === 0) {
+            return 'first';
+        }
+        return true;
+    }, [checkIfSelected, selected]);
 
     return (
         <>
@@ -35,19 +72,19 @@ export const EvacuationClinicComponent: FC<IFCPropsWithReadonly> = ({ readonly }
                 </Typography>
             </Box>
             <Box sx={evacuationClinicOptionsWrapperStyles}>
-                {Object.keys(evacuationClinicFieldNames).slice().sort().map(key => <Fragment key={key}>
+                {[...selectedNames, ...restClinics].map(clinic => <Fragment key={clinic}>
                         <Box 
-                            sx={getEvacuationClinicStyles(readonly)}
-                            bgcolor={getClinicBgColor(evacuationClinicFieldNames[+key].name as EvacuationClinic)}
-                            onClick={updateClinic(evacuationClinicFieldNames[+key].name as EvacuationClinic)}
+                            sx={getEvacuationClinicStyles(getStylesOrder(clinic), readonly)}
+                            bgcolor={getClinicBgColor(clinic)}
+                            onClick={updateClinic(clinic)}
                         >
                             <Typography>
-                                {evacuationClinicFieldNames[+key].name as EvacuationClinic}
+                                {clinic}
                             </Typography>
                         </Box>
                     </Fragment>
                 )}
             </Box>
         </>
-    )
+    );
 };
