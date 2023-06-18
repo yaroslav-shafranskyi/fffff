@@ -1,5 +1,4 @@
 import { IForm100, RecordType, IEvacuation, SanitaryTreatmentStatus, IEvacuationClinic } from "../../api";
-import { BodyImageFront, BodyImageBack } from "../../assets";
 
 import { defaultPersonData } from "./components/PersonInfo";
 
@@ -10,8 +9,8 @@ export const getInitialForm100 = (): IForm100 => {
         clinic: '',
         person: defaultPersonData, 
         bodyImage: {
-            back: <BodyImageBack />,
-            front: <BodyImageFront />,
+            back: [],
+            front: [],
         },
         bodyDamage: [],
         date: newDate,

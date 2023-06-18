@@ -22,7 +22,7 @@ export const EvacuationClinicComponent: FC<IFCPropsWithReadonly> = ({ readonly }
             }, { selectedNames: [], selectedOrders: [] }),
         [selected]);
     
-    const maxOrder = useMemo(() => Math.max(...selectedOrders), [selectedOrders]);
+    const maxOrder = useMemo(() => !selectedOrders.length ? -1 : Math.max(...selectedOrders), [selectedOrders]);
 
     const checkIfSelected = useCallback((option: EvacuationClinic) => selectedNames.includes(option), [selectedNames]);
 
@@ -55,13 +55,7 @@ export const EvacuationClinicComponent: FC<IFCPropsWithReadonly> = ({ readonly }
             return false
         }
         const order = selected.find(({ clinic: selectedClinic }) => selectedClinic === clinic)?.order;
-        if (order === undefined) {
-            return false;
-        }
-        if (order === 0) {
-            return 'first';
-        }
-        return true;
+        return !!order;
     }, [checkIfSelected, selected]);
 
     return (

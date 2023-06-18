@@ -3,6 +3,7 @@ import { Box, Typography } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
 import { BodyDamageInfo, IForm100 } from '../../../../api';
+import { BodyImageFront, BodyImageBack } from '../../../../assets';
 
 import { boldTextStyles, cursorPointerStyles, displayFlexStyles, severalInlineOptionsWrapperStyles } from '../../styles';
 
@@ -18,8 +19,7 @@ import { IFCPropsWithReadonly } from '../../../../interfaces';
 export const BodyDamage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { watch, setValue } = useFormContext<IForm100>();
 
-    const { bodyDamage: info, bodyImage } = watch();
-    const { front, back } = bodyImage;
+    const { bodyDamage: info } = watch();
 
     const getBodyDamageColor = (damage: BodyDamageInfo) => info.includes(damage) ? 'error' : 'textPrimary';
 
@@ -43,10 +43,10 @@ export const BodyDamage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
             </Box>
             <Box sx={bodyImagesWrapperStyles}>
                 <Box sx={clickableBoxStyles}>
-                    {front ?? null}
+                    <BodyImageFront readonly={readonly} />
                 </Box>
                 <Box sx={clickableBoxStyles}>
-                    {back ?? null}
+                    <BodyImageBack readonly={readonly} />
                 </Box>
             </Box>
             <Box sx={bodyDamageInfoWrapperStyles}>

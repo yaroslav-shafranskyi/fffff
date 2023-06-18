@@ -1,4 +1,5 @@
+export type DamageCoords = { x: number; y: number; };
 export interface IBodyImage {
-    front: JSX.Element;
-    back: JSX.Element;
+    front: DamageCoords[];
+    back: DamageCoords[];
 }

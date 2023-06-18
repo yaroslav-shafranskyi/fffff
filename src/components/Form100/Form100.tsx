@@ -18,7 +18,8 @@ export const Form100 = () => {
     const [page, setPage] = useState<number>(0);
 
     const location = useLocation();
-    const { pathname, state: { readonly } } = location;
+    const { pathname, state } = location;
+    const readonly = state?.readonly;
 
     const navigate = useNavigate();
 

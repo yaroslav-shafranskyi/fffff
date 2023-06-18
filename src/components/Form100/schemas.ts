@@ -45,7 +45,7 @@ export const personSchema = object().shape({
 
 export const evacuationSchema = object().shape({
     type: string().required(REQUIRED_FIELD_MESSAGE),
-    clinic: string().required(REQUIRED_FIELD_MESSAGE),
+    clinic: array().min(1, REQUIRED_FIELD_MESSAGE),
     priority: string().required(REQUIRED_FIELD_MESSAGE),
 }).required();
 
