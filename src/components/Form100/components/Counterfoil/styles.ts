@@ -1,4 +1,5 @@
 import { SxProps } from "@mui/material";
+import { Theme } from "@mui/system";
 
 export const titleStyles: SxProps = {
     fontWeight: 'bold',
@@ -10,13 +11,15 @@ export const titleWrapperStyles: SxProps = {
     borderColor: 'text.primary',
 };
 
-export const evacuationWrapperStyles: SxProps = {
+export const evacuationWrapperStyles: SxProps<Theme> = (theme) => ({
     border: '1.5px solid',
     borderColor: 'text.primary',
     ml: 2,
     display: 'grid',
     gridTemplateColumns: '2fr 3fr',
-};
+    width: `calc(100% - ${theme.spacing(2.5)})`,
+    borderRight: 'none',
+});
 
 export const evacuationClinicWrapperStyles: SxProps = {
     display: 'grid',

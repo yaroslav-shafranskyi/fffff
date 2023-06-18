@@ -23,7 +23,7 @@ export const Form100 = () => {
 
     const navigate = useNavigate();
 
-    const id = useMemo(() => pathname.split('form100/')[1], [pathname]);
+    const id = useMemo(() => decodeURI(pathname.split('form100/')[1]), [pathname]);
 
     const { data: initialPerson} = useGetPerson(id);
 
@@ -100,6 +100,7 @@ export const Form100 = () => {
     return (
         <Card sx={containerStyles}>
             <ControlBar
+                submitButtonText={!page ? 'Далі' : undefined}
                 onClear={handleClear}
                 onSubmit={handleSubmit}
                 onBack={handleGoBack}
