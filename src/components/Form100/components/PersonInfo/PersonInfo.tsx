@@ -60,6 +60,21 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
             clearErrors(`person.${field}`);
         }, [readonly, setValue, clearErrors]);
 
+    const handleTokenChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        if (readonly) {
+            return;
+        }
+        const newValue = event.target.value;
+        setValue('person.tokenNumber', newValue);
+        clearErrors('person.tokenNumber');
+        const newValueWithoutSpaces = newValue.split(' ').join('');
+        const birthDate = new Date(newValueWithoutSpaces);
+        const isValidDate = !Number.isNaN(birthDate.getTime());
+        if (isValidDate) {
+            setValue('person.birthDate', birthDate);
+        }
+    }, [clearErrors, readonly, setValue])
+
     const updatePersonData: UpdatePersonDataType = useCallback((key, value, path) => () => {
         if (readonly) {
             return;
@@ -177,7 +192,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                         value={tokenNumber}
                         sx={fullWidthInputStyles}
                         error={errors?.tokenNumber?.message}
-                        onChange={handleCommonFieldChange('tokenNumber')}
+                        onChange={handleTokenChange}
                     />
                 </Box>
                 <Box>

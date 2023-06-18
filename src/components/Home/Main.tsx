@@ -1,4 +1,5 @@
 import { Box, Button, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import { useOpenForm100Dialog } from '../Form100';
 
@@ -15,6 +16,12 @@ import {
 
 export const Main = () => {
     const [Form100Dialog, openForm100Dialog] = useOpenForm100Dialog();
+
+    const navigate = useNavigate();
+
+    const goToPersonsTable = () => {
+        navigate('/persons');
+    }
 
     return (
         <Box sx={mainWrapperStyles}>
@@ -36,7 +43,7 @@ export const Main = () => {
                             Знайдіть інформацію про хворого чи пораненого швидко та ефективно.
                         </Typography>
                     </Button>
-                    <Button  variant='contained' color='secondary' sx={mainButtonStyles}>
+                    <Button  variant='contained' color='secondary' sx={mainButtonStyles} onClick={goToPersonsTable}>
                         <Typography variant='h5'>
                             Перелік Поранених
                         </Typography>

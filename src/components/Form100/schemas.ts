@@ -1,4 +1,4 @@
-import { string, object, date, array, number, StringSchema, lazy, addMethod } from 'yup';
+import { string, object, date, array, StringSchema, lazy, addMethod } from 'yup';
 
 import { IPlait } from '../../api';
 
