@@ -42,3 +42,10 @@ export const filterInputStyles: SxProps<Theme> = (theme) => ({
     bgcolor: theme.palette.background.paper,
     width: theme.spacing(17),
 });
+
+export const filterInfoStyles: SxProps = {
+    display: 'flex',
+    alignItems: 'center',
+    alignSelf: 'baseline',
+    gap: .5,
+};

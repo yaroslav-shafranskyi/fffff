@@ -1,12 +1,19 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { TableProps } from '@mui/material';
-import { TableOptions } from '@tanstack/react-table';
+import { CellContext } from '@tanstack/react-table';
 
 import { IFilter, IQuery, ISort } from '../../interfaces';
 
+export interface IColumn<T extends object> {
+    title: string;
+    key: string;
+    accessor?: (data: T) => unknown;
+    render: (props: CellContext<T, unknown>) => ReactNode;
+}
+
 export interface ITableProps<T extends object> extends TableProps {
     data: T[];
-    columns: TableOptions<T>['columns'];
+    columns: IColumn<T>[];
     query?: IQuery<T>;
     total?: number;
     onQueryChange?: Dispatch<SetStateAction<IQuery<T>>>;
@@ -23,4 +30,10 @@ export interface ISortProps<T extends object> {
     field: keyof T;
     sortBy?: ISort<T>;
     onChange: Dispatch<SetStateAction<ISort<T>>>;
+}
+
+export interface IToolbarProps<T extends object> {
+    filterBy: IFilter;
+    columns: IColumn<T>[];
+    clearFilter: (key: string) => () => void;
 }

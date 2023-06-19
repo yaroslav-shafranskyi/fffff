@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import { createColumnHelper } from '@tanstack/react-table';
 import {
     Typography,
     Card,
@@ -13,7 +12,7 @@ import { IPerson, useQueryPersons } from '../../api';
 
 import { backButtonStyles, containerStyles } from './styles';
 import { formatDate } from '../../helpers';
-import { Table } from '../../shared';
+import { IColumn, Table } from '../../shared';
 import { getInitialQuery } from '../../constants';
 import { IQuery } from '../../interfaces';
 
@@ -24,54 +23,55 @@ export const PersonsTable: FC = () => {
 
     const persons = useQueryPersons(query);
 
-    const columnHelper = createColumnHelper<IPerson>();
-
-    const columns = [
-        columnHelper.accessor(p => p.fullName, {
-            header: () => <Typography>ПІП</Typography>,
-            cell: p => p.getValue(),
-            id: 'fullName',
-        }),
-        columnHelper.accessor(p => p.rank, {
-            header: () => <Typography>Звання</Typography>,
-            cell: p => p.getValue(),
-            id: 'rank',
-        }),
-        columnHelper.accessor(p => p.id, {
-            header: () => <Typography>Посвідчення особи</Typography>,
-            cell: p => p.getValue(),
-            id: 'ID',
-        }),
-        columnHelper.accessor(p => p.birthDate, {
-            header: () => <Typography>Дата народження</Typography>,
-            cell: p => formatDate(p.getValue()),
-            id: 'birthDate',
-        }),
-        columnHelper.accessor(p => p.gender, {
-            header: () => <Typography>Стать</Typography>,
-            cell: p => p.getValue(),
-            id: 'gender',
-        }),
-        columnHelper.accessor(p => p.militaryBase, {
-            header: () => <Typography>Військова частина</Typography>,
-            cell: p => p.getValue(),
-            id: 'militaryBase',
-        }),
-        columnHelper.accessor(p => p.records.length, {
-            header: () => <Typography>Кількість звернень</Typography>,
-            cell: p => p.getValue(),
-            id: 'recordsLength',
-        }),
-        columnHelper.accessor(p => p.lastRecord.date, {
-            header: () => <Typography>Дата крайнього звернення</Typography>,
-            cell: p => formatDate(p.getValue()),
-            id: 'lastRecordDate',
-        }),
-        columnHelper.accessor(p => p.lastRecord.diagnosis, {
-            header: () => <Typography>Крайній діагноз</Typography>,
-            cell: p => p.getValue(),
-            id: 'lastRecordDiagnosis',
-        }),
+    const columns: IColumn<IPerson>[] = [
+        {
+            title: 'ПІП',
+            render: p => p.getValue() as string,
+            key: 'fullName',
+        },
+        {
+            title: 'Звання',
+            render: p => p.getValue() as string,
+            key: 'rank',
+        },
+        {
+            title: 'Посвідчення особи',
+            render: p => p.getValue() as string,
+            key: 'id',
+        },
+        {
+            title: 'Дата народження',
+            render: p => formatDate(p.getValue() as Date),
+            key: 'birthDate',
+        },
+        {
+            title: 'Стать',
+            render: p => p.getValue() as string,
+            key: 'gender',
+        },
+        {
+            title: 'Військова частина',
+            render: p => p.getValue() as string,
+            key: 'militaryBase',
+        },
+        {
+            title: 'Кількість звернень',
+            render: p => p.getValue() as number,
+            accessor: p => p.records.length,
+            key: 'recordsLength',
+        },
+        {
+            title: 'Дата крайнього звернення',
+            render: p => formatDate(p.getValue() as Date),
+            accessor: p => p.lastRecord.date,
+            key: 'lastRecordDate',
+        },
+        {
+            title: 'Крайній діагноз',
+            render: p => p.getValue() as string,
+            accessor: p => p.lastRecord.diagnosis,
+            key: 'lastRecordDiagnosis',
+        },
     ];
 
     const goBack = () => {
