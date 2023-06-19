@@ -4,3 +4,4 @@ export * from './medicalHelp';
 export * from './evacuation';
 export * from './query';
 export * from './person';
+export * from './url';

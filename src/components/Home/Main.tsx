@@ -1,8 +1,11 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+import { personsUrl } from '../../constants';
+
 import { useOpenFormDialog } from '../OpenForm';
 import { OpenForm100Dialog } from '../Form100';
+import { OpenPersonDialog } from '../Person';
 
 import { 
     buttonDescStyles,
@@ -17,11 +20,12 @@ import {
 
 export const Main = () => {
     const [Form100Dialog, openForm100Dialog] = useOpenFormDialog(OpenForm100Dialog);
+    const [PersonDialog, openPersonDialog] = useOpenFormDialog(OpenPersonDialog)
 
     const navigate = useNavigate();
 
     const goToPersonsTable = () => {
-        navigate('/persons');
+        navigate(personsUrl);
     }
 
     return (
@@ -35,7 +39,7 @@ export const Main = () => {
                         Створіть або перегляньте форму для поранених чи хворих військовослужбовців.
                     </Typography>
                 </Button>
-                <Box sx={searchButtonStyles}>
+                <Box sx={searchButtonStyles} onClick={openPersonDialog}>
                     <Button  variant='contained' color='secondary' sx={mainButtonStyles}>
                         <Typography variant='h5'>
                             Швидкий Пошук
@@ -72,6 +76,7 @@ export const Main = () => {
                 </Button>
             </Box>
             {Form100Dialog}
+            {PersonDialog}
         </Box>
     );
 };

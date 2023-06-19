@@ -10,7 +10,7 @@ export const useGetPerson = (id: string) => {
     const res = useQuery(['person', id], () => 
         queryClient.getQueryData<IPerson>(['person', id]),
         {
-            enabled: !!id,
+            enabled: !!id && id !== 'create',
         }
     );
 
