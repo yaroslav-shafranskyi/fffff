@@ -1,15 +1,5 @@
 import { FC, useState } from 'react';
-import {
-    ColumnFiltersState,
-    FilterFn,
-    createColumnHelper,
-    getCoreRowModel,
-    getFilteredRowModel,
-    useReactTable,
-} from '@tanstack/react-table';
-import {
-    rankItem,
-  } from '@tanstack/match-sorter-utils';
+import { createColumnHelper } from '@tanstack/react-table';
 import {
     Typography,
     Card,
@@ -23,16 +13,18 @@ import { IPerson, useQueryPersons } from '../../api';
 
 import { backButtonStyles, containerStyles } from './styles';
 import { formatDate } from '../../helpers';
-import { Table } from '../../shared/Table';
+import { Table } from '../../shared';
+import { getInitialQuery } from '../../constants';
+import { IQuery } from '../../interfaces';
 
 export const PersonsTable: FC = () => {
+    const [query, setQuery] = useState<IQuery<IPerson>>(getInitialQuery())
+
     const navigate = useNavigate();
 
-    const persons = useQueryPersons();
+    const persons = useQueryPersons(query);
 
     const columnHelper = createColumnHelper<IPerson>();
-
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
     const columns = [
         columnHelper.accessor(p => p.fullName, {
@@ -82,28 +74,8 @@ export const PersonsTable: FC = () => {
         }),
     ];
 
-    const fuzzyFilter: FilterFn<IPerson> = (row, columnId, value, addMeta) => {
-        const itemRank = rankItem(row.getValue(columnId), value);
-        addMeta({
-          itemRank,
-        });
-      
-        return itemRank.passed;
-    };
-
-    const table = useReactTable<IPerson>({
-        data: persons,
-        columns,
-        filterFns: { fuzzy: fuzzyFilter },
-        state: { columnFilters },
-        globalFilterFn: fuzzyFilter,
-        onColumnFiltersChange: setColumnFilters,
-        getCoreRowModel: getCoreRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-    });
-
     const goBack = () => {
-        navigate(-1);
+        navigate('/');
     };
 
     return (
@@ -114,7 +86,12 @@ export const PersonsTable: FC = () => {
                 </IconButton>
                 <Typography variant='h4' sx={{ textAlign: 'center' }}>Список поранених військовослужбовців</Typography>
             </Box>
-            <Table table={table} data={persons} />
+            <Table<IPerson>
+                data={persons}
+                columns={columns}
+                query={query}
+                onQueryChange={setQuery}
+            />
         </Card>
     );
 };

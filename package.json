@@ -16,7 +16,6 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.4",
     "@mui/system": "^5.13.2",
-    "@tanstack/match-sorter-utils": "^8.8.4",
     "@tanstack/react-query": "^4.29.12",
     "@tanstack/react-table": "^8.9.2",
     "@types/react-native": "^0.72.2",

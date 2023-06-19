@@ -1,4 +1,5 @@
 import { SxProps } from '@mui/material';
+import { Theme } from '@mui/system';
 
 export const tableStyles: SxProps = {
     minHeight: 300,
@@ -25,6 +26,7 @@ export const headerStyles: SxProps = {
 
 export const headerCellStyles = {
     p: 0,
+    position: 'relative',
 };
 
 export const headerCellContentStyles = {
@@ -32,3 +34,11 @@ export const headerCellContentStyles = {
     alignItems: 'center',
     width: 'min-content',
 };
+
+export const filterInputStyles: SxProps<Theme> = (theme) => ({
+    position: 'absolute',
+    bottom: 0,
+    left: theme.spacing(2),
+    bgcolor: theme.palette.background.paper,
+    width: theme.spacing(17),
+});

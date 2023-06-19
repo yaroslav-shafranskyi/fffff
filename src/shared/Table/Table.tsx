@@ -1,4 +1,5 @@
-import { flexRender } from '@tanstack/react-table';
+import { useCallback, useState } from 'react';
+import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import {
     Typography,
     Table as MuiTable,
@@ -11,6 +12,9 @@ import {
     Box,
 } from '@mui/material';
 
+import { getInitialQuery } from '../../constants/query/query';
+import { IQuery } from '../../interfaces';
+
 import {
     headerCellContentStyles,
     headerCellStyles,
@@ -21,8 +25,32 @@ import {
 import { ITableProps } from './types';
 import { Filter } from './Filter';
 
-export const Table = <TData, >(props: ITableProps<TData>) => {
-    const { table, data, ...restProps } = props;
+export const Table = <TData extends object>(props: ITableProps<TData>) => {
+    console.log({ props })
+    const {
+        data,
+        columns,
+        total: propsTotal,
+        // query = getInitialQuery(),
+        onQueryChange,
+        ...restProps
+    } = props;
+
+    const table = useReactTable<TData>({
+        data,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+    });
+
+    const total = propsTotal ?? table.getRowModel().rows.length;
+
+    const [focusedFilter, setFocusedFilter] = useState<string>();
+
+    const handleQueryChange = useCallback((field: keyof IQuery<TData>) =>
+        (value: unknown) => {
+            onQueryChange?.(prevQuery => ({ ...prevQuery, [field]: value }));
+    }, [onQueryChange]);
+
     return (
         <TableContainer component={Paper}>
             <MuiTable sx={tableStyles} {...restProps}>
@@ -33,7 +61,12 @@ export const Table = <TData, >(props: ITableProps<TData>) => {
                                 <TableCell key={header.id} sx={headerCellStyles}>
                                     <Box sx={headerCellContentStyles}>
                                         {flexRender(header.column.columnDef.header, header.getContext())}
-                                        <Filter column={header.column} table={table} />
+                                        <Filter
+                                            field={header.id}
+                                            isFocused={header.id === focusedFilter}
+                                            setFocused={setFocusedFilter}
+                                            onChange={handleQueryChange('filterBy')}
+                                        />
                                     </Box>
                                 </TableCell>
                             ))}
@@ -41,7 +74,7 @@ export const Table = <TData, >(props: ITableProps<TData>) => {
                     ))}
                 </TableHead>
                 <TableBody>
-                    {!data.length &&
+                    {!total &&
                         <TableRow sx={{ position: 'relative' }}>
                             <TableCell sx={placeholderStyles}>
                                 <Typography variant='h5' color='text.secondary'>
@@ -49,7 +82,7 @@ export const Table = <TData, >(props: ITableProps<TData>) => {
                                 </Typography>
                             </TableCell>
                         </TableRow>}
-                    {data.length > 0 && table.getRowModel().rows.map(row => (
+                    {total > 0 && table.getRowModel().rows.map(row => (
                         <TableRow key={row.id}>
                             {row.getVisibleCells().map(cell => (
                                 <TableCell key={cell.id}>

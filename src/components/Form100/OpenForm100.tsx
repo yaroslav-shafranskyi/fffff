@@ -12,6 +12,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import { useQueryPersons } from '../../api';
+import { getInitialQuery } from '../../constants';
 
 import { dialogActionsStyles, dialogContentStyles, dialogButtonStyles } from './styles';
 
@@ -22,7 +23,7 @@ export const OpenForm100Dialog: FC<{onClose : () => void;}> = ({ onClose }) => {
 
     const navigate = useNavigate();
 
-    const persons = useQueryPersons(personName);
+    const persons = useQueryPersons({ ...getInitialQuery(), filterBy: { fullName: personName }});
 
     const convertedPersons = useMemo(
         () => persons.reduce((acc: Record<string, string>, {fullName, id, rank, militaryBase}) => {

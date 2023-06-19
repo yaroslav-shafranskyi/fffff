@@ -9,5 +9,6 @@ export const containerStyles: SxProps = {
 
 export const actionsWrapperStyles: SxProps = {
     gap: 2,
-    display: 'flex',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
 };

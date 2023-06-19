@@ -1,12 +1,20 @@
+import { Dispatch, SetStateAction } from 'react';
 import { TableProps } from '@mui/material';
-import { Column, Table } from '@tanstack/react-table';
+import { TableOptions } from '@tanstack/react-table';
 
-export interface ITableProps<T = unknown> extends TableProps {
-    table: Table<T>;
+import { IFilter, IQuery } from '../../interfaces';
+
+export interface ITableProps<T extends object> extends TableProps {
     data: T[];
+    columns: TableOptions<T>['columns'];
+    query?: IQuery<T>;
+    total?: number;
+    onQueryChange?: Dispatch<SetStateAction<IQuery<T>>>;
 }
 
-export interface IFilterProps<TData, TValue> {
-    column: Column<TData, TValue>;
-    table: Table<TData>;
+export interface IFilterProps {
+    field: string;
+    isFocused: boolean;
+    setFocused: (field?: string) => void;
+    onChange: (filter: IFilter) => void;
 }
