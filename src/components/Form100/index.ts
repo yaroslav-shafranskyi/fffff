@@ -1,3 +1,3 @@
 export * from './Form100';
-export * from './useOpenForm100Dialog';
+export * from './OpenForm100';
 export * from './types';

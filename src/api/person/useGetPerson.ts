@@ -1,6 +1,8 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { defaultPersonData } from "../../components/Form100/components/PersonInfo";
-import { IPerson } from "..";
+
+import { defaultPersonData } from "../../constants";
+
+import { IPerson } from "../IPerson";
 
 export const useGetPerson = (id: string) => {
     const queryClient = useQueryClient();

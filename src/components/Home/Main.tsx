@@ -1,7 +1,8 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { useOpenForm100Dialog } from '../Form100';
+import { useOpenFormDialog } from '../OpenForm';
+import { OpenForm100Dialog } from '../Form100';
 
 import { 
     buttonDescStyles,
@@ -15,7 +16,7 @@ import {
 } from './styles';
 
 export const Main = () => {
-    const [Form100Dialog, openForm100Dialog] = useOpenForm100Dialog();
+    const [Form100Dialog, openForm100Dialog] = useOpenFormDialog(OpenForm100Dialog);
 
     const navigate = useNavigate();
 

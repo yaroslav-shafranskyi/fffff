@@ -1,8 +1,9 @@
 import {  useCallback, useState } from 'react';
 
-import { OpenForm100Dialog } from './OpenForm100';
+import { UseOpenFormComponentType } from '../../interfaces';
 
-export const useOpenForm100Dialog = () => {
+
+export const useOpenFormDialog = (Component: UseOpenFormComponentType) => {
     const [open, setOpen] = useState<boolean>(false);
     
     const handleOpen = useCallback(() => {
@@ -13,7 +14,7 @@ export const useOpenForm100Dialog = () => {
         setOpen(false);
     }, []);
 
-    const node = open && <OpenForm100Dialog onClose={handleClose} />;
+    const node = open && <Component onClose={handleClose} />;
 
     return [node, handleOpen] as const;
 };

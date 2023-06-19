@@ -1,6 +1,5 @@
 import { IForm100, RecordType, IEvacuation, SanitaryTreatmentStatus, IEvacuationClinic } from "../../api";
-
-import { defaultPersonData } from "./components/PersonInfo";
+import { defaultPersonData } from "../../constants";
 
 export const getInitialForm100 = (): IForm100 => {
     const newDate = new Date();
