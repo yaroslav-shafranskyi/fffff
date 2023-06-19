@@ -21,7 +21,7 @@ export const PersonsTable: FC = () => {
 
     const navigate = useNavigate();
 
-    const persons = useQueryPersons(query);
+    const { data: persons, total } = useQueryPersons(query);
 
     const columns: IColumn<IPerson>[] = [
         {
@@ -90,6 +90,7 @@ export const PersonsTable: FC = () => {
                 data={persons}
                 columns={columns}
                 query={query}
+                total={total}
                 onQueryChange={setQuery}
             />
         </Card>

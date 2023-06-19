@@ -14,19 +14,21 @@ const mockedPerson = {
     lastRecord: { diagnosis: 'гіпертонія', date: new Date() },
 }
 
-const mockedPersons = Array(10).fill(mockedPerson).map((p, i) => ({ ...p, fullName: p.fullName + ' ' + i }));
+const mockedPersons = Array(100).fill(mockedPerson).map((p, i) => ({ ...p, fullName: p.fullName + ' ' + i }));
 
 const emptyArray: [] = [];
 
-export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptions<IPerson>) => {
+export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptions<{data: IPerson[]; total: number; }>) => {
     const queryClient = useQueryClient();
 
     const { sortBy, filterBy, iterator } = query ?? getInitialQuery();
+
+    const { page, rowsPerPage } = iterator;
  
     const name = (filterBy?.fullName ?? '') as string;
 
     if (options?.enabled === false) {
-        return emptyArray;
+        return { data: emptyArray, total: 100 };
     }
 
     const allPersons = queryClient.getQueryData<IPerson[]>(['persons']) ?? emptyArray;
@@ -34,7 +36,7 @@ export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptio
     const filteredPersons: IPerson[] = [];
 
     if (!query) {
-        return allPersons;
+        return { data: allPersons, total: 100 };
     }
 
     /*
@@ -49,18 +51,27 @@ export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptio
     }
     */
 
-    filteredPersons.push(...mockedPersons.filter(({ fullName }) => fullName.toLowerCase().includes(name.toLowerCase())));
+    filteredPersons.push(...mockedPersons.filter(({ fullName }) => fullName.toLowerCase().includes(name.toLowerCase())).slice(page * rowsPerPage, (page + 1) * rowsPerPage));
 
     if (!sortBy) {
-        return filteredPersons;
+        return {
+            data: filteredPersons,
+            total: 100,
+        };
     }
 
     const [field, order] = Object.entries(sortBy)[0];
 
     if (order === SortOrder.DESC) {
-        // @ts-expect-error its a temprorary function
-        return [...filteredPersons.sort((a, b) => a[field] < b[field] ? 1 : -1)];
+        return {
+            // @ts-expect-error its a temprorary function
+            data: [...filteredPersons.sort((a, b) => a[field] < b[field] ? 1 : -1)],
+            total: 100,
+        };
     }
-    // @ts-expect-error its a temprorary function
-    return [...filteredPersons.sort((a, b) => a[field] > b[field] ? 1 : -1)]
+    return {
+        // @ts-expect-error its a temprorary function
+        data: [...filteredPersons.sort((a, b) => a[field] > b[field] ? 1 : -1)],
+        total: 100
+    };
 };

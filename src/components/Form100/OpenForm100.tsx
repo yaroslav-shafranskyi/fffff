@@ -23,7 +23,7 @@ export const OpenForm100Dialog: FC<{onClose : () => void;}> = ({ onClose }) => {
 
     const navigate = useNavigate();
 
-    const persons = useQueryPersons({ ...getInitialQuery(), filterBy: { fullName: personName }});
+    const { data: persons } = useQueryPersons({ ...getInitialQuery(), filterBy: { fullName: personName }});
 
     const convertedPersons = useMemo(
         () => persons.reduce((acc: Record<string, string>, {fullName, id, rank, militaryBase}) => {

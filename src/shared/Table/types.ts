@@ -2,7 +2,7 @@ import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { TableProps } from '@mui/material';
 import { CellContext } from '@tanstack/react-table';
 
-import { IFilter, IQuery, ISort } from '../../interfaces';
+import { IFilter, IQuery, ISort, Iterator } from '../../interfaces';
 
 export interface IColumn<T extends object> {
     title: string;
@@ -36,4 +36,10 @@ export interface IToolbarProps<T extends object> {
     filterBy: IFilter;
     columns: IColumn<T>[];
     clearFilter: (key: string) => () => void;
+}
+
+export interface IPaginationProps {
+    total: number;
+    iterator: Iterator;
+    onChange: (Iterator: Iterator) => void;
 }

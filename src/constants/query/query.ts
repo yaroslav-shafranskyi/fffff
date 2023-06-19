@@ -1,14 +1,14 @@
 import { Iterator, IFilter, IQuery } from "../../interfaces"
 
 export const initialIterator: Iterator = {
-    from: 0,
-    to: 10,
+    page: 0,
+    rowsPerPage: 10,
 };
 
 export const initialFilter: IFilter = {};
 
 
-export const getInitialQuery = <T,>(): IQuery<T> => ({
+export const getInitialQuery = <T extends object>(): IQuery<T> => ({
     iterator: initialIterator,
     filterBy: initialFilter,
 });

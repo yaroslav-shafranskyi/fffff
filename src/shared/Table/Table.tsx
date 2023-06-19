@@ -26,6 +26,7 @@ import { ITableProps } from './types';
 import { Filter } from './Filter';
 import { Sort } from './Sort';
 import { Toolbar } from './Toolbar';
+import { Pagination } from './Pagination';
 
 export const Table = <TData extends object>(props: ITableProps<TData>) => {
     const {
@@ -37,7 +38,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
         ...restProps
     } = props;
 
-    const { sortBy, filterBy } = query;
+    const { sortBy, filterBy, iterator } = query;
 
     const columnHelper = createColumnHelper<TData>();
 
@@ -131,6 +132,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
                         ))}
                     </TableBody>
                 </MuiTable>
+                <Pagination total={total} iterator={iterator} onChange={handleQueryChange('iterator')} />
             </TableContainer>
         </>
     );

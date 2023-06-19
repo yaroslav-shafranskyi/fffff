@@ -1,4 +1,5 @@
 import {   createTheme } from '@mui/material';
+import { ukUA } from '@mui/material/locale'
 
 export const theme = createTheme({
     palette: {
@@ -33,4 +34,4 @@ export const theme = createTheme({
             main: '#FE654F',
         },
     },
-});
+}, ukUA);

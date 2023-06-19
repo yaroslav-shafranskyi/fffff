@@ -1,6 +1,6 @@
 export interface Iterator {
-    from: number;
-    to: number;
+    page: number;
+    rowsPerPage: number;
 }
 
 export interface IFilter {
