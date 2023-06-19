@@ -12,12 +12,11 @@ export enum SortOrder {
     DESC = 'DESC',
 }
 
-export interface ISort<TData = Record<string, unknown>> {
-    order: SortOrder;
-    field: keyof TData;
-}
+export type ISort<TData extends object> = {
+    [field in keyof TData]: SortOrder;
+};
 
-export interface IQuery<TData = Record<string, unknown>> {
+export interface IQuery<TData extends object> {
     iterator: Iterator;
     sortBy?: ISort<TData>;
     filterBy: IFilter;

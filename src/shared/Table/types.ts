@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { TableProps } from '@mui/material';
 import { TableOptions } from '@tanstack/react-table';
 
-import { IFilter, IQuery } from '../../interfaces';
+import { IFilter, IQuery, ISort } from '../../interfaces';
 
 export interface ITableProps<T extends object> extends TableProps {
     data: T[];
@@ -17,4 +17,10 @@ export interface IFilterProps {
     isFocused: boolean;
     setFocused: (field?: string) => void;
     onChange: (filter: IFilter) => void;
+}
+
+export interface ISortProps<T extends object> {
+    field: keyof T;
+    sortBy?: ISort<T>;
+    onChange: Dispatch<SetStateAction<ISort<T>>>;
 }

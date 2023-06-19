@@ -24,17 +24,19 @@ import {
 } from './styles';
 import { ITableProps } from './types';
 import { Filter } from './Filter';
+import { Sort } from '.';
 
 export const Table = <TData extends object>(props: ITableProps<TData>) => {
-    console.log({ props })
     const {
         data,
         columns,
         total: propsTotal,
-        // query = getInitialQuery(),
+        query = getInitialQuery(),
         onQueryChange,
         ...restProps
     } = props;
+
+    const { sortBy, filterBy } = query;
 
     const table = useReactTable<TData>({
         data,
@@ -67,6 +69,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
                                             setFocused={setFocusedFilter}
                                             onChange={handleQueryChange('filterBy')}
                                         />
+                                        <Sort field={header.id as keyof TData} sortBy={sortBy} onChange={handleQueryChange('sortBy')} />
                                     </Box>
                                 </TableCell>
                             ))}
