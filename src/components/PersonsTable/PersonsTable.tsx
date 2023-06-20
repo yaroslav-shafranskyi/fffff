@@ -4,17 +4,20 @@ import {
     Card,
     Box,
     IconButton,
+    Container,
 } from '@mui/material';
 import { ArrowBack as BackIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 import { IPerson, useQueryPersons } from '../../api';
-
-import { backButtonStyles, containerStyles } from './styles';
 import { formatDate } from '../../helpers';
 import { IColumn, Table } from '../../shared';
 import { getInitialQuery } from '../../constants';
 import { IQuery } from '../../interfaces';
+
+import { Header } from '../Header';
+
+import { backButtonStyles, containerStyles } from './styles';
 
 export const PersonsTable: FC = () => {
     const [query, setQuery] = useState<IQuery<IPerson>>(getInitialQuery())
@@ -79,20 +82,23 @@ export const PersonsTable: FC = () => {
     };
 
     return (
-        <Card sx={containerStyles}>
-            <Box>
-                <IconButton sx={backButtonStyles} onClick={goBack}>
-                    <BackIcon />
-                </IconButton>
-                <Typography variant='h4' sx={{ textAlign: 'center' }}>Список поранених військовослужбовців</Typography>
-            </Box>
-            <Table<IPerson>
-                data={persons}
-                columns={columns}
-                query={query}
-                total={total}
-                onQueryChange={setQuery}
-            />
-        </Card>
+        <>
+            <Header />
+            <Container maxWidth={false} sx={containerStyles}>
+                <Box>
+                    <IconButton sx={backButtonStyles} onClick={goBack}>
+                        <BackIcon />
+                    </IconButton>
+                    <Typography variant='h4' sx={{ textAlign: 'center' }}>Список поранених військовослужбовців</Typography>
+                </Box>
+                <Table<IPerson>
+                    data={persons}
+                    columns={columns}
+                    query={query}
+                    total={total}
+                    onQueryChange={setQuery}
+                />
+            </Container>
+        </>
     );
 };

@@ -8,6 +8,7 @@ export const containerStyles: SxProps = {
     flexDirection: 'column',
     alignItems: 'center',
     gap: 2,
+    bgcolor: 'background.paper',
 };
 
 export const backButtonStyles: SxProps<Theme> = (theme) => ({
