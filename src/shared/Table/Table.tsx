@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import {
     Typography,
@@ -9,22 +9,19 @@ import {
     TableCell,
     TableContainer,
     Paper,
-    Box,
+    Tooltip,
 } from '@mui/material';
 
 import { getInitialQuery } from '../../constants/query/query';
 import { IFilter, IQuery } from '../../interfaces';
 
 import {
-    headerCellContentStyles,
     headerCellStyles,
     headerStyles,
     placeholderStyles,
     tableStyles
 } from './styles';
 import { ITableProps } from './types';
-import { Filter } from './Filter';
-import { Sort } from './Sort';
 import { Toolbar } from './Toolbar';
 import { Pagination } from './Pagination';
 
@@ -33,8 +30,11 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
         data,
         columns: propsColumns,
         total: propsTotal,
+        title,
+        globalFilterPlaceholder,
         query = getInitialQuery(),
         onQueryChange,
+        goBack,
         ...restProps
     } = props;
 
@@ -50,7 +50,11 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
             return accessor(d);
         }
         return columnHelper.accessor(columnAccessor, {
-            header: () => <Typography>{title}</Typography>,
+            header: () => (
+                <Tooltip title={title} sx={{ cursor: 'pointer' }}>
+                    <Typography>{title}</Typography>
+                </Tooltip>
+            ),
             cell: render,
             id: String(key),
         })
@@ -65,8 +69,6 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
     const total = propsTotal ?? table.getRowModel().rows.length;
 
     const hasFilters = useMemo(() => Object.keys(filterBy).length > 0, [filterBy]);
-
-    const [focusedFilter, setFocusedFilter] = useState<string>();
 
     const handleQueryChange = useCallback((field: keyof IQuery<TData>) =>
         (value: unknown) => {
@@ -85,28 +87,23 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
 
     return (
         <>
-            {hasFilters && <Toolbar
+            <Toolbar
+                title={title}
                 filterBy={filterBy}
                 columns={propsColumns}
+                globalFilterPlaceholder={globalFilterPlaceholder}
                 clearFilter={clearFilter}
-                />}
+                goBack={goBack}
+                onChange={handleQueryChange}
+            />
             <TableContainer component={Paper}>
                 <MuiTable sx={tableStyles} {...restProps}>
                     <TableHead sx={headerStyles}>
                         {table.getHeaderGroups().map(headerGroup => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map(header => (
-                                    <TableCell key={header.id} sx={headerCellStyles}>
-                                        <Box sx={headerCellContentStyles}>
-                                            {flexRender(header.column.columnDef.header, header.getContext())}
-                                            <Filter
-                                                field={header.id}
-                                                isFocused={header.id === focusedFilter}
-                                                setFocused={setFocusedFilter}
-                                                onChange={handleQueryChange('filterBy')}
-                                            />
-                                            <Sort field={header.id as keyof TData} sortBy={sortBy} onChange={handleQueryChange('sortBy')} />
-                                        </Box>
+                                    <TableCell variant='head' key={header.id} sx={headerCellStyles}>
+                                        {flexRender(header.column.columnDef.header, header.getContext())}
                                     </TableCell>
                                 ))}
                             </TableRow>
@@ -124,7 +121,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
                         {total > 0 && table.getRowModel().rows.map(row => (
                             <TableRow key={row.id}>
                                 {row.getVisibleCells().map(cell => (
-                                    <TableCell key={cell.id}>
+                                    <TableCell key={cell.id} sx={{ p: .25 }}>
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}

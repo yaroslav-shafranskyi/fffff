@@ -12,17 +12,20 @@ export interface IColumn<T extends object> {
 }
 
 export interface ITableProps<T extends object> extends TableProps {
+    title?: string;
     data: T[];
     columns: IColumn<T>[];
     query?: IQuery<T>;
     total?: number;
+    globalFilterPlaceholder?: string;
+    goBack?: () => void;
     onQueryChange?: Dispatch<SetStateAction<IQuery<T>>>;
 }
 
-export interface IFilterProps {
-    field: string;
-    isFocused: boolean;
-    setFocused: (field?: string) => void;
+export interface IFilterProps<T extends object> {
+    columns: IColumn<T>[];
+    filterBy: IFilter;
+    globalFilterPlaceholder?: string;
     onChange: (filter: IFilter) => void;
 }
 
@@ -33,13 +36,17 @@ export interface ISortProps<T extends object> {
 }
 
 export interface IToolbarProps<T extends object> {
+    title?: string;
     filterBy: IFilter;
     columns: IColumn<T>[];
+    globalFilterPlaceholder?: string;
     clearFilter: (key: string) => () => void;
+    goBack?: () => void;
+    onChange?: (field: keyof IQuery<T>) => (value: unknown) => void;
 }
 
 export interface IPaginationProps {
     total: number;
     iterator: Iterator;
-    onChange: (Iterator: Iterator) => void;
+    onChange?: (Iterator: Iterator) => void;
 }

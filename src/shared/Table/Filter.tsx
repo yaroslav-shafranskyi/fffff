@@ -1,65 +1,56 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 
-import { Box, IconButton, Input } from '@mui/material';
+import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
 
 import { IFilterProps } from './types';
-import { filterInputStyles } from './styles';
 
 
-export const Filter = (props: IFilterProps) => {
+export const Filter = <T extends object>(props: IFilterProps<T>) => {
     const {
-        field,
-        isFocused,
-        setFocused,
+        columns,
+        filterBy,
+        globalFilterPlaceholder  = 'Почніть вводити значення для пошуку',
         onChange
     } = props;
 
-    const [showInput, setShowInput] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>('');
 
-    useEffect(() => {
-        if (!isFocused) {
-            setShowInput(false);
-        }
-    }, [isFocused]);
-
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value);
-    };
-
-    const handleSubmitFilter = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key !== 'Enter') {
-            return;
+        const { value } = event.target;
+        setInputValue(value);
+        if (!value) {
+            onChange({ ...filterBy, 'Any': '' });
         }
-        onChange({ [field]: inputValue });
-        setShowInput(false);
-        setInputValue('');
     };
 
-    const toggleShowInput = () => {
-        setShowInput(prevShow => {
-            const result = !prevShow;
-            setFocused(result ? field : undefined);
-            return result;
-        });
-    };
+    const handleSubmitGlobalFilter = useCallback(() => {
+        onChange({ ...filterBy, 'Any': inputValue });
+    }, [filterBy, inputValue, onChange]);
+
+    const handleEnterPress = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            handleSubmitGlobalFilter();
+        }
+    }, [handleSubmitGlobalFilter])
 
     return (
         <Box>
-            <IconButton size='small' onClick={toggleShowInput}>
-                <SearchIcon />
-            </IconButton>
-            {showInput && 
-                <Input
-                    size='small'
-                    value={inputValue}
-                    sx={filterInputStyles}
-                    placeholder='Введіть значення'
-                    onChange={handleInputChange}
-                    onKeyUp={handleSubmitFilter}
-                />
-            }
+            <TextField
+                size='small'
+                value={inputValue}
+                placeholder={globalFilterPlaceholder}
+                InputProps={{
+                    startAdornment: 
+                        <InputAdornment position="start">
+                            <IconButton onClick={handleSubmitGlobalFilter}>
+                                <SearchIcon />
+                            </IconButton>
+                        </InputAdornment>
+                }}
+                onChange={handleInputChange}
+                onKeyPress={handleEnterPress}
+            />
         </Box>
     );
 };

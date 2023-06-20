@@ -49,7 +49,7 @@ export const PersonsTable: FC = () => {
         },
         {
             title: 'Стать',
-            render: p => p.getValue() as string,
+            render: p => (p.getValue() as string).toLowerCase() + '.',
             key: 'gender',
         },
         {
@@ -58,13 +58,13 @@ export const PersonsTable: FC = () => {
             key: 'militaryBase',
         },
         {
-            title: 'Кількість звернень',
+            title: 'К-ть звернень',
             render: p => p.getValue() as number,
             accessor: p => p.records.length,
             key: 'recordsLength',
         },
         {
-            title: 'Дата крайнього звернення',
+            title: 'Крайнє звернення',
             render: p => formatDate(p.getValue() as Date),
             accessor: p => p.lastRecord.date,
             key: 'lastRecordDate',
@@ -85,17 +85,14 @@ export const PersonsTable: FC = () => {
         <>
             <Header />
             <Container maxWidth={false} sx={containerStyles}>
-                <Box>
-                    <IconButton sx={backButtonStyles} onClick={goBack}>
-                        <BackIcon />
-                    </IconButton>
-                    <Typography variant='h4' sx={{ textAlign: 'center' }}>Список поранених військовослужбовців</Typography>
-                </Box>
                 <Table<IPerson>
                     data={persons}
                     columns={columns}
                     query={query}
                     total={total}
+                    title='Перелік поранених військовослужбовців'
+                    globalFilterPlaceholder='Впишіть ПІБ або діагноз...'
+                    goBack={goBack}
                     onQueryChange={setQuery}
                 />
             </Container>

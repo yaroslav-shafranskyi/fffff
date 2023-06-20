@@ -2,19 +2,41 @@ import { UseQueryOptions, useQueryClient } from "@tanstack/react-query";
 import { IPerson } from "../IPerson";
 import { IQuery, SortOrder } from "../../interfaces";
 import { getInitialQuery } from "../../constants";
+import { ArmyRank } from "../Rank";
+import { Gender } from "../Gender";
+import { IRecord } from "../IRecord";
 
-const mockedPerson = {
+const mockedRecord = { diagnosis: 'гіпертонія', date: new Date(), fullDiagnosis: 'гіпертонія' } as IRecord;
+
+const mockedPerson: IPerson = {
     id: '1234',
+    tokenNumber: '1234',
     fullName: 'Петренко Петро Петрович',
     birthDate: new Date(),
-    rank: 'солдат',
-    gender: 'Чол',
+    rank: ArmyRank.SOLDIER,
+    gender: Gender.MALE,
     militaryBase: '25',
-    records: [{}, {}],
-    lastRecord: { diagnosis: 'гіпертонія', date: new Date() },
+    records: [mockedRecord, mockedRecord],
+    lastRecord: mockedRecord,
 }
 
-const mockedPersons = Array(100).fill(mockedPerson).map((p, i) => ({ ...p, fullName: p.fullName + ' ' + i }));
+const mockedPersons: IPerson[] = Array(100).fill(mockedPerson).map((p, i) => 
+    ({
+        ...p,
+        fullName: p.fullName + ' ' + i,
+        lastRecord: {
+            ...p.lastRecord,
+            diagnosis: i % 2 ? 'високий тиск' : 'гіпертонія',
+            fullDiagnosis: i % 2 ? 'високий тиск' : 'гіпертонія'
+        },
+        records: [
+            {
+                ...p.lastRecord,
+                diagnosis: i % 2 ? 'високий тиск' : 'гіпертонія',
+                fullDiagnosis: i % 2 ? 'високий тиск' : 'гіпертонія'
+            },
+        ],
+    }));
 
 const emptyArray: [] = [];
 
@@ -26,6 +48,8 @@ export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptio
     const { page, rowsPerPage } = iterator;
  
     const name = (filterBy?.fullName ?? '') as string;
+
+    const anyFilter = (filterBy?.Any ?? '') as string;
 
     if (options?.enabled === false) {
         return { data: emptyArray, total: 100 };
@@ -49,7 +73,13 @@ export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptio
     //     // return emptyArray;
     // }
 
-    filteredPersons.push(...allPersons.filter(({ fullName }) => fullName.toLowerCase().includes(name.toLowerCase())).slice(page * rowsPerPage, (page + 1) * rowsPerPage));
+    filteredPersons.push(
+        ...mockedPersons
+        .filter(({ fullName }) => fullName.toLowerCase().includes(name.toLowerCase()))
+        .filter(({ fullName, records }) => fullName.toLowerCase().includes(anyFilter.toLowerCase()) || records.some(({ diagnosis, fullDiagnosis }) => 
+            fullDiagnosis.includes(anyFilter.toLowerCase()) || diagnosis.includes(anyFilter.toLowerCase())))
+        .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+    );
 
     if (!sortBy) {
         return {

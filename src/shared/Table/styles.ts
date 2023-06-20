@@ -3,6 +3,7 @@ import { Theme } from '@mui/system';
 
 export const tableStyles: SxProps = {
     minHeight: 300,
+    tableLayout: 'fixed',
 };
 
 export const placeholderStyles = {
@@ -15,37 +16,37 @@ export const placeholderStyles = {
     transform: 'translateY(-50%)',
 };
 
-export const headerStyles: SxProps = {
+export const headerStyles: SxProps<Theme> = (theme) => ({
+    height: theme.spacing(6),
     '& th:first-of-type': {
         pl: 2,
     },
     '& th:last-of-type': {
         pr: 2,
     },
-};
-
-export const headerCellStyles = {
-    p: 0,
-    position: 'relative',
-};
-
-export const headerCellContentStyles = {
-    display: 'flex',
-    alignItems: 'center',
-    width: 'min-content',
-};
-
-export const filterInputStyles: SxProps<Theme> = (theme) => ({
-    position: 'absolute',
-    bottom: 0,
-    left: theme.spacing(2),
-    bgcolor: theme.palette.background.paper,
-    width: theme.spacing(17),
 });
 
-export const filterInfoStyles: SxProps = {
+export const headerCellStyles = {
+    px: .25,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '& p:first-of-type': {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+    },
+};
+
+export const toolbarWrapperStyles: SxProps = {
     display: 'flex',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    alignSelf: 'baseline',
-    gap: .5,
+    width: '100%',
+};
+
+export const titleWrapperStyles: SxProps = {
+    display: 'flex',
+    justifyContent: 'start',
+    gap: 2,
 };
