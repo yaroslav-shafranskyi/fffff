@@ -39,19 +39,17 @@ export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptio
         return { data: allPersons, total: 100 };
     }
 
-    /*
-    if (name && name.length < 3) {
-        // return allPersons;
-        return emptyArray;
-    }
+    // if (name && name.length < 3) {
+    //     // return allPersons;
+    //     return emptyArray;
+    // }
 
-    if (!name) {
-        // return allPersons;
-        return emptyArray;
-    }
-    */
+    // if (!name) {
+    //     return allPersons ?? emptyArray;
+    //     // return emptyArray;
+    // }
 
-    filteredPersons.push(...mockedPersons.filter(({ fullName }) => fullName.toLowerCase().includes(name.toLowerCase())).slice(page * rowsPerPage, (page + 1) * rowsPerPage));
+    filteredPersons.push(...allPersons.filter(({ fullName }) => fullName.toLowerCase().includes(name.toLowerCase())).slice(page * rowsPerPage, (page + 1) * rowsPerPage));
 
     if (!sortBy) {
         return {

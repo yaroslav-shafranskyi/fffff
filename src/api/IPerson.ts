@@ -12,4 +12,5 @@ export interface IPerson {
     militaryBase: string; // TODO declare type
     records: IRecord[];
     lastRecord: IRecord;
+    phoneNumber?: string;
 }

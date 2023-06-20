@@ -1,11 +1,12 @@
 import { FC } from 'react';
-import { Select as MuiSelect, Typography, MenuItem } from "@mui/material";
+import { Select as MuiSelect, Typography, MenuItem, FormControl, InputLabel } from "@mui/material";
 
 import { ISelectProps } from "./types";
 
 export const Select: FC<ISelectProps> = (props) => {
-    const { error, options, inputProps } = props;
-    return <>
+    const { error, options, label, inputProps } = props;
+    return <FormControl fullWidth={true}>
+        <InputLabel>{label}</InputLabel>
         <MuiSelect
             IconComponent={() => null}
             variant='standard'
@@ -18,6 +19,6 @@ export const Select: FC<ISelectProps> = (props) => {
         >
             {options.map(option => <MenuItem value={option} key={option}>{option}</MenuItem>)}
         </MuiSelect>
-        {error && <Typography color='error' sx={{ position: 'absolute' }}>{error}</Typography>}
-    </>
+        {error && <Typography color='error'>{error}</Typography>}
+    </FormControl>
 }

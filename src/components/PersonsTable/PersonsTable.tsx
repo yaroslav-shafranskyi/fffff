@@ -25,7 +25,7 @@ export const PersonsTable: FC = () => {
 
     const columns: IColumn<IPerson>[] = [
         {
-            title: 'ПІП',
+            title: 'ПІБ',
             render: p => p.getValue() as string,
             key: 'fullName',
         },
