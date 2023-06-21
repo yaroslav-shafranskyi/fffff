@@ -9,7 +9,7 @@ export const theme = createTheme({
             200: '#54EDE7',
             main: '#48D1CC',
             400: '#41BCB8',
-            dark: '3AA9A5',
+            dark: '#3AA9A5',
             contrastText: '#1E1E1E',
         },
         secondary: {
@@ -22,6 +22,7 @@ export const theme = createTheme({
             200: '#C0C2CC',
             300: '#ADAFB',
             400: '#9B9DA5',
+            500: '#1B504E',
         },
         text: {
             primary: '#1E1E1E',
@@ -32,6 +33,19 @@ export const theme = createTheme({
         },
         error: {
             main: '#FE654F',
+        },
+    },
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                colorInherit: {
+                    backgroundColor: '#1B504E',
+                    color: '#F5F2F2',
+                    '&:hover': {
+                        backgroundColor: '#3AA9A5',
+                    }
+                },
+            },
         },
     },
 }, ukUA);

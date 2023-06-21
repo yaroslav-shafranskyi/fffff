@@ -1,24 +1,28 @@
-import { Fragment, useCallback } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import { ArrowBack as BackIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 import { IFilter } from '../../interfaces';
+import { getInitialQuery } from '../../constants';
 
 import { IToolbarProps } from './types';
 import { titleWrapperStyles, toolbarWrapperStyles } from './styles';
 import { Filter } from './Filter';
+import { ColumnsFilter } from './ColumnsFilters';
 
 export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
     const {
-        filterBy,
+        query = getInitialQuery(),
         title,
         columns,
-        globalFilterPlaceholder,
+        queryData = {}, 
         goBack,
         clearFilter,
         onChange
     } = props;
+
+    const { filterBy } = query;
 
     const navigate = useNavigate();
 
@@ -38,6 +42,8 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
         return column.title
     }, [columns]);
 
+    const globalFilterData = useMemo(() => queryData.filters?.find(({ key }) => key === 'Any'), [queryData]);
+
     return (
         <Box sx={toolbarWrapperStyles}>
             <Box sx={titleWrapperStyles}>
@@ -46,12 +52,19 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
                 </IconButton>
                 <Typography variant='h4'>{title}</Typography>
             </Box>
-            <Box>
-                <Filter
-                    filterBy={filterBy}
-                    columns={columns}
-                    globalFilterPlaceholder={globalFilterPlaceholder}
-                    onChange={onChange?.('filterBy') as (value: IFilter) => void}
+            <Box sx={titleWrapperStyles}>
+                {globalFilterData !== undefined && 
+                    <Filter
+                        fieldFilterData={globalFilterData}
+                        filterBy={filterBy}
+                        columns={columns}
+                        onChange={onChange?.('filterBy') as (value: IFilter) => void}
+                    />
+                }
+                <ColumnsFilter
+                    queryData={queryData}
+                    query={query}
+                    onChange={onChange}
                 />
             </Box>
         </Box>

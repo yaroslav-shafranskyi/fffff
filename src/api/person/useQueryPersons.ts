@@ -78,28 +78,29 @@ export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptio
         .filter(({ fullName }) => fullName.toLowerCase().includes(name.toLowerCase()))
         .filter(({ fullName, records }) => fullName.toLowerCase().includes(anyFilter.toLowerCase()) || records.some(({ diagnosis, fullDiagnosis }) => 
             fullDiagnosis.includes(anyFilter.toLowerCase()) || diagnosis.includes(anyFilter.toLowerCase())))
-        .slice(page * rowsPerPage, (page + 1) * rowsPerPage)
     );
 
     if (!sortBy) {
         return {
-            data: filteredPersons,
-            total: 100,
+            data: filteredPersons.slice(page * rowsPerPage, (page + 1) * rowsPerPage),
+            total: filteredPersons.length,
         };
     }
 
     const [field, order] = Object.entries(sortBy)[0];
 
     if (order === SortOrder.DESC) {
+        // @ts-expect-error its a temprorary function
+        const data = [...filteredPersons.sort((a, b) => a[field] < b[field] ? 1 : -1)]
         return {
-            // @ts-expect-error its a temprorary function
-            data: [...filteredPersons.sort((a, b) => a[field] < b[field] ? 1 : -1)],
-            total: 100,
+            data: data.slice(page * rowsPerPage, (page + 1) * rowsPerPage),
+            total: data.length,
         };
     }
+    // @ts-expect-error its a temprorary function
+    const data =[...filteredPersons.sort((a, b) => a[field] > b[field] ? 1 : -1)];
     return {
-        // @ts-expect-error its a temprorary function
-        data: [...filteredPersons.sort((a, b) => a[field] > b[field] ? 1 : -1)],
-        total: 100
+        data: data.slice(page * rowsPerPage, (page + 1) * rowsPerPage),
+        total: data.length,
     };
 };

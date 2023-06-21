@@ -31,7 +31,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
         columns: propsColumns,
         total: propsTotal,
         title,
-        globalFilterPlaceholder,
+        queryData,
         query = getInitialQuery(),
         onQueryChange,
         goBack,
@@ -89,9 +89,9 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
         <>
             <Toolbar
                 title={title}
-                filterBy={filterBy}
+                query={query}
                 columns={propsColumns}
-                globalFilterPlaceholder={globalFilterPlaceholder}
+                queryData={queryData}
                 clearFilter={clearFilter}
                 goBack={goBack}
                 onChange={handleQueryChange}

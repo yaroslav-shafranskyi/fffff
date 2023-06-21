@@ -50,3 +50,26 @@ export const titleWrapperStyles: SxProps = {
     justifyContent: 'start',
     gap: 2,
 };
+
+export const columnsFiltersButtonStyles: SxProps = {
+    bgcolor: 'grey[500]',
+    color: 'background.default',
+};
+
+export const filtersPopoverStyles: SxProps<Theme> = (theme) => ({
+    top: theme.spacing(-2),
+});
+
+export const filtersMenuStyles: SxProps<Theme> = (theme) => ({
+    padding: theme.spacing(2),
+    borderRadius: 0,
+    gap: theme.spacing(2),
+    display: 'grid',
+    maxHeight: '100vh',
+});
+
+export const columnsFiltersHeaderStyles: SxProps = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+};
