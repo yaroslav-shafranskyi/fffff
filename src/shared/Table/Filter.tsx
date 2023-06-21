@@ -1,10 +1,13 @@
-import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
-
+import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
 
-import { IFilterProps } from './types';
+import { DateRange } from '../../interfaces';
 
+import { DatePicker } from '../DatePicker';
+
+import { IFilterProps, TableFilterType } from './types';
+import { datePickerStyles, dateRangeFilterPickerStyles, dateRangePickerStyles } from './styles';
 
 export const Filter = <T extends object>(props: IFilterProps<T>) => {
     const {
@@ -13,9 +16,15 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
         onChange
     } = props;
 
-    const { key, title, placeholder } = fieldFilterData;
+    const { key, title, placeholder, type = TableFilterType.STRING } = fieldFilterData;
 
     const [inputValue, setInputValue] = useState<string>('');
+
+    useEffect(() => {
+        if (type === TableFilterType.STRING){
+            setInputValue(filterBy[key] as string ?? '');
+        }
+    }, [type, filterBy, key]);
 
     const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
@@ -25,26 +34,38 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
         }
     }, [key, filterBy, onChange]);
 
-    const handleSubmitGlobalFilter = useCallback(() => {
+    const handleDateChange = useCallback((value?: Date) => {
+        onChange({ ...filterBy, [key]: value });
+    }, [filterBy, key, onChange]);
+
+    const handleDateRangeChange = useCallback((field: 'start' | 'end' ) => (value?: Date) => {
+        if (field === 'start') {
+            onChange({ ...filterBy, [key]: [value, (filterBy[key] as DateRange | undefined)?.[1] ?? null] });
+            return;
+        }
+        onChange({ ...filterBy, [key]: [(filterBy[key] as DateRange | undefined)?.[0] ?? null, value] });
+    }, [filterBy, key, onChange]);
+
+    const handleSubmitFilter = useCallback(() => {
         onChange({ ...filterBy, [key]: inputValue });
     }, [filterBy, inputValue, key, onChange]);
 
     const handleEnterPress = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            handleSubmitGlobalFilter();
+            handleSubmitFilter();
         }
-    }, [handleSubmitGlobalFilter])
+    }, [handleSubmitFilter])
 
     return (
         <Box>
-            <TextField
+            {type === TableFilterType.STRING && <TextField
                 size='small'
                 value={inputValue}
                 placeholder={placeholder ?? title}
                 InputProps={{
                     startAdornment: 
                         <InputAdornment position="start">
-                            <IconButton onClick={handleSubmitGlobalFilter}>
+                            <IconButton onClick={handleSubmitFilter}>
                                 <SearchIcon />
                             </IconButton>
                         </InputAdornment>,
@@ -52,7 +73,26 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
                 }}
                 onChange={handleInputChange}
                 onKeyPress={handleEnterPress}
-            />
+            />}
+            {type === TableFilterType.DATE && <DatePicker
+                value={filterBy?.[key] as Date | undefined}
+                sx={datePickerStyles}
+                onChange={handleDateChange}
+            />}
+            {type === TableFilterType.DATE_RANGE && <Box sx={dateRangeFilterPickerStyles}>
+                <DatePicker
+                    value={(filterBy?.[key] as DateRange | undefined)?.[0] ?? undefined}
+                    sx={dateRangePickerStyles}
+                    onChange={handleDateRangeChange('start')}
+                />
+                <Box>-</Box>
+                <DatePicker
+                    value={(filterBy?.[key] as DateRange | undefined)?.[1] ?? undefined}
+                    sx={dateRangePickerStyles}
+                    format='dd.MM.yy'
+                    onChange={handleDateRangeChange('end')}
+                />
+            </Box>}
         </Box>
     );
 };

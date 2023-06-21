@@ -78,7 +78,7 @@ export const queryData: IQueryData = {
                 {
                     key: 'birthDate',
                     title: 'Дата народження',
-                    type: TableFilterType.DATE,
+                    type: TableFilterType.DATE_RANGE,
                 },
                 {
                     key: 'gender',

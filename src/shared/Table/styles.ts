@@ -90,8 +90,36 @@ export const sortSelectStyles: SxProps<Theme> = (theme) => ({
     width: '100%',
 });
 
+export const datePickerStyles: SxProps<Theme> = (theme) => ({
+    '& .MuiInputBase-root': {
+        height: theme.spacing(5),
+    },
+});
+
 export const sortSelectTitleStyles: SxProps<Theme> = (theme) => ({
     position: 'absolute',
     top: theme.spacing(1),
     left: theme.spacing(1),
+});
+
+export const dateRangeFilterPickerStyles: SxProps = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+};
+
+export const dateRangePickerStyles: SxProps<Theme> = (theme) => ({
+    width: theme.spacing(15),
+    p: 0,
+    '& .MuiInputBase-root': {
+        height: theme.spacing(5),
+        width: theme.spacing(15),
+        '& button': {
+            width: 20,
+            height: 20,
+        },
+        '& input': {
+            p: .5,
+        },
+    },
 });
