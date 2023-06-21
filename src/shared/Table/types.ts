@@ -15,6 +15,7 @@ export enum TableFilterType {
     STRING = 'string',
     DATE = 'Date',
     DATE_RANGE = 'DateRange',
+    RANGE = 'Range',
 }
 
 export interface IFieldFilterData {
@@ -23,6 +24,10 @@ export interface IFieldFilterData {
     title?: string;
     type?: TableFilterType;
     options?: string[];
+    range?: {
+        min?: number;
+        max?: number;
+    }
 }
 
 export interface IFilterData {

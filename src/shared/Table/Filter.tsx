@@ -1,5 +1,5 @@
 import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { Box, Checkbox, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, Checkbox, IconButton, InputAdornment, Slider, TextField, Typography } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
 
 import { DateRange } from '../../interfaces';
@@ -22,6 +22,7 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
         placeholder,
         type = TableFilterType.STRING,
         options,
+        range,
     } = fieldFilterData;
 
     const [inputValue, setInputValue] = useState<string>('');
@@ -71,6 +72,10 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
         onChange({ ...filterBy, [key]: value });
     }, [filterBy, key, onChange])
 
+    const handleRangeChange = useCallback((_event: Event, value: number | number[]) => {
+        onChange({ ...filterBy, [key]: value });
+    }, [filterBy, key, onChange])
+
     return (
         <Box>
             {type === TableFilterType.STRING && !options && <TextField
@@ -114,6 +119,17 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
                     <Typography>{option}</Typography>
                 </Box>
             ))}
+            {type === TableFilterType.RANGE && (
+                <>
+                    <Slider
+                        min={range?.min}
+                        max={range?.max}
+                        value={filterBy?.[key] as number | [number, number]}
+                        valueLabelDisplay='on'
+                        onChange={handleRangeChange}
+                    />
+                </>
+            )}
         </Box>
     );
 };

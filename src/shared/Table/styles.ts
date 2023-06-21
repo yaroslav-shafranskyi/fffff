@@ -65,7 +65,7 @@ export const filtersMenuStyles: SxProps<Theme> = (theme) => ({
     borderRadius: 0,
     gap: theme.spacing(2),
     display: 'grid',
-    maxHeight: '100vh',
+    maxHeight: `calc(100vh - ${theme.spacing(1)})`,
 });
 
 export const columnsFiltersHeaderStyles: SxProps = {

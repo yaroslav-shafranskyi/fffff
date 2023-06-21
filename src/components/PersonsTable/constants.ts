@@ -97,6 +97,11 @@ export const queryData: IQueryData = {
                 {
                     title: 'К-ть звернень',
                     key: 'recordsLength',
+                    type: TableFilterType.RANGE,
+                    range: {
+                        min: 0,
+                        max: 100,
+                    },
                 },
                 {
                     title: 'Дата звернення',
@@ -140,9 +145,11 @@ export const queryData: IQueryData = {
         recordsLength: {
             [SortOrder.DESC]: {
                 optionTitle: 'Від більшої кількості',
+                infoTitle: 'Від більшої кількості звернень',
             },
             [SortOrder.ASC]: {
                 optionTitle: 'Від меншої кількості',
+                infoTitle: 'Від меншої кількості звернень',
             },
         },
         recordDate: {
