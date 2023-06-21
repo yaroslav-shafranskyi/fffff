@@ -9,8 +9,12 @@ export const Sort = <T extends object>({ field, fieldSortData, sortBy, onChange 
     const selected = sortBy?.[field];
 
     const handleSelectOrder = useCallback((value: SortOrder) => () => {
+        const isSelected = value === selected;
+        if (isSelected) {
+            onChange(undefined);
+        }
         onChange({ [field]: value } as ISort<T>);
-    }, [field, onChange]);
+    }, [field, onChange, selected]);
 
     return (
         <Box>
@@ -19,14 +23,14 @@ export const Sort = <T extends object>({ field, fieldSortData, sortBy, onChange 
                     Сортувати
                 </Typography>
                 <Select sx={sortSelectStyles}>
-                    {Object.entries(fieldSortData).map(([order, title]) => (
+                    {Object.entries(fieldSortData).map(([order, { optionTitle }]) => (
                         <MenuItem
                             key={`${field as string}-${order}`}
                             sx={sortSelectStyles}
                             onClick={handleSelectOrder(order as SortOrder)}
                         >
                             <Checkbox checked={selected === order} />
-                            <Typography>{title}</Typography>
+                            <Typography>{optionTitle}</Typography>
                         </MenuItem>
                     ))}
                 </Select>

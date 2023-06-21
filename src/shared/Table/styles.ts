@@ -123,3 +123,9 @@ export const dateRangePickerStyles: SxProps<Theme> = (theme) => ({
         },
     },
 });
+
+export const optionsFilterWrapperStyles: SxProps = {
+    display: 'flex',
+    cursor: 'pointer',
+    alignItems: 'center',
+};

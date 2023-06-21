@@ -30,9 +30,14 @@ export interface IFilterData {
     fields: IFieldFilterData[];
 }
 
+export type SortTitlesType = { 
+    optionTitle: string;
+    infoTitle?: string;
+};
+
 export type FieldSortDataType = {
-    [SortOrder.ASC]: string;
-    [SortOrder.DESC]: string;
+    [SortOrder.ASC]: SortTitlesType;
+    [SortOrder.DESC]: SortTitlesType;
 };
 
 export type SortDataType = {
@@ -67,7 +72,7 @@ export interface ISortProps<T extends object> {
     field: keyof T;
     fieldSortData: FieldSortDataType;
     sortBy?: ISort<T>;
-    onChange: (sort: ISort<T>) => void;
+    onChange: (sort?: ISort<T>) => void;
 }
 
 export interface IToolbarProps<T extends object> {
@@ -75,7 +80,6 @@ export interface IToolbarProps<T extends object> {
     query?: IQuery<T>;
     columns: IColumn<T>[];
     queryData?: IQueryData;
-    clearFilter: (key: string) => () => void;
     goBack?: () => void;
     onChange: (field: keyof IQuery<T>) => (value: unknown) => void;
 }
@@ -91,3 +95,5 @@ export interface IColumnsFiltersProps<T extends object> {
     query: IQuery<T>;
     onChange: (field: keyof IQuery<T>) => (value: unknown) => void;
 }
+
+export type IQueryInfoProps<T extends object> = IColumnsFiltersProps<T>;

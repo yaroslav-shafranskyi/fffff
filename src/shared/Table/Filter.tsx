@@ -1,5 +1,5 @@
 import { ChangeEvent, KeyboardEvent, useCallback, useEffect, useState } from 'react';
-import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Box, Checkbox, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
 
 import { DateRange } from '../../interfaces';
@@ -7,7 +7,7 @@ import { DateRange } from '../../interfaces';
 import { DatePicker } from '../DatePicker';
 
 import { IFilterProps, TableFilterType } from './types';
-import { datePickerStyles, dateRangeFilterPickerStyles, dateRangePickerStyles } from './styles';
+import { datePickerStyles, dateRangeFilterPickerStyles, dateRangePickerStyles, optionsFilterWrapperStyles } from './styles';
 
 export const Filter = <T extends object>(props: IFilterProps<T>) => {
     const {
@@ -16,7 +16,13 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
         onChange
     } = props;
 
-    const { key, title, placeholder, type = TableFilterType.STRING } = fieldFilterData;
+    const {
+        key,
+        title,
+        placeholder,
+        type = TableFilterType.STRING,
+        options,
+    } = fieldFilterData;
 
     const [inputValue, setInputValue] = useState<string>('');
 
@@ -54,11 +60,20 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
         if (event.key === 'Enter') {
             handleSubmitFilter();
         }
-    }, [handleSubmitFilter])
+    }, [handleSubmitFilter]);
+
+    const handleOptionSelect = useCallback((value: unknown) => () => {
+        const isSelected = filterBy?.[key] === value;
+        if (isSelected) {
+            onChange({ ...filterBy, [key]: undefined });
+            return;
+        }
+        onChange({ ...filterBy, [key]: value });
+    }, [filterBy, key, onChange])
 
     return (
         <Box>
-            {type === TableFilterType.STRING && <TextField
+            {type === TableFilterType.STRING && !options && <TextField
                 size='small'
                 value={inputValue}
                 placeholder={placeholder ?? title}
@@ -93,6 +108,12 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
                     onChange={handleDateRangeChange('end')}
                 />
             </Box>}
+            {options !== undefined && options.map((option) => (
+                <Box sx={optionsFilterWrapperStyles} onClick={handleOptionSelect(option)}>
+                    <Checkbox checked={filterBy?.[key] === option} />
+                    <Typography>{option}</Typography>
+                </Box>
+            ))}
         </Box>
     );
 };

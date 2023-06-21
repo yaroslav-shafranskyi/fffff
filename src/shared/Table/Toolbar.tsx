@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { Box, IconButton, Typography } from '@mui/material';
 import { ArrowBack as BackIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { IToolbarProps } from './types';
 import { titleWrapperStyles, toolbarWrapperStyles } from './styles';
 import { Filter } from './Filter';
 import { ColumnsFilter } from './ColumnsFilters';
+import { QueryInfo } from './QueryInfo';
 
 export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
     const {
@@ -18,7 +19,6 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
         columns,
         queryData = {}, 
         goBack,
-        clearFilter,
         onChange
     } = props;
 
@@ -35,37 +35,32 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
         navigate(-1);
     }, [navigate, goBack]);
 
-    const getToolbarFilterTitle = useCallback((key: string) => {
-        const column = columns.find(col => col.key === key);
-        if (!column) {
-            return 'Невідоме поле'
-        }
-        return column.title
-    }, [columns]);
-
     return (
-        <Box sx={toolbarWrapperStyles}>
-            <Box sx={titleWrapperStyles}>
-                <IconButton onClick={handleGoBack}>
-                    <BackIcon />
-                </IconButton>
-                <Typography variant='h4'>{title}</Typography>
-            </Box>
-            <Box sx={titleWrapperStyles}>
-                {globalFilter !== undefined && 
-                    <Filter
-                        fieldFilterData={globalFilter}
-                        filterBy={filterBy}
-                        columns={columns}
-                        onChange={onChange?.('filterBy') as (value: IFilter) => void}
+        <Box>
+            <Box sx={toolbarWrapperStyles}>
+                <Box sx={titleWrapperStyles}>
+                    <IconButton onClick={handleGoBack}>
+                        <BackIcon />
+                    </IconButton>
+                    <Typography variant='h4'>{title}</Typography>
+                </Box>
+                <Box sx={titleWrapperStyles}>
+                    {globalFilter !== undefined && 
+                        <Filter
+                            fieldFilterData={globalFilter}
+                            filterBy={filterBy}
+                            columns={columns}
+                            onChange={onChange?.('filterBy') as (value: IFilter) => void}
+                        />
+                    }
+                    <ColumnsFilter
+                        queryData={queryData}
+                        query={query}
+                        onChange={onChange}
                     />
-                }
-                <ColumnsFilter
-                    queryData={queryData}
-                    query={query}
-                    onChange={onChange}
-                />
+                </Box>
             </Box>
+            <QueryInfo query={query} queryData={queryData} onChange={onChange} />
         </Box>
     );
 };

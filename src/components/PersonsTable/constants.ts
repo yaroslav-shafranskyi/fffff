@@ -112,24 +112,46 @@ export const queryData: IQueryData = {
     ],
     sorts: {
         fullName : {
-            [SortOrder.DESC]: 'Я-А',
-            [SortOrder.ASC]: 'А-Я',
+            [SortOrder.DESC]: {
+                optionTitle: 'Я-А',
+                infoTitle: 'ПІБ: Я-А'
+            },
+            [SortOrder.ASC]: {
+                optionTitle: 'А-Я',
+                infoTitle: 'ПІБ: А-Я'
+            },
         },
         rank: {
-            [SortOrder.DESC]: 'Від вищого',
-            [SortOrder.ASC]: 'Від нижчого',
+            [SortOrder.DESC]: {
+                optionTitle: 'Від вищого звання',
+            },
+            [SortOrder.ASC]: {
+                optionTitle: 'Від нижчого звання',
+            },
         },
         birthDate: {
-            [SortOrder.DESC]: 'Від старших',
-            [SortOrder.ASC]: 'Від молодших',
+            [SortOrder.DESC]: {
+                optionTitle: 'Від старших',
+            },
+            [SortOrder.ASC]: {
+                optionTitle: 'Від молодших',
+            },
         },
         recordsLength: {
-            [SortOrder.DESC]: 'Від більшої кількості',
-            [SortOrder.ASC]: 'Від меншої кількості',
+            [SortOrder.DESC]: {
+                optionTitle: 'Від більшої кількості',
+            },
+            [SortOrder.ASC]: {
+                optionTitle: 'Від меншої кількості',
+            },
         },
         recordDate: {
-            [SortOrder.DESC]: 'Від нових звернень',
-            [SortOrder.ASC]: 'Від давніх звернень',
+            [SortOrder.DESC]: {
+                optionTitle: 'Від нових звернень',
+            },
+            [SortOrder.ASC]: {
+                optionTitle: 'Від давніх звернень',
+            },
         },
     },
 };

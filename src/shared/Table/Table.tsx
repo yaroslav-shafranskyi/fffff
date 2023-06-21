@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import {
     Typography,
@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 
 import { getInitialQuery } from '../../constants/query/query';
-import { IFilter, IQuery } from '../../interfaces';
+import { IQuery } from '../../interfaces';
 
 import {
     headerCellStyles,
@@ -38,7 +38,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
         ...restProps
     } = props;
 
-    const { sortBy, filterBy, iterator } = query;
+    const { iterator } = query;
 
     const columnHelper = createColumnHelper<TData>();
 
@@ -68,22 +68,10 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
 
     const total = propsTotal ?? table.getRowModel().rows.length;
 
-    const hasFilters = useMemo(() => Object.keys(filterBy).length > 0, [filterBy]);
-
     const handleQueryChange = useCallback((field: keyof IQuery<TData>) =>
         (value: unknown) => {
             onQueryChange?.(prevQuery => ({ ...prevQuery, [field]: value }));
     }, [onQueryChange]);
-
-    const clearFilter = useCallback((field: string) => () => {
-        const newFilterBy: IFilter = {};
-        for (const key in filterBy) {
-            if (key !== field) {
-                newFilterBy[key] = filterBy[key];
-            }
-        }
-        handleQueryChange('filterBy')(newFilterBy);
-    }, [filterBy, handleQueryChange]);
 
     return (
         <>
@@ -92,7 +80,6 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
                 query={query}
                 columns={propsColumns}
                 queryData={queryData}
-                clearFilter={clearFilter}
                 goBack={goBack}
                 onChange={handleQueryChange}
             />
