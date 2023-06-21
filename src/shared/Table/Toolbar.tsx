@@ -36,7 +36,7 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
     }, [navigate, goBack]);
 
     return (
-        <Box>
+        <Box sx={{ width: '100%' }}>
             <Box sx={toolbarWrapperStyles}>
                 <Box sx={titleWrapperStyles}>
                     <IconButton onClick={handleGoBack}>
