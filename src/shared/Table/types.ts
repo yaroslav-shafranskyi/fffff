@@ -25,16 +25,24 @@ export interface IFieldFilterData {
     options?: string[];
 }
 
+export interface IFilterData {
+    title?: string;
+    fields: IFieldFilterData[];
+}
+
 export type FieldSortDataType = {
-    [key: string] : {
-        [SortOrder.ASC]: string;
-        [SortOrder.DESC]: string;
-    };
+    [SortOrder.ASC]: string;
+    [SortOrder.DESC]: string;
+};
+
+export type SortDataType = {
+    [key: string] : FieldSortDataType;
 };
 
 export interface IQueryData {
-    filters?: IFieldFilterData[];
-    sorts?: FieldSortDataType;
+    filters?: IFilterData[];
+    globalFilter?: IFieldFilterData;
+    sorts?: SortDataType;
 }
 
 export interface ITableProps<T extends object> extends TableProps {
@@ -56,9 +64,10 @@ export interface IFilterProps<T extends object> {
 }
 
 export interface ISortProps<T extends object> {
+    field: keyof T;
     fieldSortData: FieldSortDataType;
     sortBy?: ISort<T>;
-    onChange: Dispatch<SetStateAction<ISort<T>>>;
+    onChange: (sort: ISort<T>) => void;
 }
 
 export interface IToolbarProps<T extends object> {

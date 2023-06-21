@@ -5,7 +5,8 @@ import {
     Typography,
     IconButton,
     Box,
-    Popover
+    Popover,
+    Divider
 } from '@mui/material';
 import { FilterAltOutlined as FilterIcon, Close as CloseIcon } from '@mui/icons-material';
 
@@ -13,10 +14,13 @@ import { IColumnsFiltersProps } from './types';
 import {
     columnsFiltersButtonStyles,
     columnsFiltersHeaderStyles,
+    filterFieldWrapperStyles,
+    filterGroupWrapperStyles,
     filtersMenuStyles,
     filtersPopoverStyles
 } from './styles';
 import { Filter } from './Filter';
+import { Sort } from './Sort';
 
 export const ColumnsFilter = <T extends object>(props: IColumnsFiltersProps<T>) => {
     const {
@@ -61,7 +65,7 @@ export const ColumnsFilter = <T extends object>(props: IColumnsFiltersProps<T>) 
                 onClose={handleCloseMenu}
             >
                 <Box sx={columnsFiltersHeaderStyles}>
-                    <Typography sx={{ fontWeight: 'bold' }}>
+                    <Typography sx={{ fontWeight: 'bold' }} variant='h5'>
                         Фільтри
                     </Typography>
                     <IconButton onClick={handleCloseMenu}>
@@ -69,19 +73,36 @@ export const ColumnsFilter = <T extends object>(props: IColumnsFiltersProps<T>) 
                     </IconButton>
                 </Box>
                 {filters !== undefined && (
-                    filters.map((filterData) => {
-                        const { key, placeholder, title, options, type } = filterData;
-                        return (
-                            <Box key={key}>
-                                {title !== undefined && <Typography>{title}</Typography>}
-                                <Filter
-                                    fieldFilterData={filterData}
-                                    filterBy={filterBy}
-                                    onChange={onChange('filterBy')}
-                                />
+                    (filters).map(({ title: groupTitle, fields }, idx) => (
+                        <Fragment key={groupTitle ?? fields[0].key + 'Group'}>
+                            <Box sx={filterGroupWrapperStyles}>
+                                {groupTitle !== undefined && <Typography variant='h5'>{groupTitle}</Typography>}
+                                {fields.map((fieldData) => {
+                                    const { key, title } = fieldData;
+                                    const sortData = sorts?.[key];
+                                    return (
+                                        <Box key={key} sx={filterFieldWrapperStyles}>
+                                            {title !== undefined && <Typography>{title}</Typography>}
+                                            <Filter
+                                                fieldFilterData={fieldData}
+                                                filterBy={filterBy}
+                                                onChange={onChange('filterBy')}
+                                            />
+                                            {sortData !== undefined && (
+                                                <Sort
+                                                    field={key as keyof T}
+                                                    fieldSortData={sortData}
+                                                    sortBy={sortBy}
+                                                    onChange={onChange('sortBy')}
+                                                />
+                                            )}
+                                        </Box>
+                                    )
+                                })}
                             </Box>
-                        )
-                    })
+                            {idx !== filters.length - 1 && <Divider orientation='horizontal' />}
+                        </Fragment>
+                    ))
                 )}
             </Popover>
         </>

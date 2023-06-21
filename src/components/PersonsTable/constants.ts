@@ -55,49 +55,59 @@ export const columns: IColumn<IPerson>[] = [
 ];
 
 export const queryData: IQueryData = {
+    globalFilter: {
+        key: 'Any',
+        placeholder: 'Впишіть ПІБ або діагноз...',
+    },
     filters: [
         {
-            key: 'fullName',
-            title: 'ПІБ',
+            title: 'Особиста інформація:',
+            fields: [
+                {
+                    key: 'fullName',
+                    title: 'ПІБ',
+                },
+                {
+                    key: 'rank',
+                    title: 'Звання',
+                },
+                {
+                    key: 'id',
+                    title: 'Посвідчення особи',
+                },
+                {
+                    key: 'birthDate',
+                    title: 'Дата народження',
+                    type: TableFilterType.DATE,
+                },
+                {
+                    key: 'gender',
+                    title: 'Стать',
+                    options: [Gender.MALE, Gender.FEMALE],
+                },
+                {
+                    title: 'Військова частина',
+                    key: 'militaryBase',
+                },
+            ],
         },
         {
-            key: 'rank',
-            title: 'Звання',
-        },
-        {
-            key: 'id',
-            title: 'Посвідчення особи',
-        },
-        {
-            key: 'birthDate',
-            title: 'Дата народження',
-            type: TableFilterType.DATE,
-        },
-        {
-            key: 'gender',
-            title: 'Стать',
-            options: [Gender.MALE, Gender.FEMALE],
-        },
-        {
-            title: 'Військова частина',
-            key: 'militaryBase',
-        },
-        {
-            title: 'К-ть звернень',
-            key: 'recordsLength',
-        },
-        {
-            title: 'Дата звернення',
-            key: 'recordDate',
-            type: TableFilterType.DATE_RANGE,
-        },
-        {
-            title: 'Діагноз',
-            key: 'fullDiagnosis',
-        },
-        {
-            key: 'Any',
-            placeholder: 'Впишіть ПІБ або діагноз...',
+            title: 'Звернення:',
+            fields: [
+                {
+                    title: 'К-ть звернень',
+                    key: 'recordsLength',
+                },
+                {
+                    title: 'Дата звернення',
+                    key: 'recordDate',
+                    type: TableFilterType.DATE_RANGE,
+                },
+                {
+                    title: 'Діагноз',
+                    key: 'fullDiagnosis',
+                },
+            ],
         },
     ],
     sorts: {

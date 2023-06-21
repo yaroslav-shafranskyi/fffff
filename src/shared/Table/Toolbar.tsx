@@ -23,6 +23,7 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
     } = props;
 
     const { filterBy } = query;
+    const { globalFilter } = queryData;
 
     const navigate = useNavigate();
 
@@ -42,8 +43,6 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
         return column.title
     }, [columns]);
 
-    const globalFilterData = useMemo(() => queryData.filters?.find(({ key }) => key === 'Any'), [queryData]);
-
     return (
         <Box sx={toolbarWrapperStyles}>
             <Box sx={titleWrapperStyles}>
@@ -53,9 +52,9 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
                 <Typography variant='h4'>{title}</Typography>
             </Box>
             <Box sx={titleWrapperStyles}>
-                {globalFilterData !== undefined && 
+                {globalFilter !== undefined && 
                     <Filter
-                        fieldFilterData={globalFilterData}
+                        fieldFilterData={globalFilter}
                         filterBy={filterBy}
                         columns={columns}
                         onChange={onChange?.('filterBy') as (value: IFilter) => void}

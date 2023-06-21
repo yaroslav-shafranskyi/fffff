@@ -73,3 +73,25 @@ export const columnsFiltersHeaderStyles: SxProps = {
     justifyContent: 'space-between',
     alignItems: 'center',
 };
+
+export const filterGroupWrapperStyles: SxProps = {
+    display: 'grid',
+    gap: 2,
+    pb: 2,
+};
+
+export const filterFieldWrapperStyles: SxProps = {
+    display: 'grid',
+    gap: 1,
+};
+
+export const sortSelectStyles: SxProps<Theme> = (theme) => ({
+    height: theme.spacing(5),
+    width: '100%',
+});
+
+export const sortSelectTitleStyles: SxProps<Theme> = (theme) => ({
+    position: 'absolute',
+    top: theme.spacing(1),
+    left: theme.spacing(1),
+});
