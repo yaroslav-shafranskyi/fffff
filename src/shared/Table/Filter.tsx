@@ -124,6 +124,7 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
                     <Slider
                         min={range?.min}
                         max={range?.max}
+                        defaultValue={[range?.min ?? 0, range?.max ?? 100]}
                         value={filterBy?.[key] as number | [number, number]}
                         valueLabelDisplay='on'
                         onChange={handleRangeChange}
