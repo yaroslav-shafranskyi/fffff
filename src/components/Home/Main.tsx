@@ -40,7 +40,7 @@ export const Main = () => {
                     </Typography>
                 </Button>
                 <Box sx={searchButtonStyles} onClick={openPersonDialog}>
-                    <Button  variant='contained' color='secondary' sx={mainButtonStyles}>
+                    <Button  variant='contained' color='secondary' sx={lightButtonStyles}>
                         <Typography variant='h5'>
                             Швидкий Пошук
                         </Typography>
@@ -48,7 +48,7 @@ export const Main = () => {
                             Знайдіть інформацію про хворого чи пораненого швидко та ефективно.
                         </Typography>
                     </Button>
-                    <Button  variant='contained' color='secondary' sx={mainButtonStyles} onClick={goToPersonsTable}>
+                    <Button  variant='contained' color='secondary' sx={lightButtonStyles} onClick={goToPersonsTable}>
                         <Typography variant='h5'>
                             Перелік Поранених
                         </Typography>
@@ -59,17 +59,17 @@ export const Main = () => {
                 </Box>
             </Box>
             <Box sx={mainLowerButtonsStyles}>
-                <Button variant='contained' sx={lightButtonStyles}>
+                <Button variant='contained' color='secondary' sx={mainButtonStyles}>
                     <Typography variant='h5' sx={{ textAlign: 'left' }}>
                         Консультативний висновок
                     </Typography>
                 </Button>
-                <Button variant='contained' sx={lightButtonStyles}>
+                <Button variant='contained' color='secondary' sx={mainButtonStyles}>
                     <Typography variant='h5'>
                         Виписка
                     </Typography>
                 </Button>
-                <Button variant='contained' sx={lightButtonStyles}>
+                <Button variant='contained' color='secondary' sx={mainButtonStyles}>
                     <Typography variant='h5'>
                         Направлення
                     </Typography>

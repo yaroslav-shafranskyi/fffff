@@ -61,7 +61,10 @@ export const buttonDescStyles: SxProps = {
 
 export const lightButtonStyles: SxProps = {
     ...mainButtonStyles,
-    bgcolor: 'primary.light',
+    bgcolor: 'secondary.main',
+    '&:hover': {
+        bgcolor: 'secondary.dark',
+    },
 };
 
 export const mainUpperButtonsStyles: SxProps = {
