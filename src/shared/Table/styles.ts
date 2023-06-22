@@ -134,6 +134,6 @@ export const tableRowStyles: SxProps<Theme> = (theme) => ({
     position: 'relative',
     cursor: 'pointer',
     '&:hover': {
-        boxShadow: theme.shadows[2]
+        boxShadow: (theme.shadows as string[])[2]
     }
 })

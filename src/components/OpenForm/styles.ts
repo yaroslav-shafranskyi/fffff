@@ -20,3 +20,11 @@ export const dialogButtonStyles: SxProps<Theme> = (theme) => ({
     width: '100%',
     height: theme.spacing(7),
 });
+
+export const openButtonStyles: SxProps<Theme> = (theme) => ({
+    ...dialogButtonStyles(theme),
+    bgcolor: 'secondary.main',
+    '&:hover': {
+        bgcolor: 'secondary.dark',
+    },
+})

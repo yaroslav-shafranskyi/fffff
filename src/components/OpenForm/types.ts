@@ -1,6 +1,6 @@
 export interface IOpenFormDialog {
     title: string;
     onClose: () => void;
-    goToCreateMode: () => void;
+    goToCreateMode: (id?: string) => () => void;
     goToUpdateMode: (id?: string) => () => void;
 }

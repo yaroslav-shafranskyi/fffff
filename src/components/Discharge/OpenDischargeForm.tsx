@@ -2,28 +2,26 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { UseOpenFormComponentType } from '../../interfaces';
-import { form100Url } from '../../constants';
+import { dischargeUrl } from '../../constants';
 
 import { OpenFormDialog } from '../OpenForm';
 
-export const OpenForm100Dialog: UseOpenFormComponentType = ({ onClose }) => {
+export const OpenDischargeForm: UseOpenFormComponentType = ({ onClose }) => {
     const navigate = useNavigate();
 
     const goToUpdateMode = useCallback((personId?: string) => () => {
         if (!personId) {
             return;
         }
-        navigate(`${form100Url}/${personId}`, { state: { readonly: true } });
+        navigate(`${dischargeUrl}/${personId}`, { state: { readonly: true } });
     }, [navigate]);
 
     const goToCreateMode = useCallback((personId?: string) => () => {
-        console.log({ personId })
-
-        const url = !personId ? form100Url : `${form100Url}/${personId}`;
+        const url = !personId ? dischargeUrl : `${dischargeUrl}/${personId}`
         navigate(url);
     }, [navigate]);
 
-    const title = 'Ви бажаєте створити нову Форму 100 чи переглянути існуючу?'
+    const title = 'Ви бажаєте створити нову виписку чи переглянути існуючу?'
 
     return (
         <OpenFormDialog
@@ -33,4 +31,5 @@ export const OpenForm100Dialog: UseOpenFormComponentType = ({ onClose }) => {
             onClose={onClose}
         />
     );
+
 };

@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ControlBar } from '../../shared';
-import { IRecord, useGetPerson, useUpdatePerson } from '../../api';
+import { IForm100, useGetPerson, useUpdatePerson } from '../../api';
 
 import { form100FrontSchema, form100BackSchema } from './schemas';
 import { containerStyles } from './styles';
@@ -28,11 +28,22 @@ export const Form100 = () => {
     const { data: initialPerson} = useGetPerson(id);
 
     const { front: initialFrontState, back: initialBackState} = useMemo(() => {
-        const initialData = !initialPerson?.lastRecord ? getInitialForm100() : { ...initialPerson.lastRecord, person: initialPerson };
+        const initialData = !initialPerson?.lastRecords?.form100 ?
+            getInitialForm100() :
+            { ...initialPerson.lastRecords.form100, person: initialPerson };
         if (readonly) {
             return convertIForm100ToIForm100State(initialData);
         }
-        return convertIForm100ToIForm100State({ ...getInitialForm100(), person: { ...initialData.person, lastRecord: {} as IRecord }});
+        return convertIForm100ToIForm100State({
+            ...getInitialForm100(),
+            person: {
+                ...initialData.person,
+                lastRecords: {
+                    ...initialData.person.lastRecords,
+                    form100: {} as IForm100
+                },
+            }
+        });
     }, [initialPerson, readonly]);
 
     const frontMethods = useForm<IForm100FrontState>({
@@ -40,11 +51,11 @@ export const Form100 = () => {
         resolver: yupResolver(form100FrontSchema),
     });
 
-    const { watch: watchFront, reset: resetFront, trigger: triggerFront } = frontMethods;
+    const { formState, watch: watchFront, reset: resetFront, trigger: triggerFront } = frontMethods;
     const frontState = watchFront();
     const { person, ...restFrontState } = frontState;
-
-    const { records, lastRecord } = person;
+console.log(formState.errors)
+    const { records, lastRecords } = person;
 
     const backMethods = useForm<IForm100BackState>({
         defaultValues: initialBackState,
@@ -78,10 +89,12 @@ export const Form100 = () => {
         }
         const result = await triggerBack();
         if (result) {
-            const updatedLastRecord = { ...lastRecord, ...restFrontState, ...backState };
-            mutate({...person, records: [...records, updatedLastRecord], lastRecord: updatedLastRecord });
+            const updatedLastForm100Record = { ...lastRecords.form100, ...restFrontState, ...backState };
+            const updatedLastBriefRecord = { date: restFrontState.date, fullDiagnosis: backState.fullDiagnosis };
+            const updatedRecords = { ...records, form100: [...records.form100, updatedLastForm100Record], brief: [...records.brief, updatedLastBriefRecord] };
+            mutate({...person, records: updatedRecords, lastRecords: { ...lastRecords, form100: updatedLastForm100Record, brief: updatedLastBriefRecord }});
         }
-    }, [backState, lastRecord, mutate, person, readonly, records, restFrontState, triggerBack])
+    }, [backState, lastRecords, mutate, person, readonly, records, restFrontState, triggerBack])
 
     const handleSubmit = useCallback(async () => {
         if (!page) {

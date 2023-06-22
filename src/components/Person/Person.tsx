@@ -15,10 +15,9 @@ import {
 } from '@mui/material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
-import { DateTime } from 'luxon';
 import { useNavigate } from 'react-router-dom';
 
-import { ArmyRank, Gender, IPerson, IRecord, useGetPerson, useUpdatePerson } from '../../api';
+import { ArmyRank, Gender, IBriefRecord, IPerson, IRecords, useGetPerson, useUpdatePerson } from '../../api';
 import { Select, Input, ControlBar, DatePicker } from '../../shared';
 import { defaultPersonData } from '../../constants';
 import { formatDate } from '../../helpers';
@@ -65,12 +64,12 @@ export const Person = () => {
     });
 
     const records = watch('records');
-    const lastRecord = watch('lastRecord');
+    const lastRecords = watch('lastRecords');
     const gender = watch('gender');
     
     const { errors } = formState;
 
-    const [newRecord, setNewRecord] = useState<Pick<IRecord, 'date' | 'fullDiagnosis'>>();
+    const [newRecord, setNewRecord] = useState<IBriefRecord>();
 
     const handleInputChange = useCallback((key: keyof IPerson) => (event: ChangeEvent<HTMLInputElement>) => {
         setValue(key, event.target.value);
@@ -82,20 +81,23 @@ export const Person = () => {
         }
     }, [setValue]);
 
-    const handleDateChange = useCallback((key: 'birthDate' | 'lastRecord.date') => (dateTime: DateTime | null) => {
-        if (dateTime !== null) {
-            setValue(key, dateTime.toJSDate())
+    const handleDateChange = useCallback((key: 'birthDate' | 'lastRecords.brief.date') => (date?: Date) => {
+        if (date !== undefined) {
+            setValue(key, date)
         }
     }, [setValue]);
 
     const addNewRecord = useCallback(() => {
         setNewRecord({ date: new Date(), fullDiagnosis: '' });
-        setValue('lastRecord', {} as IRecord);
+        setValue('lastRecords.brief', {} as IBriefRecord);
     }, [setValue]);
 
     const saveNewRecord = useCallback(() => {
-        setValue('records', [...records, newRecord as IRecord]);
-        setValue('lastRecord', newRecord as IRecord);
+        if (!newRecord) {
+            return;
+        }
+        setValue('records', { ...records, brief: [...records.brief, newRecord] });
+        setValue('lastRecords.brief', newRecord);
         setNewRecord(undefined);
     }, [newRecord, records, setValue]);
 
@@ -104,11 +106,16 @@ export const Person = () => {
         navigate('/');
     };
 
-    const getDateTimeValue = (date?: Date) => !date ? null : DateTime.fromJSDate(date);
+    const handleClear = useCallback(() => {
+        reset();
+        setNewRecord(undefined);
+    }, [reset])
+
+    const hasRecords = useMemo(() => Object.values(records).some(value => value.length > 0), [records]);
 
     return (
         <Card sx={cardStyles}>
-            <ControlBar onClear={reset} onSubmit={handleSubmit(submitUserChanges)} />
+            <ControlBar onClear={handleClear} onSubmit={handleSubmit(submitUserChanges)} />
             <Typography variant='h4'>Інформація про військовослужбовця</Typography>
             <Box sx={fullNameRowStyles}>
                     <Box sx={fullWidthStyles}>
@@ -203,7 +210,7 @@ export const Person = () => {
                     />
                 </Box>
                 <Box sx={fullWidthStyles}>
-                    <DatePicker label="Дата народження" value={getDateTimeValue(watch('birthDate'))} onChange={handleDateChange('birthDate')} />
+                    <DatePicker label="Дата народження" value={watch('birthDate')} onChange={handleDateChange('birthDate')} />
                     {errors.birthDate?.message !== undefined && (
                         <Typography color='error'>{REQUIRED_FIELD_MESSAGE}</Typography>
                     )}
@@ -218,7 +225,7 @@ export const Person = () => {
                     <FormLabel sx={newRecordLabelStyles}>Новий запис</FormLabel>
                     <Box sx={newRecordContentStyles}>
                         <Typography>Дата:</Typography>
-                        <DatePicker value={getDateTimeValue(watch('lastRecord.date'))} onChange={handleDateChange('lastRecord.date')} />
+                        <DatePicker value={watch('lastRecords.brief.date')} onChange={handleDateChange('lastRecords.brief.date')} />
                     </Box>
                     <Box sx={newRecordContentStyles}>
                         <Typography>Повний діагноз:</Typography>
@@ -226,38 +233,26 @@ export const Person = () => {
                             variant='outlined'
                             fullWidth={true}
                             multiline={true}
-                            {...register('lastRecord.fullDiagnosis')}
-                            value={watch('lastRecord.fullDiagnosis')}
-                            onChange={handleInputChange('lastRecord.fullDiagnosis' as keyof IPerson)}
+                            {...register('lastRecords.brief.fullDiagnosis')}
+                            value={watch('lastRecords.brief.fullDiagnosis')}
+                            onChange={handleInputChange('lastRecords.brief.fullDiagnosis' as keyof IPerson)}
                         />
                     </Box>
                     <Button
                         variant='contained'
                         sx={newRecordButtonStyles}
-                        disabled={!lastRecord.date || !lastRecord.fullDiagnosis}
+                        disabled={!lastRecords.brief.date || !lastRecords.brief.fullDiagnosis}
                         onClick={saveNewRecord}
                     >
                         Зберегти
                     </Button>
                 </Box>
             )}
-            {!records?.length && !newRecord && (
+            {!hasRecords && !newRecord && (
                 <Typography color='textSecondary'>
                     Звернень немає. Натисніть "Додати", щоб внести.
                 </Typography>
             )}
-            {(records ?? []).map(({ fullDiagnosis, date }) => (
-                <Accordion key={date.getTime()}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        {formatDate(date, true)}
-                    </AccordionSummary>
-                    <AccordionSummary>
-                        <Typography>
-                            {fullDiagnosis}
-                        </Typography>
-                    </AccordionSummary>
-                </Accordion>
-            ))}
         </Card>
     );
 }

@@ -33,7 +33,7 @@ export const ControlBar: FC<IControlBarProps> = (props) => {
                 <BackIcon />
             </IconButton>
             <Box sx={actionsWrapperStyles}>
-                <Button color='inherit' variant='contained' onClick={handleClear}>
+                <Button sx={{ bgcolor: 'primary.light' }} variant='contained' onClick={handleClear}>
                     Очистити
                 </Button>
                 <Button variant='contained' onClick={handleSubmit}>

@@ -22,19 +22,18 @@ const defaultPersonSchemaFields = {
     rank: fieldRequiredStringSchema(),
     gender: fieldRequiredStringSchema(),
     militaryBase: fieldRequiredStringSchema(),
-    records: array().of(object().shape({
-        type: fieldRequiredStringSchema(),
-        date: defaultDateSchema,
-        author: defaultStringSchema,
-        resume: defaultStringSchema,
-    })),
+    records: object().shape({
+        form100: array().of(object().shape({
+            type: fieldRequiredStringSchema(),
+            date: defaultDateSchema,
+            author: defaultStringSchema,
+            resume: defaultStringSchema,
+        })),
+    }),
 };
 
 export const personForm100Schema = object().shape({
     ...defaultPersonSchemaFields,
-    lastRecord: object().shape({
-    date: defaultDateSchema,
-    }).required(),
 }).required();
 
 export const personPageSchema = object().shape({

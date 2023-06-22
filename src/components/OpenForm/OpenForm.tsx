@@ -13,7 +13,7 @@ import {
 import { useQueryPersons } from '../../api';
 import { getInitialQuery } from '../../constants';
 
-import { dialogActionsStyles, dialogContentStyles, dialogButtonStyles } from './styles';
+import { dialogActionsStyles, dialogContentStyles, dialogButtonStyles, openButtonStyles } from './styles';
 import { IOpenFormDialog } from './types';
 
 export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
@@ -48,10 +48,10 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
 
     return (
         <Dialog
-        open={true}
-        fullWidth={true}
-        maxWidth='lg'
-        onClose={onClose}
+            open={true}
+            fullWidth={true}
+            maxWidth='lg'
+            onClose={onClose}
         >
             <DialogContent sx={dialogContentStyles}>
                 <Typography variant='h4' sx={{ textAlign: 'center' }}>
@@ -73,14 +73,13 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
                     variant='contained'
                     sx={dialogButtonStyles}
                     size='large'
-                    onClick={goToCreateMode}
+                    onClick={goToCreateMode(personId)}
                 >
                     Створити
                 </Button>
                 <Button
                     variant='contained'
-                    color='secondary'
-                    sx={dialogButtonStyles}
+                    sx={openButtonStyles}
                     size='large'
                     onClick={goToUpdateMode(personId)}
                 >

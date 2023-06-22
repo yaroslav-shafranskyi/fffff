@@ -37,7 +37,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         rank,
         id,
         tokenNumber,
-        lastRecord,
+        lastRecords,
     } = person;
 
     const {person: errors, reason: reasonError } = formState.errors;
@@ -46,8 +46,10 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         if (readonly) {
             return;
         }
-        setValue('person.lastRecord.date', newDate);
-        clearErrors('person.lastRecord.date');
+        setValue('person.lastRecords.form100.date', newDate);
+        setValue('person.lastRecords.brief.date', newDate);
+        clearErrors('person.lastRecords.form100.date');
+        clearErrors('person.lastRecords.brief.date');
     }, [clearErrors, readonly, setValue]);
 
     const handleCommonFieldChange = useCallback((field: keyof IPerson) =>
@@ -94,9 +96,9 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         if (readonly) {
             return;
         }
-        setValue('person.lastRecord.reason', value);
+        setValue('person.lastRecords.form100.reason', value);
         setValue('reason', value);
-        clearErrors('person.lastRecord.reason');
+        clearErrors('person.lastRecords.form100.reason');
         clearErrors('reason');
     }, [clearErrors, readonly, setValue]);
 
@@ -115,7 +117,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         option === getCurrentValue(person) ? 'success.light' : 'textPrimary';
 
     const getCurrentGender = (p: IPerson) => p.gender;
-    const getCurrentReason = (p: IPerson) => p.lastRecord.reason;
+    const getCurrentReason = (p: IPerson) => p.lastRecords.form100.reason;
 
     const optionWrapperSx: SxProps<Theme> = useMemo(() => readonly ? {} : cursorPointerStyles, [readonly]);
 
@@ -226,9 +228,9 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                     </Typography>
                 </Box>
                 <Box>
-                    <DateInputWithSeparatedFields date={lastRecord?.date} onChange={handleNewRecordDateChange} />
+                    <DateInputWithSeparatedFields date={lastRecords?.form100?.date} onChange={handleNewRecordDateChange} />
                     {(errors as { lastRecord?: { date?: FieldErrorType}})?.lastRecord?.date?.message &&
-                        <Typography color='error'>{errors?.lastRecord?.date?.message}</Typography>}
+                        <Typography color='error'>{errors?.lastRecords?.form100?.date?.message}</Typography>}
                 </Box>
             </Box>
         </>

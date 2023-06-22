@@ -6,6 +6,7 @@ import { personsUrl } from '../../constants';
 import { useOpenFormDialog } from '../OpenForm';
 import { OpenForm100Dialog } from '../Form100';
 import { OpenPersonDialog } from '../Person';
+import { OpenDischargeForm } from '../Discharge';
 
 import { 
     buttonDescStyles,
@@ -21,6 +22,7 @@ import {
 export const Main = () => {
     const [Form100Dialog, openForm100Dialog] = useOpenFormDialog(OpenForm100Dialog);
     const [PersonDialog, openPersonDialog] = useOpenFormDialog(OpenPersonDialog)
+    const [DischargeFormDialog, openDischargeFormDialog] = useOpenFormDialog(OpenDischargeForm);
 
     const navigate = useNavigate();
 
@@ -64,7 +66,7 @@ export const Main = () => {
                         Консультативний висновок
                     </Typography>
                 </Button>
-                <Button variant='contained' color='secondary' sx={mainButtonStyles}>
+                <Button variant='contained' color='secondary' sx={mainButtonStyles} onClick={openDischargeFormDialog}>
                     <Typography variant='h5'>
                         Виписка
                     </Typography>
@@ -77,6 +79,7 @@ export const Main = () => {
             </Box>
             {Form100Dialog}
             {PersonDialog}
+            {DischargeFormDialog}
         </Box>
     );
 };

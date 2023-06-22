@@ -37,19 +37,19 @@ export const columns: IColumn<IPerson>[] = [
     {
         title: 'К-ть звернень',
         render: p => p.getValue() as number,
-        accessor: p => p.records.length,
+        accessor: p => p.records.brief.length,
         key: 'recordsLength',
     },
     {
         title: 'Крайнє звернення',
         render: p => formatDate(p.getValue() as Date),
-        accessor: p => p.lastRecord.date,
+        accessor: p => p.lastRecords.brief.date,
         key: 'lastRecordDate',
     },
     {
         title: 'Крайній діагноз',
         render: p => p.getValue() as string,
-        accessor: p => p.lastRecord.diagnosis,
+        accessor: p => p.lastRecords.brief.fullDiagnosis,
         key: 'lastRecordDiagnosis',
     },
 ];

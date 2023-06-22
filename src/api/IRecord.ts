@@ -5,4 +5,19 @@ export enum RecordType {
     SICK = 'sick'
 }
 
-export type IRecord = Omit<IForm100, 'person'>;
+export type IForm100Record = Omit<IForm100, 'person'>;
+
+export interface IBriefRecord {
+    date: Date;
+    fullDiagnosis: string;
+}
+
+export interface ILastRecords {
+    form100: IForm100Record;
+    brief: IBriefRecord;
+}
+
+export interface IRecords {
+    form100: IForm100Record[];
+    brief: IBriefRecord[];
+}

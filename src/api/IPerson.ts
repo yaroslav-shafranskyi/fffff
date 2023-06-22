@@ -1,5 +1,5 @@
 import { Gender } from './Gender';
-import { IRecord } from './IRecord';
+import { ILastRecords, IRecords } from './IRecord';
 import { Rank } from './Rank';
 
 export interface IPerson {
@@ -10,7 +10,7 @@ export interface IPerson {
     rank: Rank;
     gender: Gender;
     militaryBase: string; // TODO declare type
-    records: IRecord[];
-    lastRecord: IRecord;
+    records: IRecords;
+    lastRecords: ILastRecords;
     phoneNumber?: string;
 }

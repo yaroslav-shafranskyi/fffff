@@ -6,7 +6,7 @@ import { Router, Route, Routes } from './shared';
 import { Home, Form100, PersonsTable, Person } from './components';
 import { theme } from './theme';
 import './App.css'
-import { form100Url, personsUrl } from './constants';
+import { dischargeUrl, form100Url, personsUrl } from './constants';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +22,7 @@ const App = () => {
             <Route path={`${form100Url}/:id`} element={<Form100 />} />
             <Route path={personsUrl} element={<PersonsTable />} />
             <Route path={`${personsUrl}/:id`} element={<Person />} />
+            <Route path={dischargeUrl} element={<></>} />
           </Routes>
         </Router>
       </QueryClientProvider>

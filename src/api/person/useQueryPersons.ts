@@ -4,9 +4,10 @@ import { IQuery, SortOrder } from "../../interfaces";
 import { getInitialQuery } from "../../constants";
 import { ArmyRank } from "../Rank";
 import { Gender } from "../Gender";
-import { IRecord } from "../IRecord";
+import { IForm100Record } from "../IRecord";
 
-const mockedRecord = { diagnosis: 'гіпертонія', date: new Date(), fullDiagnosis: 'гіпертонія' } as IRecord;
+const mockedBriefRecord = { date: new Date(), fullDiagnosis: 'гіпертонія' } as IForm100Record;
+const mockedForm100Record = { ...mockedBriefRecord, diagnosis: 'гіпертонія', }
 
 const mockedPerson: IPerson = {
     id: '1234',
@@ -16,8 +17,11 @@ const mockedPerson: IPerson = {
     rank: ArmyRank.SOLDIER,
     gender: Gender.MALE,
     militaryBase: '25',
-    records: [mockedRecord, mockedRecord],
-    lastRecord: mockedRecord,
+    records: {
+        form100: [mockedForm100Record, mockedForm100Record], 
+        brief: [mockedBriefRecord, mockedBriefRecord],
+    },
+    lastRecords: { form100: mockedForm100Record as IForm100Record, brief: mockedBriefRecord },
 }
 
 const mockedPersons: IPerson[] = Array(100).fill(mockedPerson).map((p, i) => 
@@ -74,9 +78,9 @@ export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptio
     // }
 
     filteredPersons.push(
-        ...mockedPersons
+        ...allPersons
         .filter(({ fullName }) => fullName.toLowerCase().includes(name.toLowerCase()))
-        .filter(({ fullName, records }) => fullName.toLowerCase().includes(anyFilter.toLowerCase()) || records.some(({ diagnosis, fullDiagnosis }) => 
+        .filter(({ fullName, records }) => fullName.toLowerCase().includes(anyFilter.toLowerCase()) || records.form100.some(({ diagnosis, fullDiagnosis }) => 
             fullDiagnosis.includes(anyFilter.toLowerCase()) || diagnosis.includes(anyFilter.toLowerCase())))
     );
 

@@ -1,4 +1,4 @@
-import { Gender, IPerson, IRecord, Rank } from "../../api";
+import { Gender, IPerson, ILastRecords, Rank } from "../../api";
 
 export const defaultPersonData: IPerson = {
     rank: '' as Rank,
@@ -7,6 +7,9 @@ export const defaultPersonData: IPerson = {
     id: '',
     tokenNumber: '',
     gender: '' as Gender,
-    records: [],
-    lastRecord: {} as IRecord,
+    records: {
+        form100: [],
+        brief: [],
+    },
+    lastRecords: {} as ILastRecords,
 };
