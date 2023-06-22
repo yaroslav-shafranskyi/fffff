@@ -1,6 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { TableProps } from '@mui/material';
-import { CellContext } from '@tanstack/react-table';
+import { CellContext, RowData } from '@tanstack/react-table';
 
 import { IFilter, IQuery, ISort, Iterator, SortOrder } from '../../interfaces';
 
@@ -64,6 +64,7 @@ export interface ITableProps<T extends object> extends TableProps {
     queryData?: IQueryData;
     goBack?: () => void;
     onQueryChange?: Dispatch<SetStateAction<IQuery<T>>>;
+    onRowClick?: (row: RowData) => () => void;
 }
 
 export interface IFilterProps<T extends object> {

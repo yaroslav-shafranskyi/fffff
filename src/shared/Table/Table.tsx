@@ -19,6 +19,7 @@ import {
     headerCellStyles,
     headerStyles,
     placeholderStyles,
+    tableRowStyles,
     tableStyles
 } from './styles';
 import { ITableProps } from './types';
@@ -35,6 +36,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
         query = getInitialQuery(),
         onQueryChange,
         goBack,
+        onRowClick,
         ...restProps
     } = props;
 
@@ -98,7 +100,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
                     </TableHead>
                     <TableBody>
                         {!total &&
-                            <TableRow sx={{ position: 'relative' }}>
+                            <TableRow>
                                 <TableCell sx={placeholderStyles}>
                                     <Typography variant='h5' color='text.secondary'>
                                         Нікого не знайдено
@@ -106,7 +108,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
                                 </TableCell>
                             </TableRow>}
                         {total > 0 && table.getRowModel().rows.map(row => (
-                            <TableRow key={row.id}>
+                            <TableRow key={row.id} onClick={onRowClick?.(row)} sx={onRowClick ? tableRowStyles : {}}>
                                 {row.getVisibleCells().map(cell => (
                                     <TableCell key={cell.id} sx={{ p: .25 }}>
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}

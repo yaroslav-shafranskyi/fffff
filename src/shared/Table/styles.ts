@@ -129,3 +129,11 @@ export const optionsFilterWrapperStyles: SxProps = {
     cursor: 'pointer',
     alignItems: 'center',
 };
+
+export const tableRowStyles: SxProps<Theme> = (theme) => ({
+    position: 'relative',
+    cursor: 'pointer',
+    '&:hover': {
+        boxShadow: theme.shadows[2]
+    }
+})
