@@ -12,3 +12,11 @@ export const formatDate = (date?: Date, text?: boolean): string => {
 
     return `${day}.${month}.${year}`;
 };
+
+export const formatDateWithoutDots = (date?: Date): string => {
+    if (!date) {
+        return '';
+    }
+    const { day, month, year } = getDateData(date);
+    return `${day}${month}${year}`;
+};

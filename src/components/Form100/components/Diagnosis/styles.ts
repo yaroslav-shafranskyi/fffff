@@ -25,7 +25,7 @@ export const inputPropsStyles: SxProps = {
 
 export const titleWrapperStyles: SxProps<Theme> = (theme) => ({
     position: 'absolute',
-    zIndex: (theme.zIndex as { tooltip: number }).tooltip,
+    zIndex: 'fab',
     background: theme.palette.background.paper,
     paddingRight: theme.spacing(.5),
     top: .5

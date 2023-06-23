@@ -1,22 +1,20 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateCalendar as MuiDateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { DateTime } from 'luxon';
 
-import { IDatePickerProps } from './types';
+import { IDateCalendarProps } from './types';
 
-export const DatePicker: FC<IDatePickerProps> = (props) => {
-    const { value, onChange } = props;
-
-    const [pickerValue, setPickerValue] = useState<DateTime | null>(null);
+export const DateCalendar: FC<IDateCalendarProps> = ({ value, onChange, ...restProps }) => {
+    const [dateTimeValue, setDateTimeValue] = useState<DateTime | null>(null);
 
     useEffect(() => {
         if (value !== undefined) {
-            setPickerValue(DateTime.fromJSDate(value))
-            return;
+            setDateTimeValue(DateTime.fromJSDate(value))
+        return;
         }
-        setPickerValue(null);
+            setDateTimeValue(null);
     }, [value]);
 
     const handleChange = useCallback((dateTime: DateTime | null) => {
@@ -29,7 +27,7 @@ export const DatePicker: FC<IDatePickerProps> = (props) => {
 
     return (
         <LocalizationProvider adapterLocale='ua' dateAdapter={AdapterLuxon}>
-            <MuiDatePicker { ...props } value={pickerValue} onChange={handleChange} />
+            <MuiDateCalendar { ...restProps } value={dateTimeValue} onChange={handleChange} />
         </LocalizationProvider>
     );
 };

@@ -51,10 +51,10 @@ export const Form100 = () => {
         resolver: yupResolver(form100FrontSchema),
     });
 
-    const { formState, watch: watchFront, reset: resetFront, trigger: triggerFront } = frontMethods;
+    const { watch: watchFront, reset: resetFront, trigger: triggerFront } = frontMethods;
     const frontState = watchFront();
     const { person, ...restFrontState } = frontState;
-console.log(formState.errors)
+
     const { records, lastRecords } = person;
 
     const backMethods = useForm<IForm100BackState>({

@@ -3,7 +3,7 @@ import { ThemeProvider } from '@mui/material';
 
 // @ts-expect-error TODO: set tsconfig to allow .web.* and .native.* extensions
 import { Router, Route, Routes } from './shared';
-import { Home, Form100, PersonsTable, Person } from './components';
+import { Home, Form100, PersonsTable, Person, Discharge } from './components';
 import { theme } from './theme';
 import './App.css'
 import { dischargeUrl, form100Url, personsUrl } from './constants';
@@ -22,7 +22,7 @@ const App = () => {
             <Route path={`${form100Url}/:id`} element={<Form100 />} />
             <Route path={personsUrl} element={<PersonsTable />} />
             <Route path={`${personsUrl}/:id`} element={<Person />} />
-            <Route path={dischargeUrl} element={<></>} />
+            <Route path={dischargeUrl} element={<Discharge />} />
           </Routes>
         </Router>
       </QueryClientProvider>

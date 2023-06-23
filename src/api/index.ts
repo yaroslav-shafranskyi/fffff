@@ -13,3 +13,6 @@ export * from './IEvacuation';
 export * from './IExtendedDate';
 export * from './IPlait';
 export * from './person';
+export * from './IAddress';
+export * from './IDischargeDates';
+export * from './IDischarge';

@@ -1,3 +1,4 @@
+import { IAddress } from './IAddress';
 import { Gender } from './Gender';
 import { ILastRecords, IRecords } from './IRecord';
 import { Rank } from './Rank';
@@ -13,4 +14,6 @@ export interface IPerson {
     records: IRecords;
     lastRecords: ILastRecords;
     phoneNumber?: string;
+    address?: IAddress;
+    profession?: string;
 }

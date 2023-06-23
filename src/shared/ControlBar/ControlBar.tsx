@@ -12,7 +12,7 @@ export const ControlBar: FC<IControlBarProps> = (props) => {
     const navigate = useNavigate();
 
     const handleClear = () => {
-            onClear?.()
+        onClear?.()
     };
 
     const handleGoBack = () => {

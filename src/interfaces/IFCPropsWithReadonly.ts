@@ -1,3 +1,3 @@
-export interface IFCPropsWithReadonly extends Record<string, unknown> {
+export type IFCPropsWithReadonly<T = Record<string, unknown>> = T & {
     readonly?: boolean;
-}
+};
