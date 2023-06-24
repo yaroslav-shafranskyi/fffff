@@ -5,8 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ControlBar } from '../../shared';
-import { IForm100, useUpdatePerson, useGetForm100, useUpdateForm100 } from '../../api';
-import { form100Url } from '../../constants';
+import { IForm100, useUpdatePerson, useGetForm100, useUpdateForm100, useGetPerson } from '../../api';
+import { defaultPersonData, form100Url } from '../../constants';
 
 import { form100FrontSchema, form100BackSchema } from './schemas';
 import { containerStyles } from './styles';
@@ -26,10 +26,14 @@ export const Form100 = () => {
 
     const [personId, formId] = useMemo(() => (pathname.split(`${form100Url}/`)[1]?.split('/') ?? []).map(decodeURI), [pathname]);
 
+    const { data: initialPerson } = useGetPerson(personId);
     const initialForm100 = useGetForm100(personId, formId);
     
     const { front: initialFrontState, back: initialBackState} = useMemo(() => {
-        const initialData = initialForm100 ?? getInitialForm100();
+        const initialData = {
+            ...(initialForm100 ?? getInitialForm100()),
+            person: initialPerson ?? defaultPersonData
+        };
         
         if (readonly) {
             return convertIForm100ToIForm100State(initialData);
@@ -44,7 +48,7 @@ export const Form100 = () => {
                 },
             }
         });
-    }, [initialForm100, readonly]);
+    }, [initialForm100, initialPerson, readonly]);
 
     const frontMethods = useForm<IForm100FrontState>({
         defaultValues: initialFrontState,

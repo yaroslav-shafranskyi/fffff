@@ -16,7 +16,7 @@ export const OpenPersonDialog: UseOpenFormComponentType = ({ onClose }) => {
         navigate(`${personsUrl}/${personId}`);
     }, [navigate]);
 
-    const goToCreateMode = useCallback(() => {
+    const goToCreateMode = useCallback(() => () => {
         navigate(`${personsUrl}/create`);
     }, [navigate]);
 

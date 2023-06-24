@@ -9,21 +9,27 @@ export const cardStyles: SxProps = {
     gap: 2,
 };
 
-export const rowStyles: SxProps = {
+export const infoWrapperStyles: SxProps = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
+    gridTemplateColumns: '2fr 1fr',
     gap: 2,
 };
 
-export const fullNameRowStyles: SxProps = {
-    ...rowStyles,
-    gridTemplateColumns: '3fr 2fr 2fr',
+export const infoLeftSectionStyles: SxProps = {
+    display: 'grid',
+    gap: 2,
 };
 
-export const idRowStyles: SxProps = {
-    ...rowStyles,
-    gridTemplateColumns: '3fr 3fr 1fr',
-}
+export const infoLeftSectionRowStyles: SxProps = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    gap: 2,
+};
+
+export const infoColumnStyles: SxProps = {
+    display: 'grid',
+    gap: 2,
+};
 
 export const inputPropsSx: SxProps = {
     display: 'flex',
@@ -31,7 +37,8 @@ export const inputPropsSx: SxProps = {
 };
 
 export const genderWrapperStyles: SxProps = {
-    ml: 2,
+   gap: 2,
+   mt: 2,
 };
 
 export const radioStyles: SxProps<Theme> = (theme) => ({

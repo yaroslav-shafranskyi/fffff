@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { ControlBar } from '../../shared';
-import { dischargeUrl, defaultDischargeBackPageState, defaultDischargeFrontPageState } from '../../constants';
-import { useGetDischarge, useUpdatePerson, useUpdateDischarge } from '../../api';
+import { dischargeUrl, defaultDischargeBackPageState, defaultDischargeFrontPageState, defaultPersonData } from '../../constants';
+import { useGetDischarge, useUpdatePerson, useUpdateDischarge, useGetPerson } from '../../api';
 
 import { containerStyles } from './styles';
 import { FrontPage } from './FrontPage';
@@ -22,6 +22,7 @@ export const Discharge = () => {
     const [personId, formId] = useMemo(() => (pathname.split(`${dischargeUrl}/`)[1]?.split('/') ?? []).map(decodeURI), [pathname]);
 
     const initialForm = useGetDischarge(personId, formId);
+    const { data: initialPerson } = useGetPerson(personId);
 
     const { mutate: savePerson } = useUpdatePerson();
     const { mutate: saveForm } = useUpdateDischarge();
@@ -29,16 +30,19 @@ export const Discharge = () => {
     const { defaultFrontPageValues, defaultBackPageValues } = useMemo(() => {
         if (!initialForm) {
             return {
-                defaultFrontPageValues: defaultDischargeFrontPageState,
+                defaultFrontPageValues: {
+                    ...defaultDischargeFrontPageState,
+                    person: initialPerson ?? defaultPersonData,
+                },
                 defaultBackPageValues: defaultDischargeBackPageState
             }
         }
-        const { doctor, date, recommendations, info, ...rest } = initialForm;
+        const { doctor, date, recommendations, info, ...rest } = {...initialForm, person: initialPerson ?? defaultPersonData };
         return {
             defaultFrontPageValues: { ...rest },
             defaultBackPageValues: { doctor, date, recommendations, info },
         };
-    }, [initialForm]);
+    }, [initialForm, initialPerson]);
 
     const { readonly } = (state ?? {})  as { readonly?: boolean };
 
@@ -56,6 +60,9 @@ export const Discharge = () => {
     const { reset: frontPageReset, trigger: frontPageTrigger, watch: watchFrontPage } = frontPageMethods;
     const { reset: backPageReset, trigger: backPageTrigger, watch: watchBackPage } = backPageMethods;
 
+    const { person, ...frontPageState } = watchFrontPage();
+    const backPageState = watchBackPage();
+
     const handleSubmitFrontPage = useCallback(async () => {
         const result = await frontPageTrigger();
             if (result) {
@@ -68,12 +75,15 @@ export const Discharge = () => {
         if (!result) {
             return;
         }
-        const { person, ...frontPageState } = watchFrontPage();
-        const backPageState = watchBackPage();
 
         const dischargeRecord = {
             ...frontPageState,
             ...backPageState,                    
+        };
+
+        const briefRecord = {
+            fullDiagnosis: dischargeRecord.fullDiagnosis,
+            date: dischargeRecord.date,
         };
 
         const updatedPerson = {
@@ -82,21 +92,19 @@ export const Discharge = () => {
             lastRecords: {
                 ...person.lastRecords,
                 discharge: dischargeRecord,
-                brief: {
-                    fullDiagnosis: dischargeRecord.fullDiagnosis,
-                    date: dischargeRecord.date,
-                },
+                brief: briefRecord,
             },
             records: {
                 ...person.records,
-                discharge: [ ...person.records.discharge, dischargeRecord ]
+                discharge: [ ...person.records.discharge, dischargeRecord ],
+                brief: [ ...person.records.brief, briefRecord ]
             },
         };
 
         savePerson(updatedPerson);
         saveForm({ ...dischargeRecord, person: updatedPerson, id: String(person.records.discharge.length + 1) })
         navigate('/')
-    }, [backPageTrigger, navigate, saveForm, savePerson, watchBackPage, watchFrontPage]);
+    }, [backPageState, backPageTrigger, frontPageState, navigate, person, saveForm, savePerson]);
 
     const handleSubmit = useCallback(() => {
         if (page === 0) {
