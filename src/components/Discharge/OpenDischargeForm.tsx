@@ -17,7 +17,7 @@ export const OpenDischargeForm: UseOpenFormComponentType = ({ onClose }) => {
     }, [navigate]);
 
     const goToCreateMode = useCallback((personId?: string) => () => {
-        const url = !personId ? dischargeUrl : `${dischargeUrl}/${personId}`
+        const url = !personId ? `${dischargeUrl}/create` : `${dischargeUrl}/${personId}`
         navigate(url);
     }, [navigate]);
 

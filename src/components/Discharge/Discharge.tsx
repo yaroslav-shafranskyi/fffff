@@ -20,7 +20,7 @@ export const Discharge = () => {
     
     const navigate = useNavigate();
 
-    const personId = useMemo(() => pathname.split(dischargeUrl)[1], [pathname]);
+    const personId = useMemo(() => pathname.split(`${dischargeUrl}/`)[1], [pathname]);
 
     const { data:  person } = useGetPerson(decodeURI(personId));
     const { mutate: savePerson } = useUpdatePerson();
@@ -34,10 +34,10 @@ export const Discharge = () => {
         }
         const { doctor, date, recommendations, info, ...rest } = person.lastRecords.discharge;
         return {
-            defaultFrontPageValues: rest,
+            defaultFrontPageValues: { ...rest, person },
             defaultBackPageValues: { doctor, date, recommendations, info }
         }
-    }, [person?.lastRecords?.discharge])
+    }, [person])
 
     const { readonly } = (state ?? {})  as { readonly?: boolean };
 
@@ -77,6 +77,7 @@ export const Discharge = () => {
 
         const updatedPerson = {
             ...person,
+            id: person.id || `${Math.round(Math.random() * 1000000)}`,
             lastRecords: {
                 ...person.lastRecords,
                 discharge: dischargeRecord,

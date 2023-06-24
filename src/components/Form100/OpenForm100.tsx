@@ -17,7 +17,6 @@ export const OpenForm100Dialog: UseOpenFormComponentType = ({ onClose }) => {
     }, [navigate]);
 
     const goToCreateMode = useCallback((personId?: string) => () => {
-        console.log({ personId })
 
         const url = !personId ? form100Url : `${form100Url}/${personId}`;
         navigate(url);

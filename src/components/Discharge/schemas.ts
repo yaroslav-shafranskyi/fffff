@@ -1,6 +1,6 @@
 import { object } from 'yup';
 
-import { defaultDateSchema, defaultStringSchema, personFullNameSchema } from '../../schemas';
+import { defaultDateSchema, defaultStringSchema, fieldRequiredStringSchema, personFullNameSchema } from '../../schemas';
 
 export const dischargeFrontPageSchema = object().shape({
     person: object().shape({
@@ -10,13 +10,13 @@ export const dischargeFrontPageSchema = object().shape({
             oblast: defaultStringSchema,
             region: defaultStringSchema,
             settlement: defaultStringSchema,
-            building: defaultStringSchema,
+            building: fieldRequiredStringSchema(),
             street: defaultStringSchema,
         }).required(),
     }).required(),
     order: object().shape({
         date: defaultDateSchema,
-        number: defaultStringSchema,
+        number: fieldRequiredStringSchema(),
     }).required(),
     receiver: defaultStringSchema,
     datesData: object().shape({
@@ -27,7 +27,7 @@ export const dischargeFrontPageSchema = object().shape({
     }).required(),
     reason: defaultStringSchema,
     fullDiagnosis: defaultStringSchema,
-    code: defaultStringSchema,
+    code: fieldRequiredStringSchema(),
     department: defaultStringSchema,
     clinic: defaultStringSchema,
 }).required();
