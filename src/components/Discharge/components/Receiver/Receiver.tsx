@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useCallback } from 'react';
-import { useFormContext, FieldPath } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 
 import { IDischarge } from '../../../../api';
@@ -10,14 +10,14 @@ import { inputHintStyles, inputTitleStyles } from '../../styles';
 import { receiverInputPropsSx, receiverInputStyles } from './styles';
 
 export const Receiver: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { setValue, watch, register } = useFormContext<IDischarge>();
+    const { formState, setValue, watch, register, clearErrors } = useFormContext<IDischarge>();
 
-    const handleInputChange = useCallback((field: FieldPath<IDischarge>) =>
-        (event: ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
             if (!readonly) {
-                    setValue(field, event.target.value)
+                    setValue('receiver', event.target.value);
+                    clearErrors('receiver');
                 }
-    }, [readonly, setValue]);
+    }, [readonly, setValue, clearErrors]);
 
     return (
         <Box sx={{ position: 'relative' }}>
@@ -32,9 +32,10 @@ export const Receiver: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                 multiline={true}
                 rows={4}
                 {...register('receiver')}
-                onChange={handleInputChange('receiver')}
+                onChange={handleInputChange}
                 value={watch('receiver')}
                 inputProps={{ sx: receiverInputPropsSx }}
+                error={formState.errors?.receiver?.message}
             />
         </Box>
     );

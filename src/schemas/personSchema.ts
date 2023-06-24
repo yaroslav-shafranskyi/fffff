@@ -14,10 +14,12 @@ addMethod(string, 'validateFullName', function() {
     })
 });
 
+// @ts-expect-error custom method
+export const personFullNameSchema = fieldRequiredStringSchema().validateFullName();
+
 const defaultPersonSchemaFields = {
     id: defaultStringSchema,
-    // @ts-expect-error custom method
-    fullName: fieldRequiredStringSchema().validateFullName(),
+    fullName: personFullNameSchema,
     tokenNumber: defaultStringSchema,
     rank: fieldRequiredStringSchema(),
     gender: fieldRequiredStringSchema(),

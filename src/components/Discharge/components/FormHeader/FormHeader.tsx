@@ -8,17 +8,29 @@ import { IDischarge } from '../../../../api';
 import { IFCPropsWithReadonly } from '../../../../interfaces';
 import { boldTextStyles } from '../../styles';
 
-import { codeWrapperStyles, formHeaderInputPropsSx, formHeaderInputStyles, formHeaderItemStyles, formHeaderItemWithTitleStyles, formHeaderStyles, formHeaderTitleContentStyles, formHeaderTitleStyles, orderWrapperStyles } from './styles';
+import { codeWrapperStyles, dateInputStyles, formHeaderInputPropsSx, formHeaderInputStyles, formHeaderItemStyles, formHeaderItemWithTitleStyles, formHeaderStyles, formHeaderTitleContentStyles, formHeaderTitleStyles, orderWrapperStyles } from './styles';
+import { formatDateWithoutDots } from '../../../../helpers';
+import { CustomDatePicker } from '../../../../shared/CustomDatePicker/CustomDatePicker';
 
 export const FormHeader: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { watch, register, setValue } = useFormContext<IDischarge>();
+    const { formState, watch, register, setValue, clearErrors } = useFormContext<IDischarge>();
+    const { errors } = formState;
 
     const handleInputChange = useCallback((field: FieldPath<IDischarge>) =>
         (event: ChangeEvent<HTMLInputElement>) => {
             if (!readonly) {
                 setValue(field, event.target.value)
+                clearErrors(field);
             }
-    }, [readonly, setValue]);
+    }, [clearErrors, readonly, setValue]);
+
+    const handleDateChange = useCallback((date?: Date) => {
+        if (readonly || !date) {
+            return;
+        }
+        setValue('order.date', date);
+        clearErrors('order.date');
+    }, [clearErrors, readonly, setValue]);
 
     return (
         <Box sx={formHeaderStyles}>
@@ -34,6 +46,7 @@ export const FormHeader: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                 multiline={true}
                 inputProps={{ sx: formHeaderInputPropsSx }}
                 onChange={handleInputChange('department')}
+                error={errors?.department?.message}
             />
             <Typography variant='caption'>
                 Найменування та місцезнаходження (повна поштова адреса) закладу охорони здоров’я, де заповнюється форма
@@ -42,18 +55,22 @@ export const FormHeader: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                 sx={formHeaderInputStyles}
                 {...register('clinic')}
                 value={watch('clinic')}
+                error={errors?.clinic?.message}
                 onChange={handleInputChange('clinic')}
             />
             <Box sx={codeWrapperStyles}>
                 <Typography variant='caption'>
                     Код за ЄДРПОУ
                 </Typography>
-                <Input
-                    sx={formHeaderInputStyles}
-                    {...register('code')}
-                    value={watch('code')}
-                    onChange={handleInputChange('code')}
-                />
+                <Box>
+                    <Input
+                        sx={formHeaderInputStyles}
+                        {...register('code')}
+                        value={watch('code')}
+                        error={errors?.code?.message}
+                        onChange={handleInputChange('code')}
+                    />
+                </Box>
             </Box>
         </Box>
         <Box sx={formHeaderItemWithTitleStyles}>
@@ -79,15 +96,23 @@ export const FormHeader: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                         Наказ МОЗ України
                     </Typography>
                     <Box sx={orderWrapperStyles}>
-                        <Input
-                            {...register('order.date')}
-                            value=''
-                        />
+                        <CustomDatePicker onChange={handleDateChange}>
+                                <Input
+                                    sx={dateInputStyles}
+                                    error={errors?.order?.date?.message}
+                                    value={formatDateWithoutDots(watch('order.date'))}
+                                    />
+                        </CustomDatePicker>
                         №
-                        <Input
-                            {...register('order.number')}
-                            value=''
-                        />
+                        <Box>
+                            <Input
+                                {...register('order.number')}
+                                sx={dateInputStyles}
+                                value={watch('order.number') ?? ''}
+                                error={errors?.order?.number?.message}
+                                onChange={handleInputChange('order.number')}
+                            />
+                        </Box>
                     </Box>
                 </Box>
             </Box>

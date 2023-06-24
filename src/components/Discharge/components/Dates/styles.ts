@@ -6,6 +6,8 @@ export const rowStyles: SxProps = {
     justifyContent: 'space-between',
     gap: 1,
     whiteSpace: 'nowrap',
+    width: '100%',
+    alignItems: 'end',
 };
 
 export const blankBoxStyles: SxProps = {
@@ -17,3 +19,10 @@ export const blankBoxStyles: SxProps = {
 export const inputStyles: SxProps<Theme> = (theme) => ({
     width: theme.spacing(8),
 });
+
+export const reasonWrapperStyles: SxProps = {
+    display: 'flex',
+    alignItems: 'center',
+    whiteSpace: 'nowrap',
+    gap: '2px',
+};

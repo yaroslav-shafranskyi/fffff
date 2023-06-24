@@ -45,7 +45,12 @@ export const formHeaderTitleStyles: SxProps = {
     m: -.5,
 };
 
-export const orderWrapperStyles: SxProps<Theme> = (theme) => ({
-    display: 'grid',
-    gridTemplateColumns: `2fr ${theme.spacing(5)} 1fr`,
+export const orderWrapperStyles: SxProps= {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+};
+
+export const dateInputStyles: SxProps<Theme> = (theme) => ({
+    width: theme.spacing(7),
 });

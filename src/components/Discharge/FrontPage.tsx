@@ -20,13 +20,14 @@ import { FormHeader, Receiver, PersonInfo } from './components';
 import { Dates } from './components/Dates/Dates';
 
 export const FrontPage: FC<IFCPropsWithReadonly> = () => {
-    const { formState, watch, setValue, register } = useFormContext<IDischarge>();
+    const { formState, watch, setValue, register, clearErrors } = useFormContext<IDischarge>();
     const errors = formState.errors;
 
     const handleInputChange = useCallback((field: FieldPath<IDischarge>) =>
         (event: ChangeEvent<HTMLInputElement>) => {
             setValue(field, event.target.value);
-    }, [setValue]);
+            clearErrors(field)
+    }, [setValue, clearErrors]);
 
     return (
         <Box sx={formWrapperStyles}>

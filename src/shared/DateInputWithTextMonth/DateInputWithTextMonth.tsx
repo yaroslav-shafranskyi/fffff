@@ -1,33 +1,21 @@
-import { FC, useMemo, useState } from 'react';
-import { Typography, Dialog, Box } from '@mui/material';
+import { FC, useMemo } from 'react';
+import { Typography, Box } from '@mui/material';
 
 import { getDateData } from '../../helpers';
 import { emptyDateData } from '../../constants';
 
-import { DateCalendar } from '../DateCalendar';
+import { IDateCalendarProps } from '../DateCalendar';
 
-import { IDateInputWithTextMonthProps } from './types';
 import { fieldStyles, wrapperStyles } from './styles';
+import { CustomDatePicker } from '../CustomDatePicker/CustomDatePicker';
 
-
-export const DateInputWithTextMonth: FC<IDateInputWithTextMonthProps> = (props) => {
+export const DateInputWithTextMonth: FC<IDateCalendarProps> = (props) => {
     const { value } = props;
-
-    const [open, setOpen] = useState<boolean>(false);
-
     const { day, monthName, year } = useMemo(() => !value ? emptyDateData : getDateData(value), [value]);
 
-    const handleOpen = () => {
-        setOpen(true);
-    }
-
-    const handleClose = () => {
-        setOpen(false);
-    }
-
     return (
-        <>
-            <Box sx={wrapperStyles} onClick={handleOpen}>
+        <CustomDatePicker {...props}>
+            <Box sx={wrapperStyles}>
                 "<Box sx={fieldStyles}>
                     <Typography>{day}</Typography>    
                 </Box>"
@@ -40,9 +28,6 @@ export const DateInputWithTextMonth: FC<IDateInputWithTextMonthProps> = (props) 
                 </Box>
                     <Typography>року</Typography>
             </Box>
-            <Dialog open={open} onClose={handleClose}>
-                <DateCalendar { ...props } />
-            </Dialog>
-        </>
+        </CustomDatePicker>
     );
 };

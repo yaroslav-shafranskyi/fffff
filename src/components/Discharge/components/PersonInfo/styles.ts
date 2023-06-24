@@ -16,6 +16,7 @@ export const addressWrapperStyles: SxProps = {
     display: 'flex',
     alignItems: 'center',
     whiteSpace: 'nowrap',
+    gap: '2px',
 };
 
 export const addressNumberInputStyles: SxProps<Theme> = (theme) => ({
