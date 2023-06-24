@@ -19,15 +19,18 @@ import {
 import { FormHeader, Receiver, PersonInfo } from './components';
 import { Dates } from './components/Dates/Dates';
 
-export const FrontPage: FC<IFCPropsWithReadonly> = () => {
+export const FrontPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { formState, watch, setValue, register, clearErrors } = useFormContext<IDischarge>();
     const errors = formState.errors;
 
     const handleInputChange = useCallback((field: FieldPath<IDischarge>) =>
         (event: ChangeEvent<HTMLInputElement>) => {
+            if (readonly) {
+                return;
+            }
             setValue(field, event.target.value);
             clearErrors(field)
-    }, [setValue, clearErrors]);
+    }, [readonly, setValue, clearErrors]);
 
     return (
         <Box sx={formWrapperStyles}>
@@ -43,7 +46,7 @@ export const FrontPage: FC<IFCPropsWithReadonly> = () => {
                 </Typography>
             </Box>
             <Box sx={formContentStyles}>
-                <FormHeader />
+                <FormHeader readonly={readonly} />
                 <Box sx={contentTitleWrapperStyles}>
                     <Typography sx={boldTextStyles}>
                         ВИПИСКА
@@ -53,9 +56,9 @@ export const FrontPage: FC<IFCPropsWithReadonly> = () => {
                     </Typography>
                 </Box>
                 <Box sx={contentDataWrapperStyles}>
-                    <Receiver />
-                    <PersonInfo />
-                    <Dates />
+                    <Receiver readonly={readonly} />
+                    <PersonInfo readonly={readonly} />
+                    <Dates readonly={readonly} />
                     <Box>
                         <Typography>
                             8. Повний діагноз (основне захворювання, супутні захворювання та ускладнення):

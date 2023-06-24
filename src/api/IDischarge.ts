@@ -7,6 +7,7 @@ export enum DischargeReason {
 }
 
 export interface IDischarge {
+    id: string;
     department: string;
     clinic: string;
     code: string;

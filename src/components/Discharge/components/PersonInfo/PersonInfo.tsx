@@ -137,7 +137,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                 title='4. Місце роботи(посада)'
                 inputProps={{
                     ...register('person.profession'),
-                    value: person.profession,
+                    value: person.profession ?? '',
                     onChange: handleInputChange('profession'),
                     multiline: true,
                     rows: 2,

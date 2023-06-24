@@ -6,3 +6,4 @@ export * from './query';
 export * from './person';
 export * from './url';
 export * from './paperSizes';
+export * from './forms';

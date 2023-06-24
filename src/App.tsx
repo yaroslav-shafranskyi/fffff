@@ -19,10 +19,12 @@ const App = () => {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path={form100Url} element={<Form100 />} />
-            <Route path={`${form100Url}/:id`} element={<Form100 />} />
+            <Route path={`${form100Url}/:personId`} element={<Form100 />} />
+            <Route path={`${form100Url}/:personId/:formId`} element={<Form100 />} />
             <Route path={personsUrl} element={<PersonsTable />} />
             <Route path={`${personsUrl}/:id`} element={<Person />} />
-            <Route path={`${dischargeUrl}/:id`} element={<Discharge />} />
+            <Route path={`${dischargeUrl}/:personId`} element={<Discharge />} />
+            <Route path={`${dischargeUrl}/:personId/:formId`} element={<Discharge />} />
           </Routes>
         </Router>
       </QueryClientProvider>

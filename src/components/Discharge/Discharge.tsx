@@ -5,11 +5,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { ControlBar } from '../../shared';
-import { dischargeUrl } from '../../constants';
-import { useGetPerson, useUpdatePerson } from '../../api';
+import { dischargeUrl, defaultDischargeBackPageState, defaultDischargeFrontPageState } from '../../constants';
+import { useGetDischarge, useUpdatePerson, useUpdateDischarge } from '../../api';
 
 import { containerStyles } from './styles';
-import { defaultDischargeBackPageState, defaultDischargeFrontPageState } from './constants';
 import { FrontPage } from './FrontPage';
 import { DischargeBackPageState, DischargeFrontPageState } from './types';
 import { BackPage } from './BackPage';
@@ -20,24 +19,26 @@ export const Discharge = () => {
     
     const navigate = useNavigate();
 
-    const personId = useMemo(() => pathname.split(`${dischargeUrl}/`)[1], [pathname]);
+    const [personId, formId] = useMemo(() => (pathname.split(`${dischargeUrl}/`)[1]?.split('/') ?? []).map(decodeURI), [pathname]);
 
-    const { data:  person } = useGetPerson(decodeURI(personId));
+    const initialForm = useGetDischarge(personId, formId);
+
     const { mutate: savePerson } = useUpdatePerson();
+    const { mutate: saveForm } = useUpdateDischarge();
     
     const { defaultFrontPageValues, defaultBackPageValues } = useMemo(() => {
-        if (!person?.lastRecords?.discharge) {
+        if (!initialForm) {
             return {
                 defaultFrontPageValues: defaultDischargeFrontPageState,
                 defaultBackPageValues: defaultDischargeBackPageState
             }
         }
-        const { doctor, date, recommendations, info, ...rest } = person.lastRecords.discharge;
+        const { doctor, date, recommendations, info, ...rest } = initialForm;
         return {
-            defaultFrontPageValues: { ...rest, person },
-            defaultBackPageValues: { doctor, date, recommendations, info }
-        }
-    }, [person])
+            defaultFrontPageValues: { ...rest },
+            defaultBackPageValues: { doctor, date, recommendations, info },
+        };
+    }, [initialForm]);
 
     const { readonly } = (state ?? {})  as { readonly?: boolean };
 
@@ -93,8 +94,9 @@ export const Discharge = () => {
         };
 
         savePerson(updatedPerson);
+        saveForm({ ...dischargeRecord, person: updatedPerson, id: String(person.records.discharge.length + 1) })
         navigate('/')
-    }, [backPageTrigger, navigate, savePerson, watchBackPage, watchFrontPage]);
+    }, [backPageTrigger, navigate, saveForm, savePerson, watchBackPage, watchFrontPage]);
 
     const handleSubmit = useCallback(() => {
         if (page === 0) {

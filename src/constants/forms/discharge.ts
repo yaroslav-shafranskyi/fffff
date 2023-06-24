@@ -1,7 +1,7 @@
 import { DischargeReason, IDischargeDates } from "../../api";
-import { defaultPersonData } from "../../constants";
+import { DischargeBackPageState, DischargeFrontPageState } from '../../components'
 
-import { DischargeBackPageState, DischargeFrontPageState } from "./types";
+import { defaultPersonData } from "../person";
 
 export const defaultDischargeFrontPageState: DischargeFrontPageState = {
     department: '',
@@ -16,6 +16,7 @@ export const defaultDischargeFrontPageState: DischargeFrontPageState = {
     reason: '' as DischargeReason,
     fullDiagnosis: '',
     code: '',
+    id: '',
 };
 
 export const defaultDischargeBackPageState: DischargeBackPageState = {

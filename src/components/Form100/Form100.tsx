@@ -5,7 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ControlBar } from '../../shared';
-import { IForm100, useGetPerson, useUpdatePerson } from '../../api';
+import { IForm100, useUpdatePerson, useGetForm100, useUpdateForm100 } from '../../api';
+import { form100Url } from '../../constants';
 
 import { form100FrontSchema, form100BackSchema } from './schemas';
 import { containerStyles } from './styles';
@@ -23,14 +24,13 @@ export const Form100 = () => {
 
     const navigate = useNavigate();
 
-    const id = useMemo(() => decodeURI(pathname.split('form100/')[1]), [pathname]);
+    const [personId, formId] = useMemo(() => (pathname.split(`${form100Url}/`)[1]?.split('/') ?? []).map(decodeURI), [pathname]);
 
-    const { data: initialPerson} = useGetPerson(id);
-
+    const initialForm100 = useGetForm100(personId, formId);
+    
     const { front: initialFrontState, back: initialBackState} = useMemo(() => {
-        const initialData = !initialPerson?.lastRecords?.form100 ?
-            getInitialForm100() :
-            { ...initialPerson.lastRecords.form100, person: initialPerson };
+        const initialData = initialForm100 ?? getInitialForm100();
+        
         if (readonly) {
             return convertIForm100ToIForm100State(initialData);
         }
@@ -44,7 +44,7 @@ export const Form100 = () => {
                 },
             }
         });
-    }, [initialPerson, readonly]);
+    }, [initialForm100, readonly]);
 
     const frontMethods = useForm<IForm100FrontState>({
         defaultValues: initialFrontState,
@@ -66,7 +66,8 @@ export const Form100 = () => {
 
     const backState = watchBack();
 
-    const { mutate } = useUpdatePerson();
+    const { mutate: savePerson } = useUpdatePerson();
+    const { mutate: saveForm } = useUpdateForm100();
 
     const handleGoBack = useCallback(() => {
         if (!page) {
@@ -92,9 +93,11 @@ export const Form100 = () => {
             const updatedLastForm100Record = { ...lastRecords.form100, ...restFrontState, ...backState };
             const updatedLastBriefRecord = { date: restFrontState.date, fullDiagnosis: backState.fullDiagnosis };
             const updatedRecords = { ...records, form100: [...records.form100, updatedLastForm100Record], brief: [...records.brief, updatedLastBriefRecord] };
-            mutate({...person, records: updatedRecords, lastRecords: { ...lastRecords, form100: updatedLastForm100Record, brief: updatedLastBriefRecord }});
+            const updatedPerson = {...person, records: updatedRecords, lastRecords: { ...lastRecords, form100: updatedLastForm100Record, brief: updatedLastBriefRecord }};
+            savePerson(updatedPerson);
+            saveForm({...restFrontState, ...backState, person, id: String(person.records.form100.length + 1) });
         }
-    }, [backState, lastRecords, mutate, person, readonly, records, restFrontState, triggerBack])
+    }, [readonly, triggerBack, lastRecords, restFrontState, backState, records, person, savePerson, saveForm])
 
     const handleSubmit = useCallback(async () => {
         if (!page) {

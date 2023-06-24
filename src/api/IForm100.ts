@@ -9,6 +9,7 @@ import { RecordType } from './IRecord';
 import { SanitaryTreatmentStatus } from './SanitaryTreatmentStatus';
 
 export interface IForm100 {
+    id: string;
     clinic: string;
     author: string;
     person: IPerson;
