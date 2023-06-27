@@ -32,7 +32,8 @@ export const linkStyles: SxProps = {
     },
 };
 
-export const menuIconStyles: SxProps = {
-    p: 0,
+export const getMenuIconStyles = (isMenuOpen?: boolean): SxProps => ({
+    ml: -.5,
     mt: .5,
-};
+    transform: isMenuOpen ? 'rotate(90deg)' : 'none',
+});

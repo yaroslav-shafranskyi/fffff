@@ -4,7 +4,7 @@ import { Theme } from '@mui/system';
 export const dialogActionsStyles: SxProps = {
     display: 'flex',
     justifyContent: 'space-around',
-    px: 10,
+    px: 5,
     mb: 5,
     gap: 2,
 };
@@ -12,8 +12,7 @@ export const dialogActionsStyles: SxProps = {
 export const dialogContentStyles: SxProps = {
     gap: 6,
     display: 'grid',
-    px: 10,
-    py: 5,
+    p: 5,
 };
 
 export const dialogButtonStyles: SxProps<Theme> = (theme) => ({
@@ -23,8 +22,9 @@ export const dialogButtonStyles: SxProps<Theme> = (theme) => ({
 
 export const openButtonStyles: SxProps<Theme> = (theme) => ({
     ...dialogButtonStyles(theme),
-    bgcolor: 'secondary.main',
+    bgcolor: 'primary.light',
+    color: 'text.primary',
     '&:hover': {
-        bgcolor: 'secondary.dark',
+        bgcolor: theme.palette.primary.main,
     },
 })

@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, useCallback } from 'react';
 import { Container, Box, Typography, Link, IconButton, Menu, MenuItem } from '@mui/material';
 import { AccountCircleOutlined as AvatarIcon, ArrowRight as OpenMenuIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -8,17 +8,25 @@ import { personsUrl } from '../../constants';
 import { useOpenFormDialog } from '../OpenForm';
 import { OpenForm100Dialog } from '../Form100';
 import { OpenPersonDialog } from '../Person';
+import { OpenDischargeForm } from '../Discharge';
 
-import { containerStyles, linkStyles, linksWrapperStyles, menuIconStyles } from './styles';
+import { containerStyles, getMenuIconStyles, linkStyles, linksWrapperStyles } from './styles';
 
-const additionalOptions = ['Консультативний висновок', 'Виписка', 'Направлення'];
+enum AdditionalOptions {
+    CONCLUSION = 'Консультативний висновок',
+    DISCHARGE = 'Виписка',
+    REFERRAL = 'Направлення',
+}
+
+const additionalOptions = Object.values(AdditionalOptions);
 
 export const Header = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
 
     const [OpenForm100Component, handleOpenForm100] = useOpenFormDialog(OpenForm100Dialog);
-    const [OpenPersonComponent, handleOpenPerson] = useOpenFormDialog(OpenPersonDialog)
+    const [OpenPersonComponent, handleOpenPerson] = useOpenFormDialog(OpenPersonDialog);
+    const [OpenDischargeComponent, handleOpenDischarge] = useOpenFormDialog(OpenDischargeForm);
 
     const isMenuOpen = Boolean(anchorEl);
 
@@ -33,10 +41,17 @@ export const Header = () => {
         setAnchorEl(null);
     };
 
+    const handleMenuOptionSelect = useCallback((option: AdditionalOptions) => () => {
+        if (option === AdditionalOptions.DISCHARGE) {
+            handleOpenDischarge();
+        }
+        handleCloseMenu();
+    }, [handleOpenDischarge]);
+
     return (
         <Container disableGutters={true} sx={containerStyles} maxWidth={false}>
             <Box>
-                <Typography variant='h4'>Logo</Typography>
+                <Typography variant='h5'>Logo</Typography>
             </Box>
             <Box sx={linksWrapperStyles}>
                 <Link
@@ -70,9 +85,7 @@ export const Header = () => {
                     onClick={handleOpenMenu}
                 >
                     Додаткові документи
-                    <IconButton sx={menuIconStyles}>
-                        <OpenMenuIcon sx={ isMenuOpen ? { transform: 'rotate(90deg)' } : {}} />
-                    </IconButton>
+                    <OpenMenuIcon sx={getMenuIconStyles(isMenuOpen)} />
                 </Link>
             </Box>
             <IconButton sx={{ justifySelf: 'end' }}>
@@ -80,11 +93,12 @@ export const Header = () => {
             </IconButton>
             <Menu open={isMenuOpen} anchorEl={anchorEl} onClose={handleCloseMenu}>
                 {additionalOptions.map(op => (
-                    <MenuItem key={op} value={op}>{op}</MenuItem>
+                    <MenuItem key={op} value={op} onClick={handleMenuOptionSelect(op)}>{op}</MenuItem>
                 ))}
             </Menu>
             {OpenForm100Component}
             {OpenPersonComponent}
+            {OpenDischargeComponent}
         </Container>
     )
 };

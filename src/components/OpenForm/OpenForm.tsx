@@ -79,20 +79,20 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
             </DialogContent>
             <DialogActions sx={dialogActionsStyles}>
                 <Button
+                        variant='contained'
+                        size='large'
+                        sx={openButtonStyles}
+                        onClick={goToUpdateMode(personId)}
+                    >
+                    Переглянути
+                </Button>
+                <Button
                     variant='contained'
                     sx={dialogButtonStyles}
                     size='large'
                     onClick={goToCreateMode(personId)}
                 >
                     Створити
-                </Button>
-                <Button
-                    variant='contained'
-                    sx={openButtonStyles}
-                    size='large'
-                    onClick={goToUpdateMode(personId)}
-                >
-                    Переглянути
                 </Button>
             </DialogActions>
         </Dialog>
