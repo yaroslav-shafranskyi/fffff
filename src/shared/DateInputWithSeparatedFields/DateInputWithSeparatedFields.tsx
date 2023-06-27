@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import { getDateData, updateDay, updateMinute, updateMonth, updateYear } from '../../helpers';
 import { emptyDateData } from '../../constants';
@@ -7,7 +7,7 @@ import { emptyDateData } from '../../constants';
 import { Input } from '../Input';
 
 import { IDateInputWithSeparatedFieldsProps } from './types';
-import { dateNumberInputStyles } from './styles';
+import { dateNumberInputStyles, wrapperStyles } from './styles';
 
 export const DateInputWithSeparatedFields: FC<IDateInputWithSeparatedFieldsProps> = (props) => {
     const { date, onChange } = props;
@@ -52,12 +52,16 @@ export const DateInputWithSeparatedFields: FC<IDateInputWithSeparatedFieldsProps
     }, [onChange, updatedDate]);
 
     return (
-        <Typography>
-            <Input value={hours} onChange={handleHoursChange} sx={dateNumberInputStyles} /> год. 
-            <Input value={minutes} onChange={handleCommonFieldChange(updateMinute)} sx={dateNumberInputStyles} /> {`хв. `}
+        <Box sx={wrapperStyles}>
+            <Input value={hours} onChange={handleHoursChange} sx={dateNumberInputStyles} /> 
+            <Typography>год.</Typography>
+            <Input value={minutes} onChange={handleCommonFieldChange(updateMinute)} sx={dateNumberInputStyles} />
+            <Typography>{`хв. `}</Typography>
             <Input value={day} onChange={handleCommonFieldChange(updateDay)} sx={dateNumberInputStyles} />. 
             <Input value={month} onChange={handleCommonFieldChange(updateMonth)} sx={dateNumberInputStyles} />.
-            20<Input value={year} onChange={handleCommonFieldChange(updateYear(true))} sx={dateNumberInputStyles} />р. 
-        </Typography>
+            <Typography>20</Typography>
+            <Input value={year} onChange={handleCommonFieldChange(updateYear(true))} sx={dateNumberInputStyles} />
+            <Typography>р.</Typography> 
+        </Box>
     );
 };

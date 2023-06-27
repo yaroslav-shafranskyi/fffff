@@ -4,7 +4,9 @@ export const defaultPersonData: IPerson = {
     rank: '' as Rank,
     militaryBase: '',
     fullName: '',
-    id: '',
+    // TODO: id should be incrementally generated on back-end
+    id: String(Math.round(Math.random() * 1000000)),
+    personalId: '',
     tokenNumber: '',
     gender: '' as Gender,
     records: {

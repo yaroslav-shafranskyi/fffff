@@ -35,7 +35,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         fullName,
         militaryBase,
         rank,
-        id,
+        personalId,
         tokenNumber,
         lastRecords,
     } = person;
@@ -110,14 +110,14 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         clearErrors('person.rank');
     }, [clearErrors, readonly, setValue]);
 
-    const getReasonColor = <T extends string>(option: T, getCurrentValue: (person: IPerson) => T) => 
-        option === getCurrentValue(person) ? 'error' : 'textPrimary';
+    const getReasonColor = <T extends string>(option: T, getCurrentValue: (person: IPerson) => T | undefined) => 
+        (option === getCurrentValue(person) && getCurrentValue(person) !== undefined) ? 'error' : 'textPrimary';
     
-    const getGenderColor = <T extends string>(option: T, getCurrentValue: (person: IPerson) => T) => 
-        option === getCurrentValue(person) ? 'success.light' : 'textPrimary';
+    const getGenderColor = <T extends string>(option: T, getCurrentValue: (person: IPerson) => T | undefined) => 
+        (option === getCurrentValue(person) && getCurrentValue(person) !== undefined) ? 'success.light' : 'textPrimary';
 
     const getCurrentGender = (p: IPerson) => p.gender;
-    const getCurrentReason = (p: IPerson) => p.lastRecords.form100.reason;
+    const getCurrentReason = (p: IPerson) => p.lastRecords.form100?.reason;
 
     const optionWrapperSx: SxProps<Theme> = useMemo(() => readonly ? {} : cursorPointerStyles, [readonly]);
 
@@ -178,10 +178,10 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                 </Box>
                 <Box sx={{ width: '100%' }}>
                     <Input
-                        value={id}
+                        value={personalId}
                         sx={fullWidthInputStyles}
-                        error={errors?.id?.message}
-                        onChange={handleCommonFieldChange('id')}
+                        error={errors?.personalId?.message}
+                        onChange={handleCommonFieldChange('personalId')}
                     />
                 </Box>
             </Box>

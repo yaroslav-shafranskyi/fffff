@@ -18,7 +18,6 @@ addMethod(string, 'validateFullName', function() {
 export const personFullNameSchema = fieldRequiredStringSchema().validateFullName();
 
 const defaultPersonSchemaFields = {
-    id: defaultStringSchema,
     fullName: personFullNameSchema,
     tokenNumber: defaultStringSchema,
     rank: fieldRequiredStringSchema(),
@@ -36,6 +35,7 @@ const defaultPersonSchemaFields = {
 
 export const personForm100Schema = object().shape({
     ...defaultPersonSchemaFields,
+    personalId: defaultStringSchema,
 }).required();
 
 export const personPageSchema = object().shape({

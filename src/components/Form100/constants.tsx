@@ -4,6 +4,8 @@ import { defaultPersonData } from "../../constants";
 export const getInitialForm100 = (): IForm100 => {
     const newDate = new Date();
     return {
+        // TODO: id should be incrementally generated on back-end
+        id: String(newDate.getTime()),
         author: '',
         clinic: '',
         person: defaultPersonData, 

@@ -35,9 +35,9 @@ export const Injury: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                 <Typography sx={{ fontWeight: 'bold' }}>НБ</Typography>
             </Box>
             <Box sx={injuryCellStyles}>
-                {Object.keys(injuriesFields).slice().sort().map(key => <Box sx={injuryTypeCellStyles}>
+                {Object.keys(injuriesFields).slice().sort().map(key => <Box sx={injuryTypeCellStyles} key={key}>
                         <Box sx={{ pl: .5 }}>
-                            <Typography key={key}>
+                            <Typography>
                                 {injuriesFields[+key].name}
                             </Typography>
                         </Box>

@@ -69,7 +69,7 @@ export const MedicalHelp: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                             </Typography>
                         </Box>
                     </Box>
-                    {Object.keys(treatmentsFields).slice().sort().map(key => <Box sx={preparationRowStyles}>
+                    {Object.keys(treatmentsFields).slice().sort().map(key => <Box sx={preparationRowStyles} key={key}>
                         <Box sx={{ pl: .5, borderRight: '1.5px solid',  }}>
                             <Typography>
                                 {treatmentsFields[+key].name}

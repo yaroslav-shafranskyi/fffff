@@ -1,12 +1,13 @@
-import { FC } from 'react';
+import { FC, forwardRef } from 'react';
 import { TextField, Typography } from '@mui/material';
 
 import { IInputProps } from './types';
 
-export const Input: FC<IInputProps> = (props) => {
+export const Input: FC<IInputProps> = forwardRef((props, ref) => {
     const { error, inputProps } = props;
     return <>
-        <TextField 
+        <TextField
+            ref={ref}
             variant='standard'
             sx={{ p: 0 }}
             {...props}
@@ -15,4 +16,4 @@ export const Input: FC<IInputProps> = (props) => {
         />
         {error && <Typography color='error'>{error}</Typography>}
     </>
-}
+});

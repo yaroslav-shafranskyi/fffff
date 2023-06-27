@@ -88,7 +88,6 @@ export const Discharge = () => {
 
         const updatedPerson = {
             ...person,
-            id: person.id || `${Math.round(Math.random() * 1000000)}`,
             lastRecords: {
                 ...person.lastRecords,
                 discharge: dischargeRecord,

@@ -26,8 +26,17 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
     const { data: persons } = useQueryPersons({ ...getInitialQuery(), filterBy: { fullName: personName }});
 
     const convertedPersons = useMemo(
-        () => persons.reduce((acc: Record<string, string>, {fullName, id, rank, militaryBase}) => {
-            acc[id] = `${fullName}, ID: ${id}, ${rank}, в/ч(з’єднання): ${militaryBase}`;
+        () => persons.reduce((acc: Record<string, string>, {fullName, id, personalId, rank, militaryBase}) => {
+            acc[id] = `${fullName}`;
+            if (personalId) {
+                acc[id] += `, ID: ${personalId}`;
+            }
+            if (rank) {
+                acc[id] += `, ${rank}`;
+            }
+            if (militaryBase) {
+                acc[id] += `, в/ч(з’єднання): ${militaryBase}`
+            }
             return acc;
             }, {}), [persons]);
 

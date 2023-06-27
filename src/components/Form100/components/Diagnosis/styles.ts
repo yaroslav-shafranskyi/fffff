@@ -10,7 +10,7 @@ export const diagnosisStyles: SxProps<Theme> = (theme) => ({
 
 export const diagnosisInputStyles: SxProps<Theme> = (theme) => ({
     p: 0, 
-    '& :first-child': {
+    '& div:first-of-type': {
         p: 0,
         maxHeight: theme.spacing(8)
     }

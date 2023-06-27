@@ -85,7 +85,7 @@ export const Person = () => {
         savePerson(newPerson);
         navigate('/');
     };
-    console.log({ person });
+
     return (
         <Card sx={cardStyles}>
             <ControlBar onSubmit={handleSubmit(submitUserChanges)} />

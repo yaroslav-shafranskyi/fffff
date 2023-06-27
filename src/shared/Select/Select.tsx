@@ -1,13 +1,14 @@
-import { FC } from 'react';
+import { FC, forwardRef } from 'react';
 import { Select as MuiSelect, Typography, MenuItem, FormControl, InputLabel } from "@mui/material";
 
 import { ISelectProps } from "./types";
 
-export const Select: FC<ISelectProps> = (props) => {
+export const Select: FC<ISelectProps> = forwardRef((props, ref) => {
     const { error, options, label, inputProps } = props;
     return <FormControl fullWidth={true}>
         <InputLabel>{label}</InputLabel>
         <MuiSelect
+            ref={ref}
             IconComponent={() => null}
             variant='standard'
             fullWidth={true}
@@ -21,4 +22,4 @@ export const Select: FC<ISelectProps> = (props) => {
         </MuiSelect>
         {error && <Typography color='error'>{error}</Typography>}
     </FormControl>
-}
+});
