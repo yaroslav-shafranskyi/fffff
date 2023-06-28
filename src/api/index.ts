@@ -18,3 +18,4 @@ export * from './IDischargeDates';
 export * from './IDischarge';
 export * from './form100';
 export * from './discharge';
+export * from './Forms';

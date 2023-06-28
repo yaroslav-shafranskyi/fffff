@@ -1,4 +1,5 @@
-import { IDischarge, IForm100 } from ".";
+import { IDischarge } from './IDischarge';
+import { IForm100 } from './IForm100';
 
 export enum RecordType {
     INJURY = 'injury',
@@ -12,6 +13,7 @@ export type IDischargeRecord = Omit<IDischarge, 'person'>;
 export interface IBriefRecord {
     date: Date;
     fullDiagnosis: string;
+    id: string;
 }
 
 export interface ILastRecords {

@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useMemo, useState, MouseEvent } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLocation } from 'react-router-dom';
 import {
@@ -9,31 +9,45 @@ import {
     RadioGroup,
     FormControlLabel,
     Button,
-    FormLabel
+    Menu,
+    MenuItem,
+    Container
 } from '@mui/material';
+import { ArrowRight as OpenMenuIcon } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { ArmyRank, Gender, IBriefRecord, IPerson, useGetPerson, useUpdatePerson } from '../../api';
+import { ArmyRank, Forms, Gender, IBriefRecord, IPerson, useGetPerson, useUpdatePerson } from '../../api';
 import { Select, Input, ControlBar, DatePicker } from '../../shared';
-import { defaultPersonData } from '../../constants';
+import { defaultPersonData, dischargeUrl, form100Url } from '../../constants';
 import { REQUIRED_FIELD_MESSAGE, personPageSchema } from '../../schemas';
+
+import { Header } from '../Header';
 
 import {
     cardStyles,
     inputPropsSx,
     radioStyles,
     genderWrapperStyles,
-    recordsTitleWrapperStyles,
-    newRecordWrapperStyles,
-    newRecordLabelStyles,
-    newRecordContentStyles,
-    newRecordButtonStyles,
     fullWidthStyles,
     infoWrapperStyles,
     infoLeftSectionRowStyles,
-    infoLeftSectionStyles
+    infoLeftSectionStyles,
+    containerStyles,
+    historyTitleWrapper,
+    getMenuIconStyles
 } from './styles';
+
+const options = Object.values(Forms);
+
+const getFormURL = (option: Forms) => {
+    if (option === Forms.FORM_100) {
+        return form100Url;
+    }
+    if (option === Forms.DISCHARGE) {
+        return dischargeUrl;
+    }
+};
 
 export const Person = () => {
     const { pathname } = useLocation() ?? {};
@@ -61,9 +75,25 @@ export const Person = () => {
 
     const records = watch('records');
     const lastRecords = watch('lastRecords');
+    const id = watch('id');
     const gender = watch('gender');
     
     const { errors } = formState;
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const isMenuOpen = Boolean(anchorEl);
+
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
+    const toggleMenuOpen = useCallback((event: MouseEvent<HTMLElement>) => {
+        setAnchorEl(prevAnchor => {
+            if (!prevAnchor) {
+                return event.currentTarget;
+            }
+            return null;
+        });
+    }, [])
 
     const handleInputChange = useCallback((key: keyof IPerson) => (event: ChangeEvent<HTMLInputElement>) => {
         setValue(key, event.target.value);
@@ -86,121 +116,151 @@ export const Person = () => {
         navigate('/');
     };
 
+    const handleMenuOptionSelect = useCallback((form: Forms) => () => {
+        const formUrl = getFormURL(form);
+        if (!formUrl) {
+            return;
+        }
+        navigate(`${formUrl}/${id}`);
+    }, [navigate, id])
+
+console.log({ person })
     return (
-        <Card sx={cardStyles}>
-            <ControlBar onSubmit={handleSubmit(submitUserChanges)} />
-            <Typography variant='h4'>Інформація про військовослужбовця</Typography>
-            <Box sx={infoWrapperStyles}>
-                <Box sx={infoLeftSectionStyles}>
-                    <Box sx={infoLeftSectionRowStyles}>
-                        <Box sx={fullWidthStyles}>
-                            <Input
-                                label='ПІБ'
-                                variant='outlined'
-                                inputProps={{ sx: inputPropsSx }}
-                                error={errors.fullName?.message}
-                                fullWidth={true}
-                                {...register('fullName')}
-                                onChange={handleInputChange('fullName')}
-                                value={watch('fullName')}
-                            />
+        <>
+            <Header />
+            <Container maxWidth={false} sx={containerStyles}>
+                <Card sx={cardStyles}>
+                    <ControlBar title='Швидкий пошук військовослужбовця' onSubmit={handleSubmit(submitUserChanges)} />
+                    <Typography variant='h5'>Особиста інформація війсковослужбовця</Typography>
+                    <Box sx={infoWrapperStyles}>
+                        <Box sx={infoLeftSectionStyles}>
+                            <Box sx={infoLeftSectionRowStyles}>
+                                <Box sx={fullWidthStyles}>
+                                    <Input
+                                        label='ПІБ'
+                                        variant='outlined'
+                                        inputProps={{ sx: inputPropsSx }}
+                                        error={errors.fullName?.message}
+                                        fullWidth={true}
+                                        {...register('fullName')}
+                                        onChange={handleInputChange('fullName')}
+                                        value={watch('fullName')}
+                                    />
+                                </Box>
+                                <Box sx={fullWidthStyles}>
+                                    <Select
+                                        label='Звання'
+                                        variant='outlined'
+                                        inputProps={{ sx: inputPropsSx }}
+                                        options={Object.values(ArmyRank)}
+                                        error={errors.rank?.message}
+                                        {...register('rank')}
+                                        value={watch('rank')}
+                                    />
+                                </Box>
+                            </Box>
+                            <Box sx={infoLeftSectionRowStyles}>
+                                <Box sx={fullWidthStyles}>
+                                    <Input
+                                        label='Посвідчення особи'
+                                        variant='outlined'
+                                        inputProps={{ sx: inputPropsSx }}
+                                        error={errors.personalId?.message}
+                                        fullWidth={true}
+                                        {...register('personalId')}
+                                        onChange={handleInputChange('id')}
+                                        value={watch('personalId')}
+                                    />
+                                </Box>
+                                <Box sx={fullWidthStyles}>
+                                    <Input
+                                        label='Особистий номер'
+                                        variant='outlined'
+                                        inputProps={{ sx: inputPropsSx }}
+                                        error={errors.tokenNumber?.message}
+                                        fullWidth={true}
+                                        {...register('tokenNumber')}
+                                        onChange={handleInputChange('tokenNumber')}
+                                        value={watch('tokenNumber')}
+                                    />
+                                </Box>
+                            </Box>
+                            <Box sx={infoLeftSectionRowStyles}>
+                                <Box sx={fullWidthStyles}>
+                                    <DatePicker
+                                        label="Дата народження"
+                                        value={watch('birthDate')}
+                                        sx={fullWidthStyles}
+                                        onChange={handleDateChange('birthDate')}
+                                    />
+                                    {errors.birthDate?.message !== undefined && (
+                                        <Typography color='error'>{REQUIRED_FIELD_MESSAGE}</Typography>
+                                    )}
+                                </Box>
+                                <Box sx={fullWidthStyles}>
+                                    <Input
+                                        label='Телефон'
+                                        variant='outlined'
+                                        inputProps={{ sx: inputPropsSx }}
+                                        fullWidth={true}
+                                        {...register('phoneNumber')}
+                                        onChange={handleInputChange('phoneNumber')}
+                                        value={watch('phoneNumber')}
+                                    />
+                                </Box>
+                            </Box>
                         </Box>
-                        <Box sx={fullWidthStyles}>
-                            <Select
-                                label='Звання'
-                                variant='outlined'
-                                inputProps={{ sx: inputPropsSx }}
-                                options={Object.values(ArmyRank)}
-                                error={errors.rank?.message}
-                                {...register('rank')}
-                                value={watch('rank')}
-                            />
+                        <Box>
+                            <Box sx={fullWidthStyles}>
+                                <Input
+                                    label='Військова частина'
+                                    variant='outlined'
+                                    inputProps={{ sx: inputPropsSx }}
+                                    error={errors.militaryBase?.message}
+                                    fullWidth={true}
+                                    {...register('militaryBase')}
+                                    onChange={handleInputChange('militaryBase')}
+                                    value={watch('militaryBase')}
+                                />
+                            </Box>
+                            <Box  sx={genderWrapperStyles}>
+                                <Typography>Стать</Typography>
+                                <RadioGroup>
+                                    <FormControlLabel
+                                        value={Gender.MALE}
+                                        control={<Radio checked={gender === Gender.MALE} onChange={handleGenderChange(Gender.MALE)} />}
+                                        label="Чоловік"
+                                        sx={radioStyles}
+                                    />
+                                    <FormControlLabel
+                                        value={Gender.FEMALE}
+                                        control={<Radio checked={gender === Gender.FEMALE} onChange={handleGenderChange(Gender.FEMALE)} />}
+                                        label="Жінка"
+                                        sx={radioStyles}
+                                    />
+                                </RadioGroup>
+                                {errors.gender?.message && <Typography color='error'>{REQUIRED_FIELD_MESSAGE}</Typography>}
+                            </Box>
                         </Box>
                     </Box>
-                    <Box sx={infoLeftSectionRowStyles}>
-                        <Box sx={fullWidthStyles}>
-                            <Input
-                                label='Посвідчення особи'
-                                variant='outlined'
-                                inputProps={{ sx: inputPropsSx }}
-                                error={errors.id?.message}
-                                fullWidth={true}
-                                {...register('id')}
-                                onChange={handleInputChange('id')}
-                                value={watch('id')}
-                            />
-                        </Box>
-                        <Box sx={fullWidthStyles}>
-                            <Input
-                                label='Особистий номер'
-                                variant='outlined'
-                                inputProps={{ sx: inputPropsSx }}
-                                error={errors.tokenNumber?.message}
-                                fullWidth={true}
-                                {...register('tokenNumber')}
-                                onChange={handleInputChange('tokenNumber')}
-                                value={watch('tokenNumber')}
-                            />
-                        </Box>
+                    <Box sx={historyTitleWrapper}>
+                        <Typography variant='h5'>Історія хвороби</Typography>
+                        <Button
+                            variant='contained'
+                            color='inherit'
+                            onClick={toggleMenuOpen}
+                        >
+                            ДОДАТИ ДОКУМЕНТИ
+                            <OpenMenuIcon sx={getMenuIconStyles(isMenuOpen)} />
+                        </Button>
                     </Box>
-                    <Box sx={infoLeftSectionRowStyles}>
-                        <Box sx={fullWidthStyles}>
-                            <DatePicker
-                                label="Дата народження"
-                                value={watch('birthDate')}
-                                sx={fullWidthStyles}
-                                onChange={handleDateChange('birthDate')}
-                            />
-                            {errors.birthDate?.message !== undefined && (
-                                <Typography color='error'>{REQUIRED_FIELD_MESSAGE}</Typography>
-                            )}
-                        </Box>
-                        <Box sx={fullWidthStyles}>
-                            <Input
-                                label='Телефон'
-                                variant='outlined'
-                                inputProps={{ sx: inputPropsSx }}
-                                fullWidth={true}
-                                {...register('phoneNumber')}
-                                onChange={handleInputChange('phoneNumber')}
-                                value={watch('phoneNumber')}
-                            />
-                        </Box>
-                    </Box>
-                </Box>
-                <Box>
-                    <Box sx={fullWidthStyles}>
-                        <Input
-                            label='Військова частина'
-                            variant='outlined'
-                            inputProps={{ sx: inputPropsSx }}
-                            error={errors.militaryBase?.message}
-                            fullWidth={true}
-                            {...register('militaryBase')}
-                            onChange={handleInputChange('militaryBase')}
-                            value={watch('militaryBase')}
-                        />
-                    </Box>
-                    <Box  sx={genderWrapperStyles}>
-                        <Typography>Стать</Typography>
-                        <RadioGroup>
-                            <FormControlLabel
-                                value={Gender.MALE}
-                                control={<Radio checked={gender === Gender.MALE} onChange={handleGenderChange(Gender.MALE)} />}
-                                label="Чоловік"
-                                sx={radioStyles}
-                            />
-                            <FormControlLabel
-                                value={Gender.FEMALE}
-                                control={<Radio checked={gender === Gender.FEMALE} onChange={handleGenderChange(Gender.FEMALE)} />}
-                                label="Жінка"
-                                sx={radioStyles}
-                            />
-                        </RadioGroup>
-                        {errors.gender?.message && <Typography color='error'>{REQUIRED_FIELD_MESSAGE}</Typography>}
-                    </Box>
-                </Box>
-            </Box>
-       </Card>
+                </Card>
+            </Container>
+            <Menu open={isMenuOpen} anchorEl={anchorEl} onClose={handleCloseMenu}>
+                {options.map(op => (
+                    <MenuItem key={op} value={op} onClick={handleMenuOptionSelect(op)}>{op}</MenuItem>
+                ))}
+            </Menu>
+       </>
     );
 }

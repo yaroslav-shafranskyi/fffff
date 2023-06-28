@@ -1,7 +1,7 @@
 import { IForm100 } from "../../api";
+import { getInitialForm100 } from "../../constants";
 
 import { IForm100State } from "./types";
-import { getInitialForm100 } from "./constants";
 
 export const convertIForm100ToIForm100State = (data?: IForm100): IForm100State => {
     const {
@@ -27,7 +27,7 @@ export const convertIForm100ToIForm100State = (data?: IForm100): IForm100State =
         selfLeave,
         carriedBy,
         timeAfterAccident,
-        firstAidInfo
+        firstAidInfo,
     } = data ?? getInitialForm100();
 
     return {

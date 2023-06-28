@@ -3,17 +3,18 @@ import { useNavigate } from 'react-router-dom';
 
 import { UseOpenFormComponentType } from '../../interfaces';
 import { personsUrl } from '../../constants';
+import { IPerson } from '../../api';
 
 import { OpenFormDialog } from '../OpenForm';
 
 export const OpenPersonDialog: UseOpenFormComponentType = ({ onClose }) => {
     const navigate = useNavigate();
 
-    const goToUpdateMode = useCallback((personId?: string) => () => {
-        if (!personId) {
+    const goToUpdateMode = useCallback((person?: IPerson) => () => {
+        if (!person) {
             return;
         }
-        navigate(`${personsUrl}/${personId}`);
+        navigate(`${personsUrl}/${person.id}`);
     }, [navigate]);
 
     const goToCreateMode = useCallback(() => () => {

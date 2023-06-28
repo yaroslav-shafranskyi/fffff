@@ -8,6 +8,11 @@ export const containerStyles: SxProps = {
     pb: 1,
 };
 
+export const titleStyles: SxProps = {
+    display: 'flex',
+    alignItems: 'center',
+};
+
 export const actionsWrapperStyles: SxProps = {
     gap: 2,
     display: 'grid',

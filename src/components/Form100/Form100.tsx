@@ -6,14 +6,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ControlBar } from '../../shared';
 import { IForm100, useUpdatePerson, useGetForm100, useUpdateForm100, useGetPerson } from '../../api';
-import { defaultPersonData, form100Url } from '../../constants';
+import { defaultPersonData, form100Url, getInitialForm100 } from '../../constants';
 
 import { form100FrontSchema, form100BackSchema } from './schemas';
 import { containerStyles } from './styles';
 import { Front, Back } from './components';
 import { convertIForm100ToIForm100State } from './convertIForm100ToIForm100State';
 import { IForm100BackState, IForm100FrontState } from './types';
-import { getInitialForm100 } from './constants';
 
 export const Form100 = () => {
     const [page, setPage] = useState<number>(0);
@@ -28,26 +27,32 @@ export const Form100 = () => {
 
     const { data: initialPerson } = useGetPerson(personId);
     const initialForm100 = useGetForm100(personId, formId);
-    
-    const { front: initialFrontState, back: initialBackState} = useMemo(() => {
+
+    const { front: initialFrontState, back: initialBackState, id } = useMemo(() => {
         const initialData = {
             ...(initialForm100 ?? getInitialForm100()),
             person: initialPerson ?? defaultPersonData
         };
         
         if (readonly) {
-            return convertIForm100ToIForm100State(initialData);
+            return {
+                ...convertIForm100ToIForm100State(initialData),
+                id: initialData.id,
+            };
         }
-        return convertIForm100ToIForm100State({
-            ...getInitialForm100(),
-            person: {
-                ...initialData.person,
-                lastRecords: {
-                    ...initialData.person.lastRecords,
-                    form100: {} as IForm100
-                },
-            }
-        });
+        return {
+            ...convertIForm100ToIForm100State({
+                ...getInitialForm100(),
+                person: {
+                    ...initialData.person,
+                    lastRecords: {
+                        ...initialData.person.lastRecords,
+                        form100: {} as IForm100
+                    },
+                }
+            }),
+            id: initialData.id,
+        };
     }, [initialForm100, initialPerson, readonly]);
 
     const frontMethods = useForm<IForm100FrontState>({
@@ -94,14 +99,14 @@ export const Form100 = () => {
         }
         const result = await triggerBack();
         if (result) {
-            const updatedLastForm100Record = { ...lastRecords.form100, ...restFrontState, ...backState };
-            const updatedLastBriefRecord = { date: restFrontState.date, fullDiagnosis: backState.fullDiagnosis };
-            const updatedRecords = { ...records, form100: [...records.form100, updatedLastForm100Record], brief: [...records.brief, updatedLastBriefRecord] };
+            const updatedLastForm100Record = { ...lastRecords.form100, ...restFrontState, ...backState, id };
+            const updatedLastBriefRecord = { date: restFrontState.date, fullDiagnosis: backState.fullDiagnosis, id };
+            const updatedRecords = { ...records, form100: [...records.form100, updatedLastForm100Record], brief: [...records.brief, updatedLastBriefRecord]};
             const updatedPerson = {...person, records: updatedRecords, lastRecords: { ...lastRecords, form100: updatedLastForm100Record, brief: updatedLastBriefRecord }};
             savePerson(updatedPerson);
-            saveForm({...restFrontState, ...backState, person, id: String(person.records.form100.length + 1) });
+            saveForm({...restFrontState, ...backState, person, id });
         }
-    }, [readonly, triggerBack, lastRecords, restFrontState, backState, records, person, savePerson, saveForm])
+    }, [readonly, triggerBack, lastRecords, restFrontState, backState, id, records, person, savePerson, saveForm])
 
     const handleSubmit = useCallback(async () => {
         if (!page) {

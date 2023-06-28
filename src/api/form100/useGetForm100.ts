@@ -1,6 +1,6 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { IForm100 } from "../IForm100";
-import { getInitialForm100 } from "../../components/Form100/constants";
+import { getInitialForm100 } from "../../constants";
 
 export const useGetForm100 = (personId: string, formId: string) => {
     const queryClient = useQueryClient();

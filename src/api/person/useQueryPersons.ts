@@ -6,8 +6,8 @@ import { ArmyRank } from "../Rank";
 import { Gender } from "../Gender";
 import { IForm100Record } from "../IRecord";
 
-const mockedBriefRecord = { date: new Date(), fullDiagnosis: 'гіпертонія' } as IForm100Record;
-const mockedForm100Record = { ...mockedBriefRecord, diagnosis: 'гіпертонія', }
+const mockedBriefRecord = { date: new Date(), fullDiagnosis: 'гіпертонія', id: String(Math.round(Math.random() * 1000000)) };
+const mockedForm100Record = { ...mockedBriefRecord, diagnosis: 'гіпертонія', } as unknown as IForm100Record;
 
 const mockedPerson: IPerson = {
     id: '1234',
@@ -17,9 +17,11 @@ const mockedPerson: IPerson = {
     rank: ArmyRank.SOLDIER,
     gender: Gender.MALE,
     militaryBase: '25',
+    personalId: String(Math.round(Math.random() * 1000000)),
     records: {
         form100: [mockedForm100Record, mockedForm100Record], 
         brief: [mockedBriefRecord, mockedBriefRecord],
+        discharge: [],
     },
     lastRecords: { form100: mockedForm100Record as IForm100Record, brief: mockedBriefRecord },
 }

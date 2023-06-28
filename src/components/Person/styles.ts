@@ -1,12 +1,16 @@
 import { SxProps } from "@mui/material";
-import { grey } from "@mui/material/colors";
 import { Theme } from "@mui/system";
 
 export const cardStyles: SxProps = {
-    m: 2,
     p: 2,
     display: 'grid',
     gap: 2,
+};
+
+export const containerStyles: SxProps = {
+    py: 2,
+    minHeight: '100vh',
+    bgcolor: 'background.paper',
 };
 
 export const infoWrapperStyles: SxProps = {
@@ -45,39 +49,6 @@ export const radioStyles: SxProps<Theme> = (theme) => ({
     height: theme.spacing(3.5),
 });
 
-export const recordsTitleWrapperStyles: SxProps = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-};
-
-export const newRecordWrapperStyles: SxProps = {
-    border: `1.5px solid ${grey[500]}`,
-    borderRadius: 'inherit',
-    p: 1,
-    position: 'relative',
-    display: 'grid',
-    gap: 1
-};
-
-export const newRecordLabelStyles: SxProps<Theme> = (theme) => ({
-    position: 'absolute',
-    top: theme.spacing(-1.5),
-    left: theme.spacing(1),
-    bgcolor: 'background.paper',
-});
-
-export const newRecordContentStyles: SxProps = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'start',
-};
-
-export const newRecordButtonStyles: SxProps = {
-    width: 'fit-content',
-    justifySelf: 'end',
-};
-
 export const fullWidthStyles: SxProps = {
     width: '100%',
 };
@@ -87,3 +58,13 @@ export const selectStyles: SxProps = {
         position: 'relative',
     },
 };
+
+export const historyTitleWrapper: SxProps = {
+    display: 'flex',
+    justifyContent: 'space-between',
+};
+
+export const getMenuIconStyles = (isMenuOpen?: boolean): SxProps => ({
+    ml: -.5,
+    transform: isMenuOpen ? 'rotate(90deg)' : 'none',
+});

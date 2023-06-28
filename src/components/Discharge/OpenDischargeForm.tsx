@@ -3,17 +3,20 @@ import { useNavigate } from 'react-router-dom';
 
 import { UseOpenFormComponentType } from '../../interfaces';
 import { dischargeUrl } from '../../constants';
+import { IPerson } from '../../api';
 
 import { OpenFormDialog } from '../OpenForm';
 
 export const OpenDischargeForm: UseOpenFormComponentType = ({ onClose }) => {
     const navigate = useNavigate();
 
-    const goToUpdateMode = useCallback((personId?: string) => () => {
-        if (!personId) {
+    const goToUpdateMode = useCallback((person?: IPerson) => () => {
+        if (!person) {
             return;
         }
-        navigate(`${dischargeUrl}/${personId}`, { state: { readonly: true } });
+        const lastDischargeId = person.lastRecords.discharge?.id;
+        const formIdUrl = lastDischargeId !== undefined ? '/' + lastDischargeId : '';
+        navigate(`${dischargeUrl}/${person.id}${formIdUrl}`, { state: { readonly: true } });
     }, [navigate]);
 
     const goToCreateMode = useCallback((personId?: string) => () => {

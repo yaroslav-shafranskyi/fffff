@@ -10,7 +10,7 @@ import {
     Box
 } from '@mui/material';
 
-import { useQueryPersons } from '../../api';
+import { IPerson, useQueryPersons } from '../../api';
 import { getInitialQuery } from '../../constants';
 
 import { dialogActionsStyles, dialogContentStyles, dialogButtonStyles, openButtonStyles } from './styles';
@@ -20,7 +20,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
     const { title, onClose, goToCreateMode, goToUpdateMode } = props;
 
     const [personName, setPersonName] = useState<string>('');
-    const [personId, setPersonId] = useState<string>();
+    const [person, setPerson] = useState<IPerson>();
     const [value, setValue] = useState<string | null>(null);
 
     const { data: persons } = useQueryPersons({ ...getInitialQuery(), filterBy: { fullName: personName }});
@@ -45,9 +45,9 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
         if (!value) {
             return;
         }
-        const selectedPersonId = Object.keys(convertedPersons).find(id => convertedPersons[id] === value);
-        if (selectedPersonId) {
-            setPersonId(selectedPersonId);
+        const selectedPerson = persons.find(({ id }) => convertedPersons[id] === value);
+        if (selectedPerson) {
+            setPerson(selectedPerson);
         }
     };
 
@@ -82,7 +82,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
                         variant='contained'
                         size='large'
                         sx={openButtonStyles}
-                        onClick={goToUpdateMode(personId)}
+                        onClick={goToUpdateMode(person)}
                     >
                     Переглянути
                 </Button>
@@ -90,7 +90,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
                     variant='contained'
                     sx={dialogButtonStyles}
                     size='large'
-                    onClick={goToCreateMode(personId)}
+                    onClick={goToCreateMode(person?.id)}
                 >
                     Створити
                 </Button>

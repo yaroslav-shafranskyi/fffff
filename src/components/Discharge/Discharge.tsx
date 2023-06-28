@@ -84,6 +84,7 @@ export const Discharge = () => {
         const briefRecord = {
             fullDiagnosis: dischargeRecord.fullDiagnosis,
             date: dischargeRecord.date,
+            id: defaultFrontPageValues.id,
         };
 
         const updatedPerson = {
@@ -103,7 +104,7 @@ export const Discharge = () => {
         savePerson(updatedPerson);
         saveForm({ ...dischargeRecord, person: updatedPerson, id: String(person.records.discharge.length + 1) })
         navigate('/')
-    }, [backPageState, backPageTrigger, frontPageState, navigate, person, saveForm, savePerson]);
+    }, [backPageState, backPageTrigger, defaultFrontPageValues.id, frontPageState, navigate, person, saveForm, savePerson]);
 
     const handleSubmit = useCallback(() => {
         if (page === 0) {

@@ -1,13 +1,19 @@
 import { FC } from 'react';
-import { Box, Button, IconButton } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import { ArrowBack as BackIcon } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 import { IControlBarProps } from './types';
-import { actionsWrapperStyles, clearButtonStyles, containerStyles } from './styles';
+import { actionsWrapperStyles, clearButtonStyles, containerStyles, titleStyles } from './styles';
 
 export const ControlBar: FC<IControlBarProps> = (props) => {
-    const { submitButtonText = 'Зберегти', onSubmit, onClear, onBack } = props;
+    const {
+        title,
+        submitButtonText = 'Зберегти',
+        onSubmit,
+        onClear,
+        onBack
+    } = props;
 
     const navigate = useNavigate();
 
@@ -29,9 +35,12 @@ export const ControlBar: FC<IControlBarProps> = (props) => {
 
     return (
         <Box sx={containerStyles}>
-            <IconButton onClick={handleGoBack}>
-                <BackIcon />
-            </IconButton>
+            <Box sx={titleStyles}>
+                <IconButton onClick={handleGoBack}>
+                    <BackIcon />
+                </IconButton>
+                {title !== undefined && <Typography variant='h4'>{title}</Typography> }
+            </Box>
             <Box sx={actionsWrapperStyles}>
                 <Button sx={clearButtonStyles} variant='contained' onClick={handleClear}>
                     Очистити
