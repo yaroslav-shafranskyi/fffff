@@ -68,3 +68,19 @@ export const getMenuIconStyles = (isMenuOpen?: boolean): SxProps => ({
     ml: -.5,
     transform: isMenuOpen ? 'rotate(90deg)' : 'none',
 });
+
+export const timelineContentWrapperStyles: SxProps = {
+    display: 'grid',
+    gap: 1
+};
+
+export const recordDiagnosisStyles: SxProps<Theme> = (theme) => ({
+    border: '1px solid',
+    p: 1,
+    borderColor: theme.palette.divider,
+    borderRadius: theme.shape.borderRadius * .25,
+});
+
+export const formIconStyles: SxProps<Theme> = (theme) => ({
+    width: theme.spacing(2),
+});

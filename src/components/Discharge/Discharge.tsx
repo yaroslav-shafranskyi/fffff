@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { ControlBar } from '../../shared';
 import { dischargeUrl, defaultDischargeBackPageState, defaultDischargeFrontPageState, defaultPersonData } from '../../constants';
-import { useGetDischarge, useUpdatePerson, useUpdateDischarge, useGetPerson } from '../../api';
+import { useGetDischarge, useUpdatePerson, useUpdateDischarge, useGetPerson, Forms } from '../../api';
 
 import { containerStyles } from './styles';
 import { FrontPage } from './FrontPage';
@@ -85,6 +85,7 @@ export const Discharge = () => {
             fullDiagnosis: dischargeRecord.fullDiagnosis,
             date: dischargeRecord.date,
             id: defaultFrontPageValues.id,
+            type: Forms.DISCHARGE,
         };
 
         const updatedPerson = {

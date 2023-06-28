@@ -1,3 +1,4 @@
+import { Forms } from './Forms';
 import { IDischarge } from './IDischarge';
 import { IForm100 } from './IForm100';
 
@@ -14,6 +15,7 @@ export interface IBriefRecord {
     date: Date;
     fullDiagnosis: string;
     id: string;
+    type: Forms;
 }
 
 export interface ILastRecords {

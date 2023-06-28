@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ControlBar } from '../../shared';
-import { IForm100, useUpdatePerson, useGetForm100, useUpdateForm100, useGetPerson } from '../../api';
+import { IForm100, useUpdatePerson, useGetForm100, useUpdateForm100, useGetPerson, Forms } from '../../api';
 import { defaultPersonData, form100Url, getInitialForm100 } from '../../constants';
 
 import { form100FrontSchema, form100BackSchema } from './schemas';
@@ -100,7 +100,7 @@ export const Form100 = () => {
         const result = await triggerBack();
         if (result) {
             const updatedLastForm100Record = { ...lastRecords.form100, ...restFrontState, ...backState, id };
-            const updatedLastBriefRecord = { date: restFrontState.date, fullDiagnosis: backState.fullDiagnosis, id };
+            const updatedLastBriefRecord = { date: restFrontState.date, fullDiagnosis: backState.fullDiagnosis, id, type: Forms.FORM_100 };
             const updatedRecords = { ...records, form100: [...records.form100, updatedLastForm100Record], brief: [...records.brief, updatedLastBriefRecord]};
             const updatedPerson = {...person, records: updatedRecords, lastRecords: { ...lastRecords, form100: updatedLastForm100Record, brief: updatedLastBriefRecord }};
             savePerson(updatedPerson);

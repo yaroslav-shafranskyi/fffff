@@ -9,7 +9,7 @@ export const useUpdateForm100 = () => {
 
     const mutate = useCallback((form100: IForm100) => {
         const { person, id } = form100;
-        console.log({ person, id, form100 });
+
         queryClient.setQueryData(['form100', person.id, id], form100);
         queryClient.setQueryData(['form100', person.id, undefined], { ...getInitialForm100(), person: form100.person });
     }, [queryClient]);

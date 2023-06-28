@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useMemo, useState, MouseEvent } from 'react';
+import { ChangeEvent, useCallback, useMemo, useState, MouseEvent, Fragment } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useLocation } from 'react-router-dom';
 import {
@@ -11,9 +11,18 @@ import {
     Button,
     Menu,
     MenuItem,
-    Container
+    Container,
 } from '@mui/material';
-import { ArrowRight as OpenMenuIcon } from '@mui/icons-material';
+import {
+    Timeline,
+    TimelineItem,
+    TimelineSeparator,
+    TimelineDot,
+    TimelineConnector,
+    TimelineContent,
+    TimelineOppositeContent,
+} from '@mui/lab';
+import { ArrowRight as OpenMenuIcon, ArrowForwardIos as ArrowForwardIosIcon } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,6 +30,7 @@ import { ArmyRank, Forms, Gender, IBriefRecord, IPerson, useGetPerson, useUpdate
 import { Select, Input, ControlBar, DatePicker } from '../../shared';
 import { defaultPersonData, dischargeUrl, form100Url } from '../../constants';
 import { REQUIRED_FIELD_MESSAGE, personPageSchema } from '../../schemas';
+import { formatDate } from '../../helpers';
 
 import { Header } from '../Header';
 
@@ -35,7 +45,10 @@ import {
     infoLeftSectionStyles,
     containerStyles,
     historyTitleWrapper,
-    getMenuIconStyles
+    getMenuIconStyles,
+    timelineContentWrapperStyles,
+    recordDiagnosisStyles,
+    formIconStyles
 } from './styles';
 
 const options = Object.values(Forms);
@@ -48,6 +61,15 @@ const getFormURL = (option: Forms) => {
         return dischargeUrl;
     }
 };
+
+const mockedBrief = () => ({
+    date: new Date(Math.round(Math.random() * 1000000000)),
+    fullDiagnosis: 'aaaa',
+    id: String(Math.round(Math.random() * 1000000000)),
+    type: Math.random() > 0.5 ? Forms.FORM_100 : Forms.DISCHARGE,
+});
+
+const mockedRecords: IBriefRecord[] = Array(100).fill(1).map(mockedBrief);
 
 export const Person = () => {
     const { pathname } = useLocation() ?? {};
@@ -74,7 +96,6 @@ export const Person = () => {
     });
 
     const records = watch('records');
-    const lastRecords = watch('lastRecords');
     const id = watch('id');
     const gender = watch('gender');
     
@@ -122,9 +143,16 @@ export const Person = () => {
             return;
         }
         navigate(`${formUrl}/${id}`);
-    }, [navigate, id])
+    }, [navigate, id]);
 
-console.log({ person })
+    const goToForm = useCallback(({ type, id: formId }: IBriefRecord) => () => {
+        const formUrl = getFormURL(type);
+        if (!formUrl) {
+            return;
+        }
+        navigate(`${formUrl}/${id}/${formId}`);
+    }, [id, navigate])
+
     return (
         <>
             <Header />
@@ -254,6 +282,44 @@ console.log({ person })
                             <OpenMenuIcon sx={getMenuIconStyles(isMenuOpen)} />
                         </Button>
                     </Box>
+                    {!mockedRecords.length && <Typography color='textSecondary'>Немає записів</Typography>}
+                    <Timeline position='alternate'>
+                        {mockedRecords.map((record, idx) => {
+                            const { id, date, fullDiagnosis, type } = record;
+                            const shouldHaveConnector = idx < mockedRecords.length - 1;
+                            return (
+                                <Fragment key={id}>
+                                    <TimelineItem>
+                                        <TimelineOppositeContent>
+                                            <Typography>
+                                                {formatDate(date)}
+                                            </Typography>
+                                        </TimelineOppositeContent>
+                                        <TimelineSeparator>
+                                            <TimelineDot />
+                                            {shouldHaveConnector && <TimelineConnector />}
+                                        </TimelineSeparator>
+                                        <TimelineContent>
+                                            <Box  sx={timelineContentWrapperStyles}>
+                                                <Button
+                                                    sx={{ width: 'fit-content' }}
+                                                    variant='contained'
+                                                    color={type === Forms.FORM_100 ? 'primary' : 'secondary'}
+                                                    onClick={goToForm(record)}
+                                                >
+                                                    {type}
+                                                    <ArrowForwardIosIcon sx={formIconStyles} />
+                                                </Button>
+                                                <Box sx={recordDiagnosisStyles}>
+                                                    <Typography color='textSecondary'>{fullDiagnosis}</Typography>
+                                                </Box>
+                                            </Box>
+                                        </TimelineContent>
+                                    </TimelineItem>
+                                </Fragment>
+                            )
+                        })}
+                    </Timeline>
                 </Card>
             </Container>
             <Menu open={isMenuOpen} anchorEl={anchorEl} onClose={handleCloseMenu}>
