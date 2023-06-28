@@ -6,8 +6,7 @@ import { IFCPropsWithReadonly } from '../../interfaces';
 
 import { DischargeBackPageState } from './types';
 import { backPageFooterStyles, backPageWrapper, commonInputStyles, doctorHintStyles, formContentStyles, multilineInputStyles } from './styles';
-import { Input } from '../../shared/Input';
-import { DateInputWithTextMonth } from '../../shared/DateInputWithTextMonth/DateInputWithTextMonth';
+import { Input, DateInputWithTextMonth } from '../../shared';
 
 export const BackPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { watch, setValue, clearErrors, register, formState } = useFormContext<DischargeBackPageState>();

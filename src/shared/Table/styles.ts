@@ -19,10 +19,10 @@ export const placeholderStyles = {
 export const headerStyles: SxProps<Theme> = (theme) => ({
     height: theme.spacing(6),
     '& th:first-of-type': {
-        pl: 2,
+        pl: 1,
     },
     '& th:last-of-type': {
-        pr: 2,
+        pr: 1,
     },
 });
 

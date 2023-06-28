@@ -2,7 +2,7 @@ import { ChangeEvent, FC, useCallback } from 'react';
 import { FieldPath, useFormContext } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 
-import { Input, CustomDatePicker } from '../../../../shared';
+import { Input, CustomDatePicker, InputWithTextIndent } from '../../../../shared';
 import { IDischarge, IPerson } from '../../../../api';
 import { IFCPropsWithReadonly } from '../../../../interfaces';
 
@@ -13,7 +13,6 @@ import {
     birthDateWrapperStyles,
 } from './styles';
 import { formatDateWithoutDots } from '../../../../helpers';
-import { InputWithTextIndent } from '../InputWithTextIndent/InputWithTextIndent';
 
 export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { formState, watch, register, setValue, clearErrors } = useFormContext<IDischarge>();

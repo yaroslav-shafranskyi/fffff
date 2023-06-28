@@ -9,6 +9,7 @@ import { useOpenFormDialog } from '../OpenForm';
 import { OpenForm100Dialog } from '../Form100';
 import { OpenPersonDialog } from '../PersonPage';
 import { OpenDischargeForm } from '../Discharge';
+import { OpenReferralForm } from '../Referral';
 
 import { containerStyles, getMenuIconStyles, linkStyles, linksWrapperStyles } from './styles';
 
@@ -27,6 +28,7 @@ export const Header = () => {
     const [OpenForm100Component, handleOpenForm100] = useOpenFormDialog(OpenForm100Dialog);
     const [OpenPersonComponent, handleOpenPerson] = useOpenFormDialog(OpenPersonDialog);
     const [OpenDischargeComponent, handleOpenDischarge] = useOpenFormDialog(OpenDischargeForm);
+    const [ReferralDialog, handleOpenReferral] = useOpenFormDialog(OpenReferralForm)
 
     const isMenuOpen = Boolean(anchorEl);
 
@@ -45,8 +47,11 @@ export const Header = () => {
         if (option === AdditionalOptions.DISCHARGE) {
             handleOpenDischarge();
         }
+        if (option === AdditionalOptions.REFERRAL) {
+            handleOpenReferral();
+        }
         handleCloseMenu();
-    }, [handleOpenDischarge]);
+    }, [handleOpenDischarge, handleOpenReferral]);
 
     return (
         <Container disableGutters={true} sx={containerStyles} maxWidth={false}>
@@ -99,6 +104,7 @@ export const Header = () => {
             {OpenForm100Component}
             {OpenPersonComponent}
             {OpenDischargeComponent}
+            {ReferralDialog}
         </Container>
     )
 };

@@ -7,3 +7,5 @@ export * from './Table';
 export * from './DatePicker';
 export * from './DateCalendar';
 export * from './CustomDatePicker';
+export * from './DateInputWithTextMonth';
+export * from './InputWithTextIndent';

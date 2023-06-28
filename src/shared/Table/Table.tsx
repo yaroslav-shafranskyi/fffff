@@ -109,8 +109,8 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
                             </TableRow>}
                         {total > 0 && table.getRowModel().rows.map(row => (
                             <TableRow key={row.id} onClick={onRowClick?.(row)} sx={onRowClick ? tableRowStyles : {}}>
-                                {row.getVisibleCells().map(cell => (
-                                    <TableCell key={cell.id} sx={{ p: .25 }}>
+                                {row.getVisibleCells().map((cell, cellIdx) => (
+                                    <TableCell key={cell.id} sx={{ p: !cellIdx ? 1 : .25 }}>
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}

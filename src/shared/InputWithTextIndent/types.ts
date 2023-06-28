@@ -1,4 +1,4 @@
-import { IInputProps } from "../../../../shared";
+import { IInputProps } from "..";
 
 export interface IInputWithTextIndentProps {
     title: string;

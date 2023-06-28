@@ -6,6 +6,7 @@ export const containerStyles: SxProps = {
     display: 'flex',
     justifyContent: 'space-between',
     pb: 1,
+    whiteSpace: 'nowrap',
 };
 
 export const titleStyles: SxProps = {

@@ -16,10 +16,10 @@ export const DateInputWithTextMonth: FC<IDateCalendarProps> = (props) => {
     return (
         <CustomDatePicker {...props}>
             <Box sx={wrapperStyles}>
-                "<Box sx={fieldStyles}>
+                "<Box sx={{ ...fieldStyles, minWidth: '16px' }}>
                     <Typography>{day}</Typography>    
                 </Box>"
-                <Box sx={fieldStyles}>
+                <Box sx={{ ...fieldStyles, minWidth: '48px' }}>
                     <Typography>{monthName}</Typography>
                 </Box>
                     <Typography>20</Typography>

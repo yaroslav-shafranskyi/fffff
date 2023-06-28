@@ -28,7 +28,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ArmyRank, Forms, Gender, IBriefRecord, IPerson, useGetPerson, useUpdatePerson } from '../../api';
 import { Select, Input, ControlBar, DatePicker } from '../../shared';
-import { defaultPersonData, dischargeUrl, form100Url } from '../../constants';
+import { defaultPersonData, dischargeUrl, form100Url, referralUrl } from '../../constants';
 import { REQUIRED_FIELD_MESSAGE, personPageSchema } from '../../schemas';
 import { formatDate } from '../../helpers';
 
@@ -59,6 +59,9 @@ const getFormURL = (option: Forms) => {
     }
     if (option === Forms.DISCHARGE) {
         return dischargeUrl;
+    }
+    if (option === Forms.REFERRAL) {
+        return referralUrl;
     }
 };
 
@@ -132,7 +135,7 @@ export const PersonPage = () => {
         if (!formUrl) {
             return;
         }
-        navigate(`${formUrl}/${id}`);
+        navigate(`${formUrl}/${id}/create`);
     }, [navigate, id]);
 
     const goToForm = useCallback(({ type, id: formId }: IBriefRecord) => () => {

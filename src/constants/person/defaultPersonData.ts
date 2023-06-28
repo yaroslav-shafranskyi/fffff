@@ -13,6 +13,7 @@ export const defaultPersonData: IPerson = {
         form100: [],
         brief: [],
         discharge: [],
+        referral: [],
     },
     lastRecords: {},
     address: {

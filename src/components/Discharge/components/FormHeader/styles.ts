@@ -1,7 +1,9 @@
 import { SxProps } from '@mui/material';
 import { Theme } from '@mui/system';
 
-import { INNER_BORDER_WIDTH, commonInputStyles, multilineInputStyles } from '../../styles';
+import { INNER_BORDER_WIDTH } from '../../../../constants';
+
+import { commonInputStyles, multilineInputStyles } from '../../styles';
 
 export const codeWrapperStyles: SxProps = {
     display: 'grid',

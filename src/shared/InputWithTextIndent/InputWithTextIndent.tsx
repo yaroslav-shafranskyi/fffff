@@ -1,10 +1,10 @@
 import { FC, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 
-import { Input } from '../../../../shared';
+import { Input } from '../Input';
 
 import { IInputWithTextIndentProps } from "./types";
-import { commonInputStyles, getMultilineInputPropsSx, inputTitleStyles } from '../../styles';
+import { commonInputStyles, getMultilineInputPropsSx, inputTitleStyles } from './styles';
 
 export const InputWithTextIndent: FC<IInputWithTextIndentProps> = ({ title, inputProps }) => {
     const titleRef = useRef<HTMLDivElement>(null);

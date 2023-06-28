@@ -4,3 +4,4 @@ export * from './PersonsTable';
 export * from './PersonPage';
 export * from './Header';
 export * from './Discharge';
+export * from './Referral';

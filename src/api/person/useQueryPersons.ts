@@ -81,9 +81,9 @@ export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptio
 
     filteredPersons.push(
         ...allPersons
-        .filter(({ fullName }) => fullName.toLowerCase().includes(name.toLowerCase()))
-        .filter(({ fullName, records }) => fullName.toLowerCase().includes(anyFilter.toLowerCase()) || records.form100.some(({ diagnosis, fullDiagnosis }) => 
-            fullDiagnosis.includes(anyFilter.toLowerCase()) || diagnosis.includes(anyFilter.toLowerCase())))
+        .filter(({ fullName }) => fullName?.toLowerCase().includes(name.toLowerCase()))
+        .filter(({ fullName, records }) => fullName?.toLowerCase().includes(anyFilter.toLowerCase()) || records.form100.some(({ diagnosis, fullDiagnosis }) => 
+            fullDiagnosis.includes(anyFilter?.toLowerCase()) || diagnosis?.includes(anyFilter.toLowerCase())))
     );
 
     if (!sortBy) {

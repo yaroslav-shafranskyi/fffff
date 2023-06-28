@@ -42,14 +42,14 @@ export const columns: IColumn<IPerson>[] = [
     },
     {
         title: 'Крайнє звернення',
-        render: p => formatDate(p.getValue() as Date),
-        accessor: p => p.lastRecords.brief.date,
+        render: p => formatDate(p.getValue() as Date) ?? '',
+        accessor: p => p.lastRecords?.brief?.date,
         key: 'lastRecordDate',
     },
     {
         title: 'Крайній діагноз',
         render: p => p.getValue() as string,
-        accessor: p => p.lastRecords.brief.fullDiagnosis,
+        accessor: p => p.lastRecords?.brief?.fullDiagnosis ?? '',
         key: 'lastRecordDiagnosis',
     },
 ];

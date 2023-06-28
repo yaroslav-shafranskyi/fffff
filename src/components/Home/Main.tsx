@@ -7,6 +7,7 @@ import { useOpenFormDialog } from '../OpenForm';
 import { OpenForm100Dialog } from '../Form100';
 import { OpenPersonDialog } from '../PersonPage';
 import { OpenDischargeForm } from '../Discharge';
+import { OpenReferralForm } from '../Referral';
 
 import { 
     buttonDescStyles,
@@ -23,6 +24,7 @@ export const Main = () => {
     const [Form100Dialog, openForm100Dialog] = useOpenFormDialog(OpenForm100Dialog);
     const [PersonDialog, openPersonDialog] = useOpenFormDialog(OpenPersonDialog)
     const [DischargeFormDialog, openDischargeFormDialog] = useOpenFormDialog(OpenDischargeForm);
+    const [ReferralDialog, openReferralDialog] = useOpenFormDialog(OpenReferralForm)
 
     const navigate = useNavigate();
 
@@ -71,7 +73,7 @@ export const Main = () => {
                         Виписка
                     </Typography>
                 </Button>
-                <Button variant='contained' color='secondary' sx={mainButtonStyles}>
+                <Button variant='contained' color='secondary' sx={mainButtonStyles} onClick={openReferralDialog}>
                     <Typography variant='h5'>
                         Направлення
                     </Typography>
@@ -80,6 +82,7 @@ export const Main = () => {
             {Form100Dialog}
             {PersonDialog}
             {DischargeFormDialog}
+            {ReferralDialog}
         </Box>
     );
 };
