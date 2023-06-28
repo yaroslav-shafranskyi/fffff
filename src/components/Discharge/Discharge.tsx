@@ -27,20 +27,22 @@ export const Discharge = () => {
     const { mutate: savePerson } = useUpdatePerson();
     const { mutate: saveForm } = useUpdateDischarge();
     
-    const { defaultFrontPageValues, defaultBackPageValues } = useMemo(() => {
+    const { defaultFrontPageValues, defaultBackPageValues, id } = useMemo(() => {
         if (!initialForm) {
             return {
                 defaultFrontPageValues: {
                     ...defaultDischargeFrontPageState,
                     person: initialPerson ?? defaultPersonData,
                 },
-                defaultBackPageValues: defaultDischargeBackPageState
+                defaultBackPageValues: defaultDischargeBackPageState,
+                id: String(Date.now()),
             }
         }
-        const { doctor, date, recommendations, info, ...rest } = {...initialForm, person: initialPerson ?? defaultPersonData };
+        const { doctor, date, recommendations, info, id, ...rest } = {...initialForm, person: initialPerson ?? defaultPersonData };
         return {
             defaultFrontPageValues: { ...rest },
             defaultBackPageValues: { doctor, date, recommendations, info },
+            id,
         };
     }, [initialForm, initialPerson]);
 
@@ -78,13 +80,14 @@ export const Discharge = () => {
 
         const dischargeRecord = {
             ...frontPageState,
-            ...backPageState,                    
+            ...backPageState,
+            id                  
         };
 
         const briefRecord = {
             fullDiagnosis: dischargeRecord.fullDiagnosis,
             date: dischargeRecord.date,
-            id: defaultFrontPageValues.id,
+            id,
             type: Forms.DISCHARGE,
         };
 
@@ -103,9 +106,9 @@ export const Discharge = () => {
         };
 
         savePerson(updatedPerson);
-        saveForm({ ...dischargeRecord, person: updatedPerson, id: String(person.records.discharge.length + 1) })
-        navigate('/')
-    }, [backPageState, backPageTrigger, defaultFrontPageValues.id, frontPageState, navigate, person, saveForm, savePerson]);
+        saveForm({ ...dischargeRecord, person: updatedPerson })
+        navigate(-1)
+    }, [backPageState, backPageTrigger, frontPageState, id, navigate, person, saveForm, savePerson]);
 
     const handleSubmit = useCallback(() => {
         if (page === 0) {
@@ -125,7 +128,7 @@ export const Discharge = () => {
 
     const handleGoBack = useCallback(() => {
         if (page === 0) {
-            navigate('/');
+            navigate(-1);
             return;
         }
         setPage(0);

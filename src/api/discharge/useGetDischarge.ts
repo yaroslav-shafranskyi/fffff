@@ -8,5 +8,5 @@ export const useGetDischarge = (personId: string, dischargeId: string) => {
 
     const data = queryClient.getQueryData<IDischarge>(['discharge', personId, dischargeId]);
 
-    return data ?? { ...defaultDischargeBackPageState, ...defaultDischargeFrontPageState };
+    return data ?? { ...defaultDischargeBackPageState, ...defaultDischargeFrontPageState, id: String(Date.now()) };
 };

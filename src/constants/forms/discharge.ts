@@ -16,7 +16,6 @@ export const defaultDischargeFrontPageState: DischargeFrontPageState = {
     reason: '' as DischargeReason,
     fullDiagnosis: '',
     code: '',
-    id: '',
 };
 
 export const defaultDischargeBackPageState: DischargeBackPageState = {

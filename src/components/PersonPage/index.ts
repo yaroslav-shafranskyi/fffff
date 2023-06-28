@@ -1,2 +1,2 @@
-export * from './Person';
+export * from './PersonPage';
 export * from './OpenPersonDialog';

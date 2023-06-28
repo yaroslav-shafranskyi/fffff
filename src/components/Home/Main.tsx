@@ -5,7 +5,7 @@ import { personsUrl } from '../../constants';
 
 import { useOpenFormDialog } from '../OpenForm';
 import { OpenForm100Dialog } from '../Form100';
-import { OpenPersonDialog } from '../Person';
+import { OpenPersonDialog } from '../PersonPage';
 import { OpenDischargeForm } from '../Discharge';
 
 import { 

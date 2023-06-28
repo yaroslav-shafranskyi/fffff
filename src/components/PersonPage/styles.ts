@@ -70,7 +70,8 @@ export const getMenuIconStyles = (isMenuOpen?: boolean): SxProps => ({
 });
 
 export const timelineContentWrapperStyles: SxProps = {
-    display: 'grid',
+    display: 'flex',
+    flexDirection: 'column',
     gap: 1
 };
 

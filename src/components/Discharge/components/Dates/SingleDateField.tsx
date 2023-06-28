@@ -11,7 +11,7 @@ export const SingleDateField: FC<ISingleDateFieldProps> = (props) => {
     const { title, value, error, onChange } = props;
 
     return (
-        <Box sx={rowStyles}>
+        <Box sx={{...rowStyles, alignItems: error ? 'center' : 'end' }}>
             <Typography>{title}</Typography>
             <Box sx={blankBoxStyles} />
             <CustomDatePicker onChange={onChange}>

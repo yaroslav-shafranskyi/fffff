@@ -114,7 +114,7 @@ export const Form100 = () => {
             return;
         }
         await submitForm();
-        navigate('/');
+        navigate(-1);
     }, [navigate, navigateToBack, page, submitForm]);
 
     const handleClear = useCallback(() => {

@@ -7,7 +7,6 @@ export const rowStyles: SxProps = {
     gap: 1,
     whiteSpace: 'nowrap',
     width: '100%',
-    alignItems: 'end',
 };
 
 export const blankBoxStyles: SxProps = {

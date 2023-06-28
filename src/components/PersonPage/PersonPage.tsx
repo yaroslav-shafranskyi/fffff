@@ -62,16 +62,7 @@ const getFormURL = (option: Forms) => {
     }
 };
 
-const mockedBrief = () => ({
-    date: new Date(Math.round(Math.random() * 1000000000)),
-    fullDiagnosis: 'aaaa',
-    id: String(Math.round(Math.random() * 1000000000)),
-    type: Math.random() > 0.5 ? Forms.FORM_100 : Forms.DISCHARGE,
-});
-
-const mockedRecords: IBriefRecord[] = Array(100).fill(1).map(mockedBrief);
-
-export const Person = () => {
+export const PersonPage = () => {
     const { pathname } = useLocation() ?? {};
 
     const personId = useMemo(() => decodeURI(pathname?.split('/persons/')?.[1]), [pathname]);
@@ -95,7 +86,7 @@ export const Person = () => {
         resolver: yupResolver(personPageSchema),
     });
 
-    const records = watch('records');
+    const records = watch('records.brief');
     const id = watch('id');
     const gender = watch('gender');
     
@@ -134,7 +125,6 @@ export const Person = () => {
 
     const submitUserChanges = (newPerson: IPerson) => {
         savePerson(newPerson);
-        navigate('/');
     };
 
     const handleMenuOptionSelect = useCallback((form: Forms) => () => {
@@ -150,8 +140,8 @@ export const Person = () => {
         if (!formUrl) {
             return;
         }
-        navigate(`${formUrl}/${id}/${formId}`);
-    }, [id, navigate])
+        navigate(`${formUrl}/${id}/${formId}`, { state: { readonly: true } });
+    }, [id, navigate]);
 
     return (
         <>
@@ -172,7 +162,7 @@ export const Person = () => {
                                         fullWidth={true}
                                         {...register('fullName')}
                                         onChange={handleInputChange('fullName')}
-                                        value={watch('fullName')}
+                                        value={watch('fullName') ?? ''}
                                     />
                                 </Box>
                                 <Box sx={fullWidthStyles}>
@@ -183,7 +173,7 @@ export const Person = () => {
                                         options={Object.values(ArmyRank)}
                                         error={errors.rank?.message}
                                         {...register('rank')}
-                                        value={watch('rank')}
+                                        value={watch('rank') ?? ''}
                                     />
                                 </Box>
                             </Box>
@@ -196,8 +186,8 @@ export const Person = () => {
                                         error={errors.personalId?.message}
                                         fullWidth={true}
                                         {...register('personalId')}
-                                        onChange={handleInputChange('id')}
-                                        value={watch('personalId')}
+                                        onChange={handleInputChange('personalId')}
+                                        value={watch('personalId') ?? ''}
                                     />
                                 </Box>
                                 <Box sx={fullWidthStyles}>
@@ -209,7 +199,7 @@ export const Person = () => {
                                         fullWidth={true}
                                         {...register('tokenNumber')}
                                         onChange={handleInputChange('tokenNumber')}
-                                        value={watch('tokenNumber')}
+                                        value={watch('tokenNumber') ?? ''}
                                     />
                                 </Box>
                             </Box>
@@ -233,7 +223,7 @@ export const Person = () => {
                                         fullWidth={true}
                                         {...register('phoneNumber')}
                                         onChange={handleInputChange('phoneNumber')}
-                                        value={watch('phoneNumber')}
+                                        value={watch('phoneNumber') ?? ''}
                                     />
                                 </Box>
                             </Box>
@@ -248,7 +238,7 @@ export const Person = () => {
                                     fullWidth={true}
                                     {...register('militaryBase')}
                                     onChange={handleInputChange('militaryBase')}
-                                    value={watch('militaryBase')}
+                                    value={watch('militaryBase') ?? ''}
                                 />
                             </Box>
                             <Box  sx={genderWrapperStyles}>
@@ -282,11 +272,11 @@ export const Person = () => {
                             <OpenMenuIcon sx={getMenuIconStyles(isMenuOpen)} />
                         </Button>
                     </Box>
-                    {!mockedRecords.length && <Typography color='textSecondary'>Немає записів</Typography>}
+                    {!records.length && <Typography color='textSecondary'>Немає записів</Typography>}
                     <Timeline position='alternate'>
-                        {mockedRecords.map((record, idx) => {
+                        {records.map((record, idx) => {
                             const { id, date, fullDiagnosis, type } = record;
-                            const shouldHaveConnector = idx < mockedRecords.length - 1;
+                            const shouldHaveConnector = idx < records.length - 1;
                             return (
                                 <Fragment key={id}>
                                     <TimelineItem>
@@ -302,7 +292,7 @@ export const Person = () => {
                                         <TimelineContent>
                                             <Box  sx={timelineContentWrapperStyles}>
                                                 <Button
-                                                    sx={{ width: 'fit-content' }}
+                                                    sx={{ width: 'fit-content', alignSelf: idx % 2 ? 'end' : 'start' }}
                                                     variant='contained'
                                                     color={type === Forms.FORM_100 ? 'primary' : 'secondary'}
                                                     onClick={goToForm(record)}
