@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
 import { Input } from '../Input';
@@ -8,6 +8,13 @@ import { getMultilineInputPropsSx, inputTitleStyles } from './styles';
 
 export const InputWithTextIndent: FC<IInputWithTextIndentProps> = ({ title, inputProps }) => {
     const titleRef = useRef<HTMLDivElement>(null);
+    const [textIndent, setTextIndent] = useState<number | '100%'>('100%');
+
+    useEffect(() => {
+        if (titleRef.current?.clientWidth) {
+            setTextIndent(titleRef.current?.clientWidth)
+        }
+    }, [titleRef.current?.clientWidth]);
 
     return (
         <Box sx={{ position: 'relative' }}>
@@ -19,7 +26,7 @@ export const InputWithTextIndent: FC<IInputWithTextIndentProps> = ({ title, inpu
             <Input
                 { ...inputProps }
                 inputProps={{
-                    sx: getMultilineInputPropsSx(titleRef.current?.clientWidth)
+                    sx: getMultilineInputPropsSx(textIndent)
                 }}
             />
         </Box>
