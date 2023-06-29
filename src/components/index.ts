@@ -5,3 +5,5 @@ export * from './PersonPage';
 export * from './Header';
 export * from './Discharge';
 export * from './Referral';
+export * from './Conclusion';
+export * from './CommonFormHeader';

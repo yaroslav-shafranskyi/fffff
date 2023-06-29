@@ -1,58 +1,9 @@
 import { SxProps } from "@mui/material";
 import { Theme } from "@mui/system";
 
-import { DEFAULT_LINE_HEIGHT, INPUT_WITH_HINT_LINE_HEIGHT, OUTER_BORDER_WIDTH } from "../../constants";
+import { INPUT_WITH_HINT_LINE_HEIGHT } from "../../constants";
 
-export const boldTextStyles: SxProps = {
-    fontWeight: 'bold',
-};
-
-export const flexContainerStyles: SxProps = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 1,
-};
-
-export const containerStyles: SxProps = {
-    ...flexContainerStyles,
-    p: 2,
-    bgcolor: 'background.paper',
-    minHeight: '100vh',
-    '& textarea': {
-        overflow: 'hidden',
-    },
-};
-
-export const formWrapperStyles: SxProps = {
-    ...flexContainerStyles,
-};
-
-export const headerStyles: SxProps = {
-    display: 'grid',
-    alignSelf: 'end',
-};
-
-export const formContentStyles: SxProps = {
-    border: `${OUTER_BORDER_WIDTH}px solid`,
-};
-
-export const commonInputStyles: SxProps<Theme> = (theme) => ({
-    width: `calc(100% - ${theme.spacing(2)})`,
-    mx: 1,
-    p: 0,
-});
-
-export const multilineInputStyles: SxProps<Theme> = (theme) => ({
-    background: `repeating-linear-gradient(${theme.palette.background.paper} 0, ${theme.palette.background.paper} ${DEFAULT_LINE_HEIGHT - 1}px, ${theme.palette.text.primary} ${DEFAULT_LINE_HEIGHT}px)`,
-    lineHeight: `${DEFAULT_LINE_HEIGHT}px`,
-    mb: '-5px',
-});
-
-export const contentTitleWrapperStyles: SxProps = {
-    borderBlock: `${OUTER_BORDER_WIDTH}px solid`,
-    p: 2,
-    textAlign: 'center',
-};
+import { flexContainerStyles } from "../commonFormStyles";
 
 export const inputHintStyles: SxProps = {
     position: 'absolute',

@@ -3,9 +3,12 @@ import { FieldPath, useFormContext } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 
 import { IFCPropsWithReadonly } from '../../interfaces';
+import { commonInputStyles, multilineInputStyles } from '../../constants';
+
+import { formContentStyles } from '../commonFormStyles';
 
 import { DischargeBackPageState } from './types';
-import { backPageFooterStyles, backPageWrapper, commonInputStyles, doctorHintStyles, formContentStyles, multilineInputStyles } from './styles';
+import { backPageFooterStyles, backPageWrapper, doctorHintStyles } from './styles';
 import { Input, DateInputWithTextMonth } from '../../shared';
 
 export const BackPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {

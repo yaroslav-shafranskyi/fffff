@@ -5,14 +5,10 @@ import { Box, Typography } from '@mui/material';
 import { Input, CustomDatePicker, InputWithTextIndent } from '../../../../shared';
 import { IDischarge, IPerson } from '../../../../api';
 import { IFCPropsWithReadonly } from '../../../../interfaces';
-
-import {
-    addressNumberInputStyles,
-    addressWrapperStyles,
-    birthDateInputStyles,
-    birthDateWrapperStyles,
-} from './styles';
+import { birthDateInputStyles, birthDateWrapperStyles } from '../../../commonFormStyles';
 import { formatDateWithoutDots } from '../../../../helpers';
+
+import { addressNumberInputStyles, addressWrapperStyles, commonInputStyles } from './styles';
 
 export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { formState, watch, register, setValue, clearErrors } = useFormContext<IDischarge>();
@@ -47,7 +43,8 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                     value: person.fullName,
                     error: errors?.fullName?.message,
                     multiline: true,
-                    rows: 2
+                    rows: 2,
+                    sx: commonInputStyles
                 }}
             />
             <Box sx={birthDateWrapperStyles}>
@@ -140,6 +137,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                     onChange: handleInputChange('profession'),
                     multiline: true,
                     rows: 2,
+                    sx: commonInputStyles,
                 }}
             />
         </Box>

@@ -21,3 +21,6 @@ export * from './discharge';
 export * from './Forms';
 export * from './IReferral';
 export * from './referral';
+export * from './IConclusion';
+export * from './conclusion';
+export * from './ICommonFormHeaderFields';

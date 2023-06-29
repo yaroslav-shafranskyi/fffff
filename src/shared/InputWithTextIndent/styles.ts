@@ -3,16 +3,11 @@ import { Theme } from '@mui/system';
 
 import { getMultilineInputDefaultBackground } from '../../constants';
 
-export const commonInputStyles: SxProps<Theme> = (theme) => ({
-    width: `calc(100% - ${theme.spacing(2)})`,
-    mx: 1,
-    p: 0,
-});
-
 export const getMultilineInputPropsSx = (textIndent: number | string = '100%'): SxProps<Theme> =>
     (theme) => ({
         background: getMultilineInputDefaultBackground(theme),
         textIndent,
+        mb: -.5
     });
 
 export const inputTitleStyles: SxProps<Theme> = (theme) => ({

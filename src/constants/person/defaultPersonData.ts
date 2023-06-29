@@ -14,6 +14,7 @@ export const defaultPersonData: IPerson = {
         brief: [],
         discharge: [],
         referral: [],
+        conclusion: [],
     },
     lastRecords: {},
     address: {

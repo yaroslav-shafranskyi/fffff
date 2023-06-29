@@ -3,10 +3,10 @@ import { ThemeProvider } from '@mui/material';
 
 // @ts-expect-error TODO: set tsconfig to allow .web.* and .native.* extensions
 import { Router, Route, Routes } from './shared';
-import { Home, Form100, PersonsTable, Discharge, PersonPage, Referral } from './components';
+import { Home, Form100, PersonsTable, Discharge, PersonPage, Referral, Conclusion } from './components';
 import { theme } from './theme';
 import './App.css'
-import { dischargeUrl, form100Url, personsUrl, referralUrl } from './constants';
+import { conclusionUrl, dischargeUrl, form100Url, personsUrl, referralUrl } from './constants';
 
 const queryClient = new QueryClient();
 
@@ -27,6 +27,9 @@ const App = () => {
             <Route path={`${dischargeUrl}/:personId/:formId`} element={<Discharge />} />
             <Route path={`${referralUrl}/:personId`} element={<Referral />} />
             <Route path={`${referralUrl}/:personId/:formId`} element={<Referral />} />
+            <Route path={conclusionUrl} element={<Conclusion />} />
+            <Route path={`${conclusionUrl}/:personId`} element={<Conclusion />} />
+            <Route path={`${conclusionUrl}/:personId/:formId`} element={<Conclusion />} />
           </Routes>
         </Router>
       </QueryClientProvider>

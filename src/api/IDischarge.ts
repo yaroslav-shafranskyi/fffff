@@ -1,3 +1,4 @@
+import { ICommonFormHeaderFields } from './ICommonFormHeaderFields';
 import { IDischargeDates } from './IDischargeDates';
 import { IPerson } from './IPerson';
 
@@ -6,15 +7,8 @@ export enum DischargeReason {
     DEATH = 'DEATH',
 }
 
-export interface IDischarge {
+export interface IDischarge extends ICommonFormHeaderFields {
     id: string;
-    department: string;
-    clinic: string;
-    code: string;
-    order: {
-        date: Date;
-        number: number;
-    };
     receiver: string;
     person: IPerson;
     datesData: IDischargeDates;

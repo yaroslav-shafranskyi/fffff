@@ -4,19 +4,21 @@ import { AccountCircleOutlined as AvatarIcon, ArrowRight as OpenMenuIcon } from 
 import { useNavigate } from 'react-router-dom';
 
 import { personsUrl } from '../../constants';
+import { Forms } from '../../api';
 
 import { useOpenFormDialog } from '../OpenForm';
 import { OpenForm100Dialog } from '../Form100';
 import { OpenPersonDialog } from '../PersonPage';
 import { OpenDischargeForm } from '../Discharge';
 import { OpenReferralForm } from '../Referral';
+import { OpenConclusionForm } from '../Conclusion';
 
 import { containerStyles, getMenuIconStyles, linkStyles, linksWrapperStyles } from './styles';
 
 enum AdditionalOptions {
-    CONCLUSION = 'Консультативний висновок',
-    DISCHARGE = 'Виписка',
-    REFERRAL = 'Направлення',
+    CONCLUSION = Forms.CONCLUSION,
+    DISCHARGE = Forms.DISCHARGE,
+    REFERRAL = Forms.REFERRAL,
 }
 
 const additionalOptions = Object.values(AdditionalOptions);
@@ -29,6 +31,7 @@ export const Header = () => {
     const [OpenPersonComponent, handleOpenPerson] = useOpenFormDialog(OpenPersonDialog);
     const [OpenDischargeComponent, handleOpenDischarge] = useOpenFormDialog(OpenDischargeForm);
     const [ReferralDialog, handleOpenReferral] = useOpenFormDialog(OpenReferralForm)
+    const [ConclusionDialog, handleOpenConclusion] = useOpenFormDialog(OpenConclusionForm);
 
     const isMenuOpen = Boolean(anchorEl);
 
@@ -50,8 +53,11 @@ export const Header = () => {
         if (option === AdditionalOptions.REFERRAL) {
             handleOpenReferral();
         }
+        if (option === AdditionalOptions.CONCLUSION) {
+            handleOpenConclusion();
+        }
         handleCloseMenu();
-    }, [handleOpenDischarge, handleOpenReferral]);
+    }, [handleOpenConclusion, handleOpenDischarge, handleOpenReferral]);
 
     return (
         <Container disableGutters={true} sx={containerStyles} maxWidth={false}>
@@ -105,6 +111,7 @@ export const Header = () => {
             {OpenPersonComponent}
             {OpenDischargeComponent}
             {ReferralDialog}
+            {ConclusionDialog}
         </Container>
     )
 };

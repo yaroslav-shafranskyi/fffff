@@ -1,9 +1,7 @@
 import { SxProps } from "@mui/material";
 import { Theme } from '@mui/system';
 
-import { INPUT_WITH_HINT_LINE_HEIGHT } from '../../../../constants';
-
-import { commonInputStyles } from "../../styles";
+import { INPUT_WITH_HINT_LINE_HEIGHT, commonInputStyles } from '../../../../constants';
 
 export const receiverInputStyles = commonInputStyles;
 

@@ -1,25 +1,35 @@
-import { ChangeEvent, FC, useCallback } from 'react';
-import { FieldPath, useFormContext } from 'react-hook-form';
+import { ChangeEvent, useCallback } from 'react';
+import { FieldPath, PathValue, useFormContext } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 
-import { Input } from '../../../../shared';
-import { IDischarge } from '../../../../api';
+import { Input, CustomDatePicker } from '../../shared';
+import { ICommonFormHeaderFields } from '../../api';
+import { FieldErrorType } from '../../interfaces';
+import { formatDateWithoutDots } from '../../helpers';
 
-import { IFCPropsWithReadonly } from '../../../../interfaces';
-import { boldTextStyles } from '../../styles';
+import {
+    boldTextStyles,
+    codeWrapperStyles,
+    dateInputStyles,
+    formHeaderInputPropsSx,
+    formHeaderInputStyles,
+    formHeaderItemStyles,
+    formHeaderItemWithTitleStyles,
+    formHeaderStyles,
+    formHeaderTitleContentStyles,
+    formHeaderTitleStyles,
+    orderWrapperStyles
+} from './styles';
+import { ICommonFormHeaderProps } from './types';
 
-import { codeWrapperStyles, dateInputStyles, formHeaderInputPropsSx, formHeaderInputStyles, formHeaderItemStyles, formHeaderItemWithTitleStyles, formHeaderStyles, formHeaderTitleContentStyles, formHeaderTitleStyles, orderWrapperStyles } from './styles';
-import { formatDateWithoutDots } from '../../../../helpers';
-import { CustomDatePicker } from '../../../../shared/CustomDatePicker/CustomDatePicker';
-
-export const FormHeader: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { formState, watch, register, setValue, clearErrors } = useFormContext<IDischarge>();
+export const FormHeader = <T extends ICommonFormHeaderFields>({ readonly, formNumber }: ICommonFormHeaderProps) => {
+    const { formState, watch, register, setValue, clearErrors } = useFormContext<T>();
     const { errors } = formState;
 
-    const handleInputChange = useCallback((field: FieldPath<IDischarge>) =>
+    const handleInputChange = useCallback((field: FieldPath<T>) =>
         (event: ChangeEvent<HTMLInputElement>) => {
             if (!readonly) {
-                setValue(field, event.target.value)
+                setValue(field, event.target.value as PathValue<T, FieldPath<T>>);
                 clearErrors(field);
             }
     }, [clearErrors, readonly, setValue]);
@@ -28,8 +38,8 @@ export const FormHeader: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         if (readonly || !date) {
             return;
         }
-        setValue('order.date', date);
-        clearErrors('order.date');
+        setValue('order.date' as FieldPath<T>, date as PathValue<T, FieldPath<T>>);
+        clearErrors('order.date' as FieldPath<T>);
     }, [clearErrors, readonly, setValue]);
 
     return (
@@ -40,23 +50,23 @@ export const FormHeader: FC<IFCPropsWithReadonly> = ({ readonly }) => {
             </Typography>
             <Input
                 sx={formHeaderInputStyles}
-                {...register('department')}
-                value={watch('department')}
+                {...register('department' as FieldPath<T>)}
+                value={watch('department' as FieldPath<T>)}
                 rows={2}
                 multiline={true}
                 inputProps={{ sx: formHeaderInputPropsSx }}
-                onChange={handleInputChange('department')}
-                error={errors?.department?.message}
+                onChange={handleInputChange('department' as FieldPath<T>)}
+                error={errors?.department?.message as string | undefined}
             />
             <Typography variant='caption'>
                 Найменування та місцезнаходження (повна поштова адреса) закладу охорони здоров’я, де заповнюється форма
             </Typography>
             <Input
                 sx={formHeaderInputStyles}
-                {...register('clinic')}
-                value={watch('clinic')}
-                error={errors?.clinic?.message}
-                onChange={handleInputChange('clinic')}
+                {...register('clinic' as FieldPath<T>)}
+                value={watch('clinic' as FieldPath<T>)}
+                error={errors?.clinic?.message as string | undefined}
+                onChange={handleInputChange('clinic' as FieldPath<T>)}
             />
             <Box sx={codeWrapperStyles}>
                 <Typography variant='caption'>
@@ -65,10 +75,10 @@ export const FormHeader: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                 <Box>
                     <Input
                         sx={formHeaderInputStyles}
-                        {...register('code')}
-                        value={watch('code')}
-                        error={errors?.code?.message}
-                        onChange={handleInputChange('code')}
+                        {...register('code' as FieldPath<T>)}
+                        value={watch('code' as FieldPath<T>)}
+                        error={errors?.code?.message as string | undefined}
+                        onChange={handleInputChange('code' as FieldPath<T>)}
                     />
                 </Box>
             </Box>
@@ -85,7 +95,7 @@ export const FormHeader: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                         Форма первинної облікової документації
                     </Typography>
                     <Typography sx={boldTextStyles}>
-                        № 027/о
+                        {`№ ${formNumber}`}
                     </Typography>
                 </Box>
                 <Typography sx={boldTextStyles}>
@@ -99,18 +109,18 @@ export const FormHeader: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                         <CustomDatePicker onChange={handleDateChange}>
                                 <Input
                                     sx={dateInputStyles}
-                                    error={errors?.order?.date?.message}
-                                    value={formatDateWithoutDots(watch('order.date'))}
+                                    error={(errors?.order as { date?: FieldErrorType })?.date?.message}
+                                    value={formatDateWithoutDots(watch('order.date' as FieldPath<T>) as Date)}
                                     />
                         </CustomDatePicker>
                         №
                         <Box>
                             <Input
-                                {...register('order.number')}
+                                {...register('order.number' as FieldPath<T>)}
                                 sx={dateInputStyles}
-                                value={watch('order.number') ?? ''}
-                                error={errors?.order?.number?.message}
-                                onChange={handleInputChange('order.number')}
+                                value={watch('order.number' as FieldPath<T>) ?? ''}
+                                error={(errors?.order as { number?: FieldErrorType })?.number?.message}
+                                onChange={handleInputChange('order.number' as FieldPath<T>)}
                             />
                         </Box>
                     </Box>

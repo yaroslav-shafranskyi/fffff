@@ -1,9 +1,15 @@
-import { SxProps } from '@mui/material';
+import { SxProps } from "@mui/material";
 import { Theme } from '@mui/system';
 
-import { INNER_BORDER_WIDTH } from '../../../../constants';
+import { INNER_BORDER_WIDTH, commonInputStyles, multilineInputStyles } from '../../constants';
+export const headerStyles: SxProps = {
+    display: 'grid',
+    alignSelf: 'end',
+};
 
-import { commonInputStyles, multilineInputStyles } from '../../styles';
+export const boldTextStyles: SxProps = {
+    fontWeight: 'bold',
+};
 
 export const codeWrapperStyles: SxProps = {
     display: 'grid',
@@ -56,3 +62,4 @@ export const orderWrapperStyles: SxProps= {
 export const dateInputStyles: SxProps<Theme> = (theme) => ({
     width: theme.spacing(7),
 });
+

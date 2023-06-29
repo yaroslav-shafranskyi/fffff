@@ -2,12 +2,14 @@ import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { personsUrl } from '../../constants';
+import { Forms } from '../../api';
 
 import { useOpenFormDialog } from '../OpenForm';
 import { OpenForm100Dialog } from '../Form100';
 import { OpenPersonDialog } from '../PersonPage';
 import { OpenDischargeForm } from '../Discharge';
 import { OpenReferralForm } from '../Referral';
+import { OpenConclusionForm } from '../Conclusion';
 
 import { 
     buttonDescStyles,
@@ -22,9 +24,10 @@ import {
 
 export const Main = () => {
     const [Form100Dialog, openForm100Dialog] = useOpenFormDialog(OpenForm100Dialog);
-    const [PersonDialog, openPersonDialog] = useOpenFormDialog(OpenPersonDialog)
+    const [PersonDialog, openPersonDialog] = useOpenFormDialog(OpenPersonDialog);
     const [DischargeFormDialog, openDischargeFormDialog] = useOpenFormDialog(OpenDischargeForm);
-    const [ReferralDialog, openReferralDialog] = useOpenFormDialog(OpenReferralForm)
+    const [ReferralDialog, openReferralDialog] = useOpenFormDialog(OpenReferralForm);
+    const [ConclusionDialog, openConclusionFormDialog] = useOpenFormDialog(OpenConclusionForm);
 
     const navigate = useNavigate();
 
@@ -37,7 +40,7 @@ export const Main = () => {
             <Box sx={mainUpperButtonsStyles}>
                 <Button variant='contained' sx={form100ButtonStyles} onClick={openForm100Dialog}>
                     <Typography variant='h4'>
-                        Форма 100
+                        {Forms.FORM_100}
                     </Typography>
                     <Typography sx={buttonDescStyles}>
                         Створіть або перегляньте форму для поранених чи хворих військовослужбовців.
@@ -64,18 +67,18 @@ export const Main = () => {
             </Box>
             <Box sx={mainLowerButtonsStyles}>
                 <Button variant='contained' color='secondary' sx={mainButtonStyles}>
-                    <Typography variant='h5' sx={{ textAlign: 'left' }}>
-                        Консультативний висновок
+                    <Typography variant='h5' sx={{ textAlign: 'left' }} onClick={openConclusionFormDialog}>
+                        {Forms.CONCLUSION}
                     </Typography>
                 </Button>
                 <Button variant='contained' color='secondary' sx={mainButtonStyles} onClick={openDischargeFormDialog}>
                     <Typography variant='h5'>
-                        Виписка
+                        {Forms.DISCHARGE}
                     </Typography>
                 </Button>
                 <Button variant='contained' color='secondary' sx={mainButtonStyles} onClick={openReferralDialog}>
                     <Typography variant='h5'>
-                        Направлення
+                        {Forms.REFERRAL}
                     </Typography>
                 </Button>
             </Box>
@@ -83,6 +86,7 @@ export const Main = () => {
             {PersonDialog}
             {DischargeFormDialog}
             {ReferralDialog}
+            {ConclusionDialog}
         </Box>
     );
 };

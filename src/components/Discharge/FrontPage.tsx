@@ -5,19 +5,18 @@ import { FieldPath, useFormContext } from 'react-hook-form';
 import { Input } from '../../shared';
 import { IDischarge } from '../../api';
 import { IFCPropsWithReadonly } from '../../interfaces';
+import { commonInputStyles, multilineInputStyles } from '../../constants';
 
+import { MinistryOrder, FormHeader } from '../CommonFormHeader';
 import {
     boldTextStyles,
-    commonInputStyles,
-    contentDataWrapperStyles,
     contentTitleWrapperStyles,
     formContentStyles,
     formWrapperStyles,
-    headerStyles,
-    multilineInputStyles,
-} from './styles';
-import { FormHeader, Receiver, PersonInfo } from './components';
-import { Dates } from './components/Dates/Dates';
+} from '../commonFormStyles';
+
+import { contentDataWrapperStyles } from './styles';
+import { Receiver, PersonInfo, Dates } from './components';
 
 export const FrontPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { formState, watch, setValue, register, clearErrors } = useFormContext<IDischarge>();
@@ -34,19 +33,9 @@ export const FrontPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
 
     return (
         <Box sx={formWrapperStyles}>
-            <Box sx={headerStyles}>
-                <Typography sx={boldTextStyles}>
-                    ЗАТВЕРДЖЕНО
-                </Typography>
-                <Typography variant='caption'>
-                    Наказ Міністерства охорони здоров’я України
-                </Typography>
-                <Typography variant='caption'>
-                    14 лютого 2012 року № 110
-                </Typography>
-            </Box>
+            <MinistryOrder />
             <Box sx={formContentStyles}>
-                <FormHeader readonly={readonly} />
+                <FormHeader readonly={readonly} formNumber='027/о' />
                 <Box sx={contentTitleWrapperStyles}>
                     <Typography sx={boldTextStyles}>
                         ВИПИСКА

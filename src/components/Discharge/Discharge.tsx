@@ -8,7 +8,8 @@ import { ControlBar } from '../../shared';
 import { dischargeUrl, defaultDischargeBackPageState, defaultDischargeFrontPageState, defaultPersonData } from '../../constants';
 import { useGetDischarge, useUpdatePerson, useUpdateDischarge, useGetPerson, Forms } from '../../api';
 
-import { containerStyles } from './styles';
+import { containerStyles } from '../commonFormStyles';
+
 import { FrontPage } from './FrontPage';
 import { DischargeBackPageState, DischargeFrontPageState } from './types';
 import { BackPage } from './BackPage';
@@ -46,7 +47,7 @@ export const Discharge = () => {
         };
     }, [initialForm, initialPerson]);
 
-    const { readonly } = (state ?? {})  as { readonly?: boolean };
+    const readonly = state?.readonly;
 
     const [page, setPage] = useState<number>(0);
 

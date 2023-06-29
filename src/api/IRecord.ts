@@ -1,7 +1,8 @@
-import { IReferral } from '.';
+import { IConclusion } from './IConclusion';
 import { Forms } from './Forms';
 import { IDischarge } from './IDischarge';
 import { IForm100 } from './IForm100';
+import { IReferral } from './IReferral';
 
 export enum RecordType {
     INJURY = 'injury',
@@ -12,7 +13,9 @@ export type IForm100Record = Omit<IForm100, 'person'>;
 
 export type IDischargeRecord = Omit<IDischarge, 'person'>;
 
-export type IReferralRecord = Omit<IReferral, 'personId'>
+export type IReferralRecord = Omit<IReferral, 'personId'>;
+
+export type IConclusionRecord = Omit<IConclusion, 'person'>
 
 export interface IBriefRecord {
     date: Date;
@@ -26,6 +29,7 @@ export interface ILastRecords {
     brief?: IBriefRecord;
     discharge?: IDischargeRecord;
     referral?: IReferralRecord;
+    conclusion?: IConclusionRecord;
 }
 
 export interface IRecords {
@@ -33,4 +37,5 @@ export interface IRecords {
     brief: IBriefRecord[];
     discharge: IDischargeRecord[];
     referral: IReferralRecord[];
+    conclusion: IConclusionRecord[];
 }
