@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useMemo, useState } from 'react';
+import { FC, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { 
     Button,
     DialogActions,
@@ -17,11 +17,16 @@ import { dialogActionsStyles, dialogContentStyles, dialogButtonStyles, openButto
 import { IOpenFormDialog } from './types';
 
 export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
-    const { title, onClose, goToCreateMode, goToUpdateMode } = props;
+    const { title, error: propsError, onClose, goToCreateMode, goToUpdateMode } = props;
 
     const [personName, setPersonName] = useState<string>('');
     const [person, setPerson] = useState<IPerson>();
     const [value, setValue] = useState<string | null>(null);
+    const [error, setError] = useState<string>();
+
+    useEffect(() => {
+        setError(propsError);
+    }, [propsError]);
 
     const { data: persons } = useQueryPersons({ ...getInitialQuery(), filterBy: { fullName: personName }});
 
@@ -41,6 +46,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
             }, {}), [persons]);
 
     const handleChange = (_event: SyntheticEvent<Element, Event>, value: string | null) => {
+        setError(undefined);
         setValue(value);
         if (!value) {
             return;
@@ -53,6 +59,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
 
     const handleInputChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         setPersonName(value);
+        setError(undefined);
     }
 
     return (
@@ -95,6 +102,9 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
                     Створити
                 </Button>
             </DialogActions>
+            {error && <Box sx={{ p: 2 }}>
+                <Typography color='error' sx={{ textAlign: 'center' }}>{error}</Typography>
+            </Box>}
         </Dialog>
     );
 };

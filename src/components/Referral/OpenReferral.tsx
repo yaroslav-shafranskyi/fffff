@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { UseOpenFormComponentType } from '../../interfaces';
@@ -8,6 +8,7 @@ import { IPerson } from '../../api';
 import { OpenFormDialog } from '../OpenForm';
 
 export const OpenReferralForm: UseOpenFormComponentType = ({ onClose }) => {
+    const [error, setError] = useState<string>();
     const navigate = useNavigate();
 
     const goToUpdateMode = useCallback((person?: IPerson) => () => {
@@ -15,12 +16,15 @@ export const OpenReferralForm: UseOpenFormComponentType = ({ onClose }) => {
             return;
         }
         const lastReferralId = person.lastRecords.referral?.id;
-        const formIdUrl = lastReferralId !== undefined ? '/' + lastReferralId : '';
-        navigate(`${referralUrl}/${person.id}${formIdUrl}`, { state: { readonly: true } });
+        if (!lastReferralId) {
+            setError('По цьому військовослужбовцю немає збережених направлень.');
+            return;
+        }
+        navigate(`${referralUrl}/${person.id}/${lastReferralId}`, { state: { readonly: true } });
     }, [navigate]);
 
     const goToCreateMode = useCallback((personId?: string) => () => {
-        const url = !personId ? `${referralUrl}/create` : `${referralUrl}/${personId}`
+        const url = !personId ? `${referralUrl}/create` : `${referralUrl}/${personId}/create`
         navigate(url);
     }, [navigate]);
 
@@ -29,6 +33,7 @@ export const OpenReferralForm: UseOpenFormComponentType = ({ onClose }) => {
     return (
         <OpenFormDialog
             title={title}
+            error={error}
             goToUpdateMode={goToUpdateMode}
             goToCreateMode={goToCreateMode}
             onClose={onClose}
