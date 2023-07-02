@@ -21,7 +21,7 @@ export const columns: IColumn<IPerson>[] = [
     },
     {
         title: 'Дата народження',
-        render: p => formatDate(p.getValue() as Date),
+        render: p => formatDate(new Date(p.getValue() as string)),
         key: 'birthDate',
     },
     {
@@ -37,12 +37,12 @@ export const columns: IColumn<IPerson>[] = [
     {
         title: 'К-ть звернень',
         render: p => p.getValue() as number,
-        accessor: p => p.records.brief.length,
+        accessor: p => (p.records?.brief ?? []).length,
         key: 'recordsLength',
     },
     {
         title: 'Крайнє звернення',
-        render: p => formatDate(p.getValue() as Date) ?? '',
+        render: p => !p.getValue() ? '' : formatDate(new Date(p.getValue() as string)),
         accessor: p => p.lastRecords?.brief?.date,
         key: 'lastRecordDate',
     },

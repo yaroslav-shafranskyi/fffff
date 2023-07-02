@@ -6,6 +6,7 @@ import { IPerson, QueryPersonsData } from "../../api";
 
 import { IQuery } from "../../interfaces";
 import { getInitialQuery } from '../../constants';
+import { http } from '../../helpers';
 
 const emptyArray: [] = [];
 
@@ -13,11 +14,9 @@ export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptio
     const { iterator, sortBy, filterBy } = query ?? getInitialQuery();
     const queryKey: QueryKey = useMemo(() => ['persons', iterator, sortBy, filterBy], [iterator, sortBy, filterBy]);
 
-    const queryFunction = () => {
-        return fetch(`${serviceUrl}${personsUrl}`).then((res) => res.json()).catch(console.error);
-    }
+    const queryFunction = () => http.get(`${serviceUrl}${personsUrl}`) as unknown as QueryPersonsData;
 
-    const res = useQuery<QueryPersonsData>(queryKey, queryFunction, options)
+    const res = useQuery<QueryPersonsData>(queryKey, queryFunction, options);
 
     return {
         ...res,
