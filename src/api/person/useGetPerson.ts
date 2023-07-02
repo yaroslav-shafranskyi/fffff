@@ -1,18 +1,22 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMemo } from 'react';
+import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-import { defaultPersonData } from "../../constants";
+import { serviceUrl, personsUrl, defaultPersonData, getUrl } from '../../constants';
+import { IPerson } from "../../api";
+import { http } from '../../helpers';
 
-import { IPerson } from "../IPerson";
+export const useGetPerson = (id: string, options?: UseQueryOptions<IPerson>) => {
+    const queryKey: QueryKey = useMemo(() => ['persons', id], [id]);
 
-export const useGetPerson = (id: string) => {
-    const queryClient = useQueryClient();
+    const queryFunction = () => http.post(`${serviceUrl}${personsUrl}${getUrl}`, { id }) as unknown as IPerson;
 
-    const res = useQuery(['person', id], () => 
-        queryClient.getQueryData<IPerson>(['person', id]),
-        {
-            enabled: !!id && id !== 'create',
-        }
-    );
+    const res = useQuery<IPerson>(queryKey, queryFunction, options);
 
-    return res ?? defaultPersonData
-}
+    return {
+        ...res,
+        person: {
+            ...res?.data,
+            birthDate: !res?.data?.birthDate ? undefined : new Date(res.data.birthDate as unknown as string)
+        } as IPerson ?? defaultPersonData
+    };
+};

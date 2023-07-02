@@ -1,6 +1,5 @@
-import { ChangeEvent, useCallback, useMemo, useState, MouseEvent, Fragment } from 'react';
+import { ChangeEvent, useCallback, useState, MouseEvent, Fragment, FC } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useLocation } from 'react-router-dom';
 import {
     Card,
     Typography,
@@ -26,9 +25,9 @@ import { ArrowRight as OpenMenuIcon, ArrowForwardIos as ArrowForwardIosIcon } fr
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { ArmyRank, Forms, Gender, IBriefRecord, IPerson, useCreatePerson, useGetPerson, useUpdatePerson } from '../../api';
+import { ArmyRank, Forms, Gender, IBriefRecord, IPerson } from '../../api';
 import { Select, Input, ControlBar, DatePicker } from '../../shared';
-import { conclusionUrl, defaultPersonData, dischargeUrl, form100Url, referralUrl, createUrl } from '../../constants';
+import { conclusionUrl, dischargeUrl, form100Url, referralUrl, createUrl, defaultPersonData } from '../../constants';
 import { REQUIRED_FIELD_MESSAGE, personPageSchema } from '../../schemas';
 import { formatDate } from '../../helpers';
 
@@ -50,6 +49,7 @@ import {
     recordDiagnosisStyles,
     formIconStyles
 } from './styles';
+import { IPersonPageProps } from './types';
 
 const options = Object.values(Forms);
 
@@ -68,19 +68,8 @@ const getFormURL = (option: Forms) => {
     }
 };
 
-export const PersonPage = () => {
-    const { pathname } = useLocation() ?? {};
-
-    const personId = useMemo(() => decodeURI(pathname?.split('/persons/')?.[1]), [pathname]);
-
+export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
     const navigate = useNavigate();
-
-    const { data: person } = useGetPerson(personId);
-
-    const { mutate: updatePerson } = useUpdatePerson();
-    const { mutate: createPerson } = useCreatePerson();
-
-    const initialPerson = useMemo(() => person ?? defaultPersonData, [person]);
 
     const {
         formState,
@@ -88,8 +77,10 @@ export const PersonPage = () => {
         watch,
         setValue,
         handleSubmit,
+        reset,
     } = useForm<IPerson>({
-        defaultValues: initialPerson,
+        defaultValues: defaultPersonData,
+        values: person,
         resolver: yupResolver(personPageSchema),
     });
 
@@ -130,14 +121,6 @@ export const PersonPage = () => {
         }
     }, [setValue]);
 
-    const submitUserChanges = ({id, ...newPerson}: IPerson) => {
-        if (personId === 'create') {
-            createPerson(newPerson);
-            return;
-        }
-        updatePerson({ id, ...newPerson });
-    };
-
     const handleMenuOptionSelect = useCallback((form: Forms) => () => {
         const formUrl = getFormURL(form);
         if (!formUrl) {
@@ -159,7 +142,7 @@ export const PersonPage = () => {
             <Header />
             <Container maxWidth={false} sx={containerStyles}>
                 <Card sx={cardStyles}>
-                    <ControlBar title='Швидкий пошук військовослужбовця' onSubmit={handleSubmit(submitUserChanges)} />
+                    <ControlBar title='Швидкий пошук військовослужбовця' onClear={reset} onSubmit={handleSubmit(onSubmit)} />
                     <Typography variant='h5'>Особиста інформація війсковослужбовця</Typography>
                     <Box sx={infoWrapperStyles}>
                         <Box sx={infoLeftSectionStyles}>
@@ -283,9 +266,9 @@ export const PersonPage = () => {
                             <OpenMenuIcon sx={getMenuIconStyles(isMenuOpen)} />
                         </Button>
                     </Box>
-                    {!records.length && <Typography color='textSecondary'>Немає записів</Typography>}
+                    {!records?.length && <Typography color='textSecondary'>Немає записів</Typography>}
                     <Timeline position='alternate'>
-                        {records.map((record, idx) => {
+                        {records?.map((record, idx) => {
                             const { id, date, fullDiagnosis, type } = record;
                             const shouldHaveConnector = idx < records.length - 1;
                             return (
