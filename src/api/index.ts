@@ -24,3 +24,4 @@ export * from './referral';
 export * from './IConclusion';
 export * from './conclusion';
 export * from './ICommonFormHeaderFields';
+export * from './QueryPersonsData';

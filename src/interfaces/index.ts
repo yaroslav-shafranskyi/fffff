@@ -8,3 +8,4 @@ export * from './IFCPropsWithReadonly';
 export * from './IQuery';
 export * from './UseOpenFormComponentType';
 export * from './DateRange';
+export * from './IAxiosConfig';

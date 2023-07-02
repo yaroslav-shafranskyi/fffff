@@ -2,11 +2,17 @@ import { SxProps } from '@mui/material';
 import { Theme } from '@mui/system';
 
 export const containerStyles: SxProps = {
+    p: 0,
+    px: 0,
+    bgcolor: 'background.paper',
+    minHeight: '100vh',
+};
+
+export const contentStyles: SxProps = {
     height: '100%',
     borderRadius: 0,
     p: 4,
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'contents',
     pb: '43px',
 };
 
@@ -36,6 +42,7 @@ export const mainWrapperStyles: SxProps = {
     gridTemplateRows: '2fr 1fr',
     gap: 1,
     mt: 7.5,
+    px: 4,
 };
 
 export const mainButtonStyles: SxProps = {

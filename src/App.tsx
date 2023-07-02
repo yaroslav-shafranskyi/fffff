@@ -10,7 +10,6 @@ import { conclusionUrl, dischargeUrl, form100Url, personsUrl, referralUrl } from
 
 const queryClient = new QueryClient();
 
-
 const App = () => {
   return (
     <ThemeProvider theme={theme}>

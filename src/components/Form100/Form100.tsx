@@ -121,7 +121,7 @@ export const Form100 = () => {
         resetFront();
         resetBack();
     }, [resetFront, resetBack]);
-
+    console.log({ frontState })
     return (
         <Card sx={containerStyles}>
             <ControlBar

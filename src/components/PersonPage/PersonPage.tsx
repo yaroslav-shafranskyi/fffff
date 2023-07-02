@@ -26,9 +26,9 @@ import { ArrowRight as OpenMenuIcon, ArrowForwardIos as ArrowForwardIosIcon } fr
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import { ArmyRank, Forms, Gender, IBriefRecord, IPerson, useGetPerson, useUpdatePerson } from '../../api';
+import { ArmyRank, Forms, Gender, IBriefRecord, IPerson, useCreatePerson, useGetPerson, useUpdatePerson } from '../../api';
 import { Select, Input, ControlBar, DatePicker } from '../../shared';
-import { conclusionUrl, defaultPersonData, dischargeUrl, form100Url, referralUrl } from '../../constants';
+import { conclusionUrl, defaultPersonData, dischargeUrl, form100Url, referralUrl, createUrl } from '../../constants';
 import { REQUIRED_FIELD_MESSAGE, personPageSchema } from '../../schemas';
 import { formatDate } from '../../helpers';
 
@@ -77,7 +77,8 @@ export const PersonPage = () => {
 
     const { data: person } = useGetPerson(personId);
 
-    const { mutate: savePerson } = useUpdatePerson();
+    const { mutate: updatePerson } = useUpdatePerson();
+    const { mutate: createPerson } = useCreatePerson();
 
     const initialPerson = useMemo(() => person ?? defaultPersonData, [person]);
 
@@ -129,8 +130,12 @@ export const PersonPage = () => {
         }
     }, [setValue]);
 
-    const submitUserChanges = (newPerson: IPerson) => {
-        savePerson(newPerson);
+    const submitUserChanges = ({id, ...newPerson}: IPerson) => {
+        if (personId === 'create') {
+            createPerson(newPerson);
+            return;
+        }
+        updatePerson({ id, ...newPerson });
     };
 
     const handleMenuOptionSelect = useCallback((form: Forms) => () => {
@@ -138,7 +143,7 @@ export const PersonPage = () => {
         if (!formUrl) {
             return;
         }
-        navigate(`${formUrl}/${id}/create`);
+        navigate(`${formUrl}/${id}${createUrl}`);
     }, [navigate, id]);
 
     const goToForm = useCallback(({ type, id: formId }: IBriefRecord) => () => {

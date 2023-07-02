@@ -19,8 +19,8 @@ export const PersonsTable: FC = () => {
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
-    const { data: persons, total } = useQueryPersons(query);
-
+    const { persons, total } = useQueryPersons(query);
+    console.log({ persons });
     const goBack = () => {
         navigate('/');
     };
