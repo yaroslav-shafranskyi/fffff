@@ -26,9 +26,9 @@ import {
 
 export const CounterfoilFront: FC<IFCPropsWithReadonly> = ({ readonly }) => {
 
-    const { watch, formState } = useFormContext<IForm100FrontState>();
+    const { getValues, formState } = useFormContext<IForm100FrontState>();
 
-    const date = watch('date');
+    const date = getValues('date');
 
     const { errors } = formState;
 

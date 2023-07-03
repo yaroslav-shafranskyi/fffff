@@ -16,7 +16,7 @@ export const OpenForm100Dialog: UseOpenFormComponentType = ({ onClose }) => {
         if (!person) {
             return;
         }
-        const lastForm100Id = person.lastRecords.form100?.id;
+        const lastForm100Id = person.lastRecords.form100;
         if (!lastForm100Id) {
             setError('По цьому військовослужбовцю немає збережених Форм 100.');
             return;
@@ -27,7 +27,7 @@ export const OpenForm100Dialog: UseOpenFormComponentType = ({ onClose }) => {
 
     const goToCreateMode = useCallback((personId?: string) => () => {
 
-        const url = !personId ? form100Url : `${form100Url}/${personId}/create`;
+        const url = !personId ? `${form100Url}/create` : `${form100Url}/${personId}/create`;
         navigate(url);
     }, [navigate]);
 

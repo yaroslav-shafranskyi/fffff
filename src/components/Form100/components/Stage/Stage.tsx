@@ -8,9 +8,9 @@ import { Input } from '../../../../shared';
 import { containerStyles, textFieldStyles } from './styles';
 
 export const Stage = () => {
-    const { formState, watch, setValue } = useFormContext<IForm100>();
+    const { formState, getValues, setValue } = useFormContext<IForm100>();
 
-    const stage = watch('stage');
+    const stage = getValues('stage');
 
     const error = formState.errors.stage?.message;
 

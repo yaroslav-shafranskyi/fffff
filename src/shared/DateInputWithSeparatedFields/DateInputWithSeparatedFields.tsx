@@ -1,10 +1,11 @@
-import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { Box, Dialog, Typography } from '@mui/material';
 
-import { getDateData, updateDay, updateMinute, updateMonth, updateYear } from '../../helpers';
+import { getDateData } from '../../helpers';
 import { emptyDateData } from '../../constants';
 
 import { Input } from '../Input';
+import { DateTimePicker } from '../DateTimePicker';
 
 import { IDateInputWithSeparatedFieldsProps } from './types';
 import { dateNumberInputStyles, wrapperStyles } from './styles';
@@ -12,56 +13,45 @@ import { dateNumberInputStyles, wrapperStyles } from './styles';
 export const DateInputWithSeparatedFields: FC<IDateInputWithSeparatedFieldsProps> = (props) => {
     const { date, onChange } = props;
 
-    const [updatedDate, setUpdatedDate] = useState<Date>()
+    const [open, setOpen] = useState<boolean>(false);
 
-    const { hours, minutes, day, month, year } = updatedDate ?  getDateData(updatedDate) : emptyDateData;
+    const handleOpen = () => {
+        setOpen(true);
+    };
 
-    useEffect(() => {
-        if (updatedDate?.toString() === date?.toString()) {
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleChange = useCallback((d?: Date) => {
+        if (!d) {
             return;
         }
-        setUpdatedDate(date);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [date])
+        onChange(d);
+    }, [onChange]);
 
-    const handleHoursChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-        const nHours = +event.target.value;
-        if (Number.isNaN(nHours)) {
-            return;
-        }
-        const nDate = updatedDate ?? new Date();
-        if (!updatedDate) {
-            nDate.setMinutes(0);
-        }
-        if (nHours > new Date().getHours()) {
-            nDate.setDate(nDate.getDate() - 1);
-        }
-        nDate.setHours(nHours);
-        onChange(nDate);
-    }, [onChange, updatedDate]);
-
-    const handleCommonFieldChange = useCallback((updator: (d: Date, v: number) => void) => 
-        (event: ChangeEvent<HTMLInputElement>) => {
-            const nValue = +event.target.value;
-            if (Number.isNaN(nValue)) {
-                return;
-            }
-            const nDate = updatedDate ?? new Date();
-            updator(nDate, nValue);
-            onChange(nDate);
-    }, [onChange, updatedDate]);
+    const { hours, minutes, day, month, year } = useMemo(() => !date ? emptyDateData : getDateData(date), [date]);
 
     return (
-        <Box sx={wrapperStyles}>
-            <Input value={hours} onChange={handleHoursChange} sx={dateNumberInputStyles} /> 
-            <Typography>год.</Typography>
-            <Input value={minutes} onChange={handleCommonFieldChange(updateMinute)} sx={dateNumberInputStyles} />
-            <Typography>{`хв. `}</Typography>
-            <Input value={day} onChange={handleCommonFieldChange(updateDay)} sx={dateNumberInputStyles} />. 
-            <Input value={month} onChange={handleCommonFieldChange(updateMonth)} sx={dateNumberInputStyles} />.
-            <Typography>20</Typography>
-            <Input value={year} onChange={handleCommonFieldChange(updateYear(true))} sx={dateNumberInputStyles} />
-            <Typography>р.</Typography> 
-        </Box>
+        <>
+            <Box sx={wrapperStyles} onClick={handleOpen}>
+                <Input value={hours} sx={dateNumberInputStyles} /> 
+                <Typography>год.</Typography>
+                <Input value={minutes} sx={dateNumberInputStyles} />
+                <Typography>{`хв. `}</Typography>
+                <Input value={day} sx={dateNumberInputStyles} />. 
+                <Input value={month} sx={dateNumberInputStyles} />.
+                <Typography>20</Typography>
+                <Input value={year} sx={dateNumberInputStyles} />
+                <Typography>р.</Typography>
+            </Box>
+            <Dialog open={open} onClose={handleClose}>
+                <DateTimePicker
+                    value={date}
+                    onChange={handleChange}
+                    onAccept={handleClose}
+                />
+            </Dialog>
+        </>
     );
 };

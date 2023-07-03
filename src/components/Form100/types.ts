@@ -12,4 +12,5 @@ export interface IForm100BackState extends Pick<IForm100, Form100BackValues> {
 export interface IForm100State {
     front: IForm100FrontState;
     back: IForm100BackState;
+    id: number | 'create';
 }

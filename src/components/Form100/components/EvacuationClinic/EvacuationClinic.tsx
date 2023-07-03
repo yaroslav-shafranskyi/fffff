@@ -10,9 +10,9 @@ import { useFormContext } from 'react-hook-form';
 const allClinics = Object.values(EvacuationClinic);
 
 export const EvacuationClinicComponent: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { watch, setValue, clearErrors } = useFormContext<IForm100>();
+    const { getValues, setValue, clearErrors } = useFormContext<IForm100>();
 
-    const selected = watch('evacuation.clinic');
+    const selected = getValues('evacuation.clinic');
 
     const { selectedNames, selectedOrders } = useMemo(() =>
         selected.reduce((acc: { selectedNames: EvacuationClinic[]; selectedOrders: number[]; }, cur) => {

@@ -9,9 +9,9 @@ import { FieldErrorType, IFCPropsWithReadonly } from '../../../../interfaces';
 import { evacuationTypeWrapperStyles } from "./styles";
 
 export const EvacuationTypeComponent: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { formState, watch, setValue, clearErrors } = useFormContext<IForm100>();
+    const { formState, getValues, setValue, clearErrors } = useFormContext<IForm100>();
 
-    const evacuationType = watch('evacuation.type');
+    const evacuationType = getValues('evacuation.type');
 
     const error = (formState.errors.evacuation as { type?: FieldErrorType})?.type?.message;
 

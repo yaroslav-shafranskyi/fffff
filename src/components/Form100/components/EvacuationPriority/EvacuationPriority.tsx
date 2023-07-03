@@ -10,9 +10,9 @@ import { cursorPointerStyles, displayFlexStyles } from "../../styles";
 import { evacuationPriorityOptionsWrapperStyles, evacuationPriorityWrapperStyles } from "./styles";
 
 export const EvacuationPriorityComponent: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { formState, watch, setValue, clearErrors } = useFormContext<IForm100>();
+    const { formState, getValues, setValue, clearErrors } = useFormContext<IForm100>();
 
-    const priority = watch('evacuation.priority');
+    const priority = getValues('evacuation.priority');
 
     const updatePriority = useCallback((value: EvacuationPriority) => () => {
         if (readonly) {

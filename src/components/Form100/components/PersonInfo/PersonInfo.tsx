@@ -1,16 +1,15 @@
-import { ChangeEvent, useCallback, FC, useMemo } from 'react';
+import { useCallback, FC, useMemo, ChangeEvent } from 'react';
 import { Box, SelectChangeEvent, Typography, SxProps } from '@mui/material';
 import { Theme } from '@mui/system';
-import { useFormContext } from 'react-hook-form';
+import { FieldPath, useFormContext } from 'react-hook-form';
 
 import { DateInputWithSeparatedFields, Input, Select } from '../../../../shared';
-import { ArmyRank, Gender, IPerson, Rank, RecordType } from '../../../../api';
-import { FieldErrorType, IFCPropsWithReadonly } from '../../../../interfaces';
+import { ArmyRank, Form100PersonData, Gender, Rank, RecordType } from '../../../../api';
+import { IFCPropsWithReadonly } from '../../../../interfaces';
 
 import { cursorPointerStyles } from '../../styles';
 import { IForm100FrontState } from '../../types';
 
-import { UpdatePersonDataType } from './types';
 import {
     columnStyles,
     fieldNameStyles,
@@ -27,17 +26,13 @@ import {
 } from './styles';
 
 export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { formState, register, setValue, watch, clearErrors } = useFormContext<IForm100FrontState>();
+    const { formState, register, getValues, setValue, clearErrors } = useFormContext<IForm100FrontState>();
 
-    const values = watch();
-    const { person } = values;
+    const values = getValues();
+    const { person, reason, accidentTime } = values;
     const { 
-        fullName,
-        militaryBase,
         rank,
-        personalId,
-        tokenNumber,
-        lastRecords,
+        gender,
     } = person;
 
     const {person: errors, reason: reasonError } = formState.errors;
@@ -46,59 +41,27 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         if (readonly) {
             return;
         }
-        setValue('person.lastRecords.form100.date', newDate);
-        setValue('person.lastRecords.brief.date', newDate);
-        clearErrors('person.lastRecords.form100.date');
-        clearErrors('person.lastRecords.brief.date');
+        setValue('accidentTime', newDate);
+        clearErrors('accidentTime');
     }, [clearErrors, readonly, setValue]);
 
-    const handleCommonFieldChange = useCallback((field: keyof IPerson) =>
-        (event: ChangeEvent<HTMLInputElement>) => {
-            if (readonly) {
-                return;
-            }
-            const newValue = event.target.value;
-            setValue(`person.${field}`, newValue);
-            clearErrors(`person.${field}`);
-        }, [readonly, setValue, clearErrors]);
-
-    const handleTokenChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const updateGender = useCallback((value: Gender) => () => {
         if (readonly) {
             return;
         }
-        const newValue = event.target.value;
-        setValue('person.tokenNumber', newValue);
-        clearErrors('person.tokenNumber');
-        const newValueWithoutSpaces = newValue.split(' ').join('');
-        const birthDate = new Date(newValueWithoutSpaces);
-        const isValidDate = !Number.isNaN(birthDate.getTime());
-        if (isValidDate) {
-            setValue('person.birthDate', birthDate);
-        }
-    }, [clearErrors, readonly, setValue])
-
-    const updatePersonData: UpdatePersonDataType = useCallback((key, value, path) => () => {
-        if (readonly) {
+        if (gender === value) {
+            setValue('person.gender', undefined as unknown as Gender);
             return;
         }
-        if (path) {
-            // @ts-expect-error used for nested fields
-            setValue(`person.${key}.${path}`, value);
-            // @ts-expect-error used for nested fields
-            clearErrors(`person.${key}.${path}`)
-            return;
-        }
-        setValue(`person.${key}`, value);
-        clearErrors(`person.${key}`)
-    }, [clearErrors, readonly, setValue]);
+        setValue('person.gender', value);
+        clearErrors('person.gender');
+    }, [clearErrors, gender, readonly, setValue])
 
     const updateReason = useCallback((value: RecordType) => () => {
         if (readonly) {
             return;
         }
-        setValue('person.lastRecords.form100.reason', value);
         setValue('reason', value);
-        clearErrors('person.lastRecords.form100.reason');
         clearErrors('reason');
     }, [clearErrors, readonly, setValue]);
 
@@ -110,17 +73,23 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         clearErrors('person.rank');
     }, [clearErrors, readonly, setValue]);
 
-    const getReasonColor = <T extends string>(option: T, getCurrentValue: (person: IPerson) => T | undefined) => 
-        (option === getCurrentValue(person) && getCurrentValue(person) !== undefined) ? 'error' : 'textPrimary';
-    
-    const getGenderColor = <T extends string>(option: T, getCurrentValue: (person: IPerson) => T | undefined) => 
-        (option === getCurrentValue(person) && getCurrentValue(person) !== undefined) ? 'success.light' : 'textPrimary';
+    const handleInputChange = useCallback((key: FieldPath<Form100PersonData>) => (event: ChangeEvent<HTMLInputElement>) => {
+        if (readonly) {
+            return;
+        }
+        setValue(`person.${key}`, event.target.value);
+        clearErrors(`person.${key}`)
+    }, [clearErrors, readonly, setValue])
 
-    const getCurrentGender = (p: IPerson) => p.gender;
-    const getCurrentReason = (p: IPerson) => p.lastRecords.form100?.reason;
+    const getReasonColor = <T extends string>(option: T, reason: RecordType) => 
+        (option === reason && reason !== undefined) ? 'error' : 'textPrimary';
+    
+    const getGenderColor = <T extends string>(option: T, gender?: Gender) => 
+        (option === gender && gender !== undefined) ? 'success.light' : 'textPrimary';
 
     const optionWrapperSx: SxProps<Theme> = useMemo(() => readonly ? {} : cursorPointerStyles, [readonly]);
 
+    const accidentTimeError = formState.errors?.accidentTime?.message;
     return (
         <>
         <Box sx={rowStyles}>
@@ -145,20 +114,20 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                     </Box>
                     <Box sx={{ width: '100%' }}>
                         <Input
-                            value={militaryBase}
                             fullWidth={true}
+                            {...register('person.militaryBase')}
+                            onChange={handleInputChange('militaryBase')}
                             error={errors?.militaryBase?.message}
-                            onChange={handleCommonFieldChange('militaryBase')}
                         />
                     </Box>
                 </Box>
             </Box>
             <Box sx={singleElementRowStyles}>
                 <Input
-                    value={fullName}
                     sx={fullWidthInputStyles}
+                    {...register('person.fullName')}
+                    onChange={handleInputChange('fullName')}
                     error={errors?.fullName?.message}
-                    onChange={handleCommonFieldChange('fullName')}
                 />
                 <Box sx={fullNameTitleStyles}>
                     <Typography>
@@ -178,10 +147,10 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                 </Box>
                 <Box sx={{ width: '100%' }}>
                     <Input
-                        value={personalId}
                         sx={fullWidthInputStyles}
+                        {...register('person.personalId')}
+                        onChange={handleInputChange('personalId')}
                         error={errors?.personalId?.message}
-                        onChange={handleCommonFieldChange('personalId')}
                     />
                 </Box>
             </Box>
@@ -191,20 +160,20 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                 </Box>
                 <Box sx={{ width: '100%' }}>
                     <Input
-                        value={tokenNumber}
                         sx={fullWidthInputStyles}
+                        {...register('person.tokenNumber')}
+                        onChange={handleInputChange('tokenNumber')}
                         error={errors?.tokenNumber?.message}
-                        onChange={handleTokenChange}
                     />
                 </Box>
                 <Box>
                     <Box sx={genderWrapperStyles}>
                         <Typography>Стать: </Typography>
-                        <Box sx={optionWrapperSx} onClick={updatePersonData('gender', Gender.MALE)}>
-                            <Typography color={getGenderColor(Gender.MALE, getCurrentGender)}>{Gender.MALE}</Typography> 
+                        <Box sx={optionWrapperSx} onClick={updateGender(Gender.MALE)}>
+                            <Typography color={getGenderColor(Gender.MALE, gender)}>{Gender.MALE}</Typography> 
                         </Box>
-                            <Box sx={getFemaleWrapperStyles(readonly)} onClick={updatePersonData('gender', Gender.FEMALE)}>
-                            <Typography color={getGenderColor(Gender.FEMALE, getCurrentGender)}>{Gender.FEMALE}</Typography> 
+                            <Box sx={getFemaleWrapperStyles(readonly)} onClick={updateGender(Gender.FEMALE)}>
+                            <Typography color={getGenderColor(Gender.FEMALE, gender)}>{Gender.FEMALE}</Typography> 
                         </Box>
                     </Box>
                     <Typography color='error'>
@@ -216,11 +185,11 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                 <Box>
                     <Box sx={reasonWrapperStyles}>
                         <Box sx={getReasonWrapperStyles(readonly)} onClick={updateReason(RecordType.INJURY)}>
-                            <Typography color={getReasonColor(RecordType.INJURY, getCurrentReason)}>Поранений</Typography>
+                            <Typography color={getReasonColor(RecordType.INJURY, reason)}>Поранений</Typography>
                             <Typography>,</Typography>
                         </Box>
                         <Box sx={optionWrapperSx} onClick={updateReason(RecordType.SICK)}>
-                            <Typography color={getReasonColor(RecordType.SICK, getCurrentReason)}>захворів</Typography>
+                            <Typography color={getReasonColor(RecordType.SICK, reason)}>захворів</Typography>
                         </Box>
                     </Box>
                     <Typography color='error'>
@@ -228,9 +197,9 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                     </Typography>
                 </Box>
                 <Box>
-                    <DateInputWithSeparatedFields date={lastRecords?.form100?.date} onChange={handleNewRecordDateChange} />
-                    {(errors as { lastRecord?: { date?: FieldErrorType}})?.lastRecord?.date?.message &&
-                        <Typography color='error'>{errors?.lastRecords?.form100?.date?.message}</Typography>}
+                    <DateInputWithSeparatedFields date={accidentTime} onChange={handleNewRecordDateChange} />
+                    {accidentTimeError !== undefined &&
+                        <Typography color='error'>{accidentTimeError}</Typography>}
                 </Box>
             </Box>
         </>

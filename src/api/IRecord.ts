@@ -25,11 +25,11 @@ export interface IBriefRecord {
 }
 
 export interface ILastRecords {
-    form100?: IForm100Record;
-    brief?: IBriefRecord;
-    discharge?: IDischargeRecord;
-    referral?: IReferralRecord;
-    conclusion?: IConclusionRecord;
+    form100?: number;
+    brief?: number;
+    discharge?: number;
+    referral?: number;
+    conclusion?: number;
 }
 
 export interface IRecords {

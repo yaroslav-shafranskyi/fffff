@@ -6,9 +6,9 @@ import { IForm100 } from "../../../../api";
 import { wrapperStyles } from "./styles";
 
 export const SelfLeave = () => {
-    const { watch, setValue } = useFormContext<IForm100>();
+    const { getValues, setValue } = useFormContext<IForm100>();
 
-    const selfLeave = watch('selfLeave');
+    const selfLeave = getValues('selfLeave');
 
     const handleChange = () => {
         setValue('selfLeave', !selfLeave);

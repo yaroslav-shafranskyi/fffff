@@ -33,6 +33,7 @@ export const form100FrontSchema = object().shape({
     diagnosis: defaultStringSchema,
     plait: plaitSchema,
     sanitaryTreatment: fieldRequiredStringSchema(),
+    accidentTime: defaultDateSchema,
 });
 
 export const form100BackSchema = object().shape({
@@ -45,3 +46,5 @@ export const form100BackSchema = object().shape({
     timeAfterAccident: number().required(),
     firstAidInfo: defaultStringSchema
 }).required();
+
+export const form100Schema = form100FrontSchema;

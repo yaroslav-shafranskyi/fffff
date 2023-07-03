@@ -9,9 +9,9 @@ import { cursorPointerStyles, displayFlexStyles, severalInlineOptionsWrapperStyl
 import { sanitaryStatusWrapperStyles } from "./styles";
 
 export const SanitaryStatus: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { formState, watch, setValue, clearErrors } = useFormContext<IForm100>();
+    const { formState, getValues, setValue, clearErrors } = useFormContext<IForm100>();
 
-    const sanitaryTreatment = watch('sanitaryTreatment');
+    const sanitaryTreatment = getValues('sanitaryTreatment');
 
     const error = formState.errors.sanitaryTreatment?.message;
 

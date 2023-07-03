@@ -1,11 +1,19 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { IForm100 } from "../IForm100";
-import { getInitialForm100 } from "../../constants";
+import { useMemo } from 'react';
+import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-export const useGetForm100 = (personId: string, formId: string) => {
-    const queryClient = useQueryClient();
+import { serviceUrl, form100Url, getInitialForm100, getUrl } from '../../constants';
+import { IForm100 } from "../../api";
+import { http } from '../../helpers';
 
-    const data = queryClient.getQueryData<IForm100>(['form100', personId, formId]);
+export const useGetForm100 = (personId: string, id: string, options?: UseQueryOptions<IForm100>) => {
+    const queryKey: QueryKey = useMemo(() => ['forms100', personId, id], [personId, id]);
 
-    return data ?? getInitialForm100();
-}
+    const queryFunction = () => http.post(`${serviceUrl}${form100Url}${getUrl}`, { id, personId }) as unknown as IForm100;
+
+    const res = useQuery<IForm100>(queryKey, queryFunction, options);
+
+    return {
+        ...res,
+        form100: { ...getInitialForm100(), ...res?.data },
+    };
+};

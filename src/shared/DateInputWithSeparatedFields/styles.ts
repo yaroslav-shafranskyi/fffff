@@ -11,4 +11,5 @@ export const wrapperStyles: SxProps = {
     alignItems: 'baseline',
     px: '2px',
     pb: '2px',
+    cursor: 'pointer'
 };

@@ -11,9 +11,9 @@ import { displayFlexStyles, boldTextStyles } from "../../styles";
 import { getPlaitStatusWrapperStyles } from "./styles";
 
 export const Plait: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { formState, watch, setValue } = useFormContext<IForm100>();
+    const { formState, getValues, setValue } = useFormContext<IForm100>();
     
-    const { date: plaitDate, status: plaitStatus} = watch('plait') ?? {};
+    const { date: plaitDate, status: plaitStatus} = getValues('plait') ?? {};
 
     const error = formState.errors.plait?.date?.message;
 

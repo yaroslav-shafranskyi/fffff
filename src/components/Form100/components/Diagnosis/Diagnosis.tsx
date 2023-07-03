@@ -9,9 +9,9 @@ import { useFormContext } from 'react-hook-form';
 import { IForm100 } from '../../../../api';
 
 export const Diagnosis: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { formState, watch, setValue, clearErrors } = useFormContext<IForm100>();
+    const { formState, getValues, setValue, clearErrors } = useFormContext<IForm100>();
 
-    const diagnosis = watch('diagnosis');
+    const diagnosis = getValues('diagnosis');
 
     const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         if (readonly) {

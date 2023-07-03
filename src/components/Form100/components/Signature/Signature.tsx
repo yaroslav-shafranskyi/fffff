@@ -6,9 +6,9 @@ import { IForm100 } from "../../../../api";
 import { ChangeEvent } from "react";
 
 export const Signature = () => {
-    const { watch, setValue } = useFormContext<IForm100>();
+    const { getValues, setValue } = useFormContext<IForm100>();
 
-    const signature = watch('signature');
+    const signature = getValues('signature');
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setValue('signature', event.target.value);

@@ -8,9 +8,9 @@ import { IForm100 } from "../../../../api";
 import { wrapperStyles } from "./styles";
 
 export const CarriedBy = () => {
-    const { watch, setValue } = useFormContext<IForm100>();
+    const { getValues, setValue } = useFormContext<IForm100>();
 
-    const carriedBy = watch('carriedBy');
+    const carriedBy = getValues('carriedBy');
 
     const updateCarriedBy = (event: ChangeEvent<HTMLInputElement>) => {
         setValue('carriedBy', event.target.value);

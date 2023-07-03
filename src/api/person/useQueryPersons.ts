@@ -12,7 +12,7 @@ const emptyArray: [] = [];
 
 export const useQueryPersons = (query?: IQuery<IPerson>, options?: UseQueryOptions<QueryPersonsData>) => {
     const { iterator, sortBy, filterBy } = query ?? getInitialQuery();
-    const queryKey: QueryKey = useMemo(() => ['persons', iterator, sortBy, filterBy], [iterator, sortBy, filterBy]);
+    const queryKey: QueryKey = useMemo(() => [personsUrl, iterator, sortBy, filterBy], [iterator, sortBy, filterBy]);
 
     const queryFunction = () => http.get(`${serviceUrl}${personsUrl}`) as unknown as QueryPersonsData;
 

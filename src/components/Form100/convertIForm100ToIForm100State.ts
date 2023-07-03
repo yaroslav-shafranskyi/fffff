@@ -28,6 +28,8 @@ export const convertIForm100ToIForm100State = (data?: IForm100): IForm100State =
         carriedBy,
         timeAfterAccident,
         firstAidInfo,
+        accidentTime,
+        id,
     } = data ?? getInitialForm100();
 
     return {
@@ -46,6 +48,7 @@ export const convertIForm100ToIForm100State = (data?: IForm100): IForm100State =
             evacuation,
             diagnosis,
             signature,
+            accidentTime,
         },
         back: {
             date,
@@ -60,5 +63,6 @@ export const convertIForm100ToIForm100State = (data?: IForm100): IForm100State =
             timeAfterAccident,
             firstAidInfo
         },
+        id,
     }
 }

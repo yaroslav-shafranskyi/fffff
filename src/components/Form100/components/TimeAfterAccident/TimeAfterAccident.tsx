@@ -17,9 +17,9 @@ import { IForm100BackState } from '../../types';
 import { textFieldStyles, wrapperStyles } from './styles';
 
 export const TimeAfterAccident: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { watch, setValue } = useFormContext<IForm100BackState>();
+    const { getValues, setValue } = useFormContext<IForm100BackState>();
     
-    const timeAfterAccident = watch('timeAfterAccident');
+    const timeAfterAccident = getValues('timeAfterAccident');
 
     const { hours, minutes } = useMemo(() => ({
         hours: convertDateField(getHoursFromMilliseconds(timeAfterAccident ?? 0)),

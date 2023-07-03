@@ -13,9 +13,9 @@ import {
 } from './styles';
 
 export const Clinic: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { formState, watch, setValue, clearErrors } = useFormContext();
+    const { formState, getValues, setValue, clearErrors } = useFormContext();
 
-    const clinic = watch('clinic');
+    const clinic = getValues('clinic');
 
     const error = formState.errors.clinic?.message;
 

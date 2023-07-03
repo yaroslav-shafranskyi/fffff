@@ -115,10 +115,12 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
         }
     }, [setValue]);
 
-    const handleDateChange = useCallback((key: 'birthDate' | 'lastRecords.brief.date') => (date?: Date) => {
-        if (date !== undefined) {
-            setValue(key, date)
+    const handleDateChange = useCallback((date?: Date) => {
+        if (!date) { 
+            return
         }
+        date.setHours(12);
+        setValue('birthDate', date)
     }, [setValue]);
 
     const handleMenuOptionSelect = useCallback((form: Forms) => () => {
@@ -203,7 +205,7 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
                                         label="Дата народження"
                                         value={watch('birthDate')}
                                         sx={fullWidthStyles}
-                                        onChange={handleDateChange('birthDate')}
+                                        onChange={handleDateChange}
                                     />
                                     {errors.birthDate?.message !== undefined && (
                                         <Typography color='error'>{REQUIRED_FIELD_MESSAGE}</Typography>

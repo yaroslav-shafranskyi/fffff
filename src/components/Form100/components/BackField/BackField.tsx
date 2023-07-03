@@ -12,9 +12,9 @@ import { inputStyles, titleStyles, wrapperStyles } from './styles';
 
 export const BackField: FC<IBackFieldProps> = (props) => {
     const { title, field, rows, titleStyles: propsTitleStyles } = props;
-    const { formState, clearErrors, watch, setValue } = useFormContext<IForm100BackState>();
+    const { formState, clearErrors, getValues, setValue } = useFormContext<IForm100BackState>();
 
-    const value = watch(field);
+    const value = getValues(field);
 
     const error = formState.errors[field]?.message;
 

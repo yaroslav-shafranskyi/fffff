@@ -1,11 +1,10 @@
 import { IForm100, RecordType, IEvacuation, SanitaryTreatmentStatus, IEvacuationClinic } from "../../api";
-import { defaultPersonData } from "..";
+import { defaultPersonData } from "../person";
 
 export const getInitialForm100 = (): IForm100 => {
     const newDate = new Date();
     return {
-        // TODO: id should be incrementally generated on back-end
-        id: String(newDate.getTime()),
+        id: 'create',
         author: '',
         clinic: '',
         person: defaultPersonData, 
@@ -15,6 +14,7 @@ export const getInitialForm100 = (): IForm100 => {
         },
         bodyDamage: [],
         date: newDate,
+        accidentTime: undefined as unknown as Date,
         reason: '' as RecordType,
         medicalHelp: {
             treatments: {},
