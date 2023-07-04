@@ -8,13 +8,7 @@ export const defaultPersonData: IPerson = {
     personalId: '',
     tokenNumber: '',
     gender: '' as Gender,
-    records: {
-        form100: [],
-        brief: [],
-        discharge: [],
-        referral: [],
-        conclusion: [],
-    },
+    records: [],
     lastRecords: {},
     address: {
         oblast: '',

@@ -84,7 +84,7 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
         resolver: yupResolver(personPageSchema),
     });
 
-    const records = watch('records.brief');
+    const records = watch('records');
     const id = watch('id');
     const gender = watch('gender');
     

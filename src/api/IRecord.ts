@@ -1,41 +1,38 @@
-import { IConclusion } from './IConclusion';
-import { Forms } from './Forms';
-import { IDischarge } from './IDischarge';
-import { IForm100 } from './IForm100';
-import { IReferral } from './IReferral';
+import { IConclusion } from "./IConclusion";
+import { Forms } from "./Forms";
+import { IDischarge } from "./IDischarge";
+import { IForm100 } from "./IForm100";
+import { IReferral } from "./IReferral";
 
 export enum RecordType {
-    INJURY = 'injury',
-    SICK = 'sick'
+  INJURY = "injury",
+  SICK = "sick",
 }
 
-export type IForm100Record = Omit<IForm100, 'person'>;
+export type IForm100Record = Omit<IForm100, "person">;
 
-export type IDischargeRecord = Omit<IDischarge, 'person'>;
+export type IDischargeRecord = Omit<IDischarge, "person">;
 
-export type IReferralRecord = Omit<IReferral, 'personId'>;
+export type IReferralRecord = Omit<IReferral, "personId">;
 
-export type IConclusionRecord = Omit<IConclusion, 'person'>
+export type IConclusionRecord = Omit<IConclusion, "person">;
 
 export interface IBriefRecord {
-    date: Date;
-    fullDiagnosis: string;
-    id: string;
-    type: Forms;
+  date: Date;
+  fullDiagnosis: string;
+  id: string;
+  type: Forms;
+}
+
+export interface IResponseBriefRecord extends Omit<IBriefRecord, 'date'> {
+    date: string;
+    formId: string;
 }
 
 export interface ILastRecords {
-    form100?: number;
-    brief?: number;
-    discharge?: number;
-    referral?: number;
-    conclusion?: number;
-}
-
-export interface IRecords {
-    form100: IForm100Record[];
-    brief: IBriefRecord[];
-    discharge: IDischargeRecord[];
-    referral: IReferralRecord[];
-    conclusion: IConclusionRecord[];
+  form100?: number;
+  brief?: number;
+  discharge?: number;
+  referral?: number;
+  conclusion?: number;
 }
