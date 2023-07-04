@@ -21,7 +21,7 @@ export const CarriedBy = () => {
             <Typography>
                 Винесений (ким)
             </Typography>
-            <Input value={carriedBy} onChange={updateCarriedBy} />
+            <Input value={carriedBy ?? ''} onChange={updateCarriedBy} />
         </Box>
     );
 };

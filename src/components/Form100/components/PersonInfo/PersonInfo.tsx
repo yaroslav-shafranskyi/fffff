@@ -33,6 +33,10 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     const { 
         rank,
         gender,
+        personalId,
+        militaryBase,
+        fullName,
+        tokenNumber
     } = person;
 
     const {person: errors, reason: reasonError } = formState.errors;
@@ -101,7 +105,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                         <Select
                             { ...register('person.rank')}
                             onChange={handleRankChange}
-                            value={rank}
+                            value={rank ?? ''}
                             options={Object.values(ArmyRank)}
                             sx={{ fontSize: '0.6rem' }}
                             error={errors?.rank?.message}
@@ -117,6 +121,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                             fullWidth={true}
                             {...register('person.militaryBase')}
                             onChange={handleInputChange('militaryBase')}
+                            value={militaryBase ?? ''}
                             error={errors?.militaryBase?.message}
                         />
                     </Box>
@@ -127,6 +132,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                     sx={fullWidthInputStyles}
                     {...register('person.fullName')}
                     onChange={handleInputChange('fullName')}
+                    value={fullName ?? ''}
                     error={errors?.fullName?.message}
                 />
                 <Box sx={fullNameTitleStyles}>
@@ -150,6 +156,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                         sx={fullWidthInputStyles}
                         {...register('person.personalId')}
                         onChange={handleInputChange('personalId')}
+                        value={personalId ?? ''}
                         error={errors?.personalId?.message}
                     />
                 </Box>
@@ -163,6 +170,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                         sx={fullWidthInputStyles}
                         {...register('person.tokenNumber')}
                         onChange={handleInputChange('tokenNumber')}
+                        value={tokenNumber ?? ''}
                         error={errors?.tokenNumber?.message}
                     />
                 </Box>

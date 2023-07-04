@@ -34,7 +34,7 @@ export const Clinic: FC<IFCPropsWithReadonly> = ({ readonly }) => {
             </Typography>
             <Box sx={clinicInputWrapperStyles}>
                 <Input
-                    value={clinic}
+                    value={clinic ?? ''}
                     fullWidth={true}
                     multiline={true}
                     rows={2}

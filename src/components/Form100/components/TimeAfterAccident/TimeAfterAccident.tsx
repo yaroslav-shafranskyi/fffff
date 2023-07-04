@@ -67,13 +67,13 @@ export const TimeAfterAccident: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         <Box sx={wrapperStyles}>
             <Typography>Через</Typography>
             <Input 
-                value={hours}
+                value={hours ?? ''}
                 sx={textFieldStyles}
                 onChange={handleChange('hours')}
             />
             <Typography>год.</Typography>
             <Input 
-                value={minutes}
+                value={minutes ?? ''}
                 sx={textFieldStyles}
                 onChange={handleChange('minutes')}
             />

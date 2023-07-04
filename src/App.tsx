@@ -8,7 +8,12 @@ import { theme } from './theme';
 import './App.css'
 import { conclusionUrl, dischargeUrl, form100Url, personsUrl, referralUrl } from './constants';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({defaultOptions: {
+  queries: {
+    refetchOnWindowFocus: false,
+    staleTime: 24 * 60 * 60 * 1000
+  },
+}});
 
 const App = () => {
   return (

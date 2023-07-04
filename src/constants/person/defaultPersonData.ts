@@ -4,7 +4,7 @@ export const defaultPersonData: IPerson = {
     rank: '' as Rank,
     militaryBase: '',
     fullName: '',
-    id: 'create',
+    id: -1,
     personalId: '',
     tokenNumber: '',
     gender: '' as Gender,

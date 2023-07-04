@@ -4,7 +4,7 @@ import { defaultPersonData } from "../person";
 export const getInitialForm100 = (): IForm100 => {
     const newDate = new Date();
     return {
-        id: 'create',
+        id: -1,
         author: '',
         clinic: '',
         person: defaultPersonData, 

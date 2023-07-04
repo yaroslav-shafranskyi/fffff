@@ -34,7 +34,7 @@ export const BackField: FC<IBackFieldProps> = (props) => {
                     </Typography>
                 </Box>
                 <Input 
-                    value={value}
+                    value={value ?? ''}
                     multiline={true}
                     rows={rows}
                     sx={inputStyles}

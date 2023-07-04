@@ -32,7 +32,7 @@ export const Diagnosis: FC<IFCPropsWithReadonly> = ({ readonly }) => {
             </Box>
             <Box sx={{ width: '100%' }}>
                 <Input
-                    value={diagnosis}
+                    value={diagnosis ?? ''}
                     multiline={true}
                     inputProps={{ sx: inputPropsStyles }}
                     fullWidth={true}

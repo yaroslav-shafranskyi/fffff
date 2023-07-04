@@ -71,9 +71,9 @@ export const CounterfoilFront: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                         Вид санітарних втрат (обвести)
                     </Typography>
                 </Box>
-                <Injury />
+                <Injury readonly={readonly} />
             </Box>
-            <Diagnosis />
+            <Diagnosis readonly={readonly} />
         </Box>
     </>
 };

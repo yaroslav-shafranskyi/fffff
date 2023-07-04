@@ -22,7 +22,7 @@ export const Stage = () => {
         <Box sx={containerStyles}>
             <Input
                 fullWidth={true}
-                value={stage}
+                value={stage ?? ''}
                 sx={textFieldStyles}
                 error={error}
                 inputProps={{

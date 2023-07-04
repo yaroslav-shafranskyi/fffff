@@ -16,7 +16,7 @@ export const Signature = () => {
 
     return (
         <Box sx={{ textAlign: 'center' }}>
-            <Input fullWidth={true} value={signature} onChange={handleChange} />
+            <Input fullWidth={true} value={signature ?? ''} onChange={handleChange} />
             <Typography variant='caption'>
                 підпис (розбірливо)
             </Typography>
