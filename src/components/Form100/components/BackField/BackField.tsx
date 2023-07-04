@@ -38,7 +38,7 @@ export const BackField: FC<IBackFieldProps> = (props) => {
                     multiline={true}
                     rows={rows}
                     sx={inputStyles}
-                    inputProps={{ sx: { textIndent: titleRef.current?.clientWidth ?? '100%' }}}
+                    inputProps={{ sx: { textIndent: titleRef.current?.clientWidth ?? title.length * 12 }}}
                     onChange={handleChange}
                 />
             </Box>
