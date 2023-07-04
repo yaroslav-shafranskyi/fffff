@@ -20,13 +20,13 @@ export type IConclusionRecord = Omit<IConclusion, "person">;
 export interface IBriefRecord {
   date: Date;
   fullDiagnosis: string;
-  id: string;
+  id: number;
   type: Forms;
 }
 
 export interface IResponseBriefRecord extends Omit<IBriefRecord, 'date'> {
     date: string;
-    formId: string;
+    formId: number;
 }
 
 export interface ILastRecords {

@@ -16,6 +16,7 @@ export const convertResponsePersonToIPerson = (
     birthDate: converStringOrUndefinedToDateOrUndefined(dataBirthDate),
     records: (dataRecords ?? []).map((record) => ({
       ...record,
+      id: record.formId,
       date: converStringOrUndefinedToDateOrUndefined(record.date) as Date,
     })),
   };
