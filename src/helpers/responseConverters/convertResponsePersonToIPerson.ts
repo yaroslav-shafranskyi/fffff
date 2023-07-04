@@ -14,7 +14,7 @@ export const convertResponsePersonToIPerson = (
   return {
     ...restData,
     birthDate: converStringOrUndefinedToDateOrUndefined(dataBirthDate),
-    records: dataRecords.map((record) => ({
+    records: (dataRecords ?? []).map((record) => ({
       ...record,
       date: converStringOrUndefinedToDateOrUndefined(record.date) as Date,
     })),

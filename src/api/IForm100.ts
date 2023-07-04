@@ -1,14 +1,8 @@
 import { BodyDamageInfo } from "./BodyDamageInfo";
 import { IBodyImage } from "./IBodyImage";
-import {
-  EvacuationClinic,
-  EvacuationPriority,
-  EvacuationTransport,
-  EvacuationType,
-  IEvacuation,
-} from "./IEvacuation";
+import { IEvacuation } from "./IEvacuation";
 import { IInjury } from "./IInjury";
-import { IMedicalHelp, IMedicalOperations, ITreatments } from "./IMedicalHelp";
+import { IMedicalHelp } from "./IMedicalHelp";
 import { IPerson } from "./IPerson";
 import { IPlait } from "./IPlait";
 import { RecordType } from "./IRecord";
@@ -55,22 +49,11 @@ export interface IForm100 {
 }
 
 export interface IResponseForm100
-  extends Omit<IForm100, "accidentTime" | "date" | "plait" | "person">,
-    Form100PersonData,
-    IInjury,
-    ITreatments,
-    IMedicalOperations {
+  extends Omit<IForm100, "accidentTime" | "date" | "plait" | "person"> {
   accidentTime: string;
   date: string;
   plait?: string | null;
-  BONES?: boolean | null;
-  BURN: boolean | null;
-  CAVITY_WOUNDS: boolean | null;
-  SOFT_TISSUES: boolean | null;
-  VESSELS: boolean | null;
-  evacuationClinics: { [order: number]: EvacuationClinic };
-  evacuationPriority: EvacuationPriority;
-  evacuationTransport: EvacuationTransport;
-  evacuationType: EvacuationType;
-  personId: number;
+  person: Omit<Form100PersonData, 'birthDate'> & {
+    birthDate?: string | null;
+  };
 }

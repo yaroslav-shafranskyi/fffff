@@ -17,8 +17,7 @@ export const OpenForm100Dialog: UseOpenFormComponentType = ({ onClose }) => {
       if (!person) {
         return;
       }
-      const lastForm100Id = (person as { lastForm100Id?: string })
-        .lastForm100Id;
+      const lastForm100Id = person.lastRecords.form100;
       if (!lastForm100Id) {
         setError("По цьому військовослужбовцю немає збережених Форм 100.");
         return;
