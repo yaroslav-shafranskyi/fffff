@@ -1,9 +1,9 @@
-import { Gender, IPerson } from "../../api";
+import { Gender, IPersonBrief } from "../../api";
 import { formatDate } from "../../helpers";
 import { SortOrder } from "../../interfaces";
 import { IColumn, IQueryData, TableFilterType } from "../../shared";
 
-export const columns: IColumn<IPerson>[] = [
+export const columns: IColumn<IPersonBrief>[] = [
     {
         title: 'ПІБ',
         render: p => p.getValue() as string,
@@ -17,11 +17,11 @@ export const columns: IColumn<IPerson>[] = [
     {
         title: 'Посвідчення особи',
         render: p => p.getValue() as string,
-        key: 'id',
+        key: 'personalId',
     },
     {
         title: 'Дата народження',
-        render: p => formatDate(new Date(p.getValue() as string)),
+        render: p => !p.getValue() ? '' : formatDate(new Date(p.getValue() as string)),
         key: 'birthDate',
     },
     {
@@ -37,19 +37,16 @@ export const columns: IColumn<IPerson>[] = [
     {
         title: 'К-ть звернень',
         render: p => p.getValue() as number,
-        accessor: p => (p.records?.brief ?? []).length,
-        key: 'recordsLength',
+        key: 'recordsQuantity',
     },
     {
         title: 'Крайнє звернення',
         render: p => !p.getValue() ? '' : formatDate(new Date(p.getValue() as string)),
-        accessor: p => p.lastRecords?.brief?.date,
-        key: 'lastRecordDate',
+        key: 'updatedAt',
     },
     {
         title: 'Крайній діагноз',
         render: p => p.getValue() as string,
-        accessor: p => p.lastRecords?.brief?.fullDiagnosis ?? '',
         key: 'lastRecordDiagnosis',
     },
 ];

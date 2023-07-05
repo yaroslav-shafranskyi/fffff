@@ -2,17 +2,16 @@ import { useMemo } from "react";
 import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 import { serviceUrl, personsUrl } from "../../constants";
-import { IPerson, IResponsePerson, QueryPersonsData } from "../../api";
+import { IPersonBrief, IResponsePerson, QueryPersonsData } from "../../api";
 
 import { IQuery } from "../../interfaces";
 import { getInitialQuery } from "../../constants";
-import { http } from "../../helpers";
-import { convertResponsePersonToIPerson } from "../../helpers/responseConverters/convertResponsePersonToIPerson";
+import { convertResponseBriefPersonToIBriefPerson, http } from "../../helpers";
 
 const emptyArray: [] = [];
 
 export const useQueryPersons = (
-  query?: IQuery<IPerson>,
+  query?: IQuery<IPersonBrief>,
   options?: UseQueryOptions<QueryPersonsData>
 ) => {
   const { iterator, sortBy, filterBy } = query ?? getInitialQuery();
@@ -30,7 +29,7 @@ export const useQueryPersons = (
     ...res,
     persons: (
       (res?.data?.entities ?? emptyArray) as unknown as IResponsePerson[]
-    ).map(convertResponsePersonToIPerson),
+    ).map(convertResponseBriefPersonToIBriefPerson),
     total: res?.data?.total ?? 0,
   };
 };

@@ -1,4 +1,4 @@
-import { string, object, array, addMethod } from 'yup';
+import { string, object, addMethod } from 'yup';
 
 import { defaultDateSchema, defaultStringSchema, fieldRequiredStringSchema } from './constants';
 
@@ -23,14 +23,6 @@ const defaultPersonSchemaFields = {
     rank: fieldRequiredStringSchema(),
     gender: fieldRequiredStringSchema(),
     militaryBase: fieldRequiredStringSchema(),
-    records: object().shape({
-        form100: array().of(object().shape({
-            type: fieldRequiredStringSchema(),
-            date: defaultDateSchema,
-            author: defaultStringSchema,
-            resume: defaultStringSchema,
-        })),
-    }),
 };
 
 export const personForm100Schema = object().shape({

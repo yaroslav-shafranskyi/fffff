@@ -24,3 +24,19 @@ export interface IResponsePerson
   birthDate?: string | null;
   records: IResponseBriefRecord[];
 }
+
+export interface IPersonBrief
+  extends Omit<
+    IPerson,
+    "records" | "lastRecords" | "address" | "profession" | "phoneNumber" | "tokenNumber"
+  > {
+  updatedAt?: Date;
+  lastRecordDiagnosis?: string;
+  recordsQuantity?: number;
+}
+
+export interface IResponsePersonBrief
+  extends Omit<IPersonBrief, "updatedAt" | "birthDate"> {
+  updatedAt?: string | null;
+  birthDate?: string | null;
+}

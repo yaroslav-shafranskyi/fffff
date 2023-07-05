@@ -3,7 +3,7 @@ import { Container } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { RowData } from '@tanstack/react-table';
 
-import { IPerson, useQueryPersons } from '../../api';
+import { IPersonBrief, useQueryPersons } from '../../api';
 import { Table } from '../../shared';
 import { getInitialQuery } from '../../constants';
 import { IQuery } from '../../interfaces';
@@ -14,7 +14,7 @@ import { containerStyles } from './styles';
 import { columns, queryData } from './constants';
 
 export const PersonsTable: FC = () => {
-    const [query, setQuery] = useState<IQuery<IPerson>>(getInitialQuery())
+    const [query, setQuery] = useState<IQuery<IPersonBrief>>(getInitialQuery())
 
     const navigate = useNavigate();
     const { pathname } = useLocation();
@@ -26,15 +26,15 @@ export const PersonsTable: FC = () => {
     };
 
     const goToPerson = (row: RowData) => () => {
-        const { id } = (row as { original: IPerson }).original;
-        navigate(`${pathname}/${decodeURI(id)}`);
+        const { id } = (row as { original: IPersonBrief }).original;
+        navigate(`${pathname}/${decodeURI(String(id))}`);
     }
 
     return (
         <>
             <Header />
             <Container maxWidth={false} sx={containerStyles}>
-                <Table<IPerson>
+                <Table<IPersonBrief>
                     data={persons}
                     columns={columns}
                     query={query}

@@ -1,6 +1,6 @@
-import { IPerson } from './IPerson';
+import { IPersonBrief } from './IPerson';
 
 export interface QueryPersonsData {
-    entities: IPerson[];
+    entities: IPersonBrief[];
     total: number;
 }
