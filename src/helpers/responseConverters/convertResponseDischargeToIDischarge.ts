@@ -1,6 +1,7 @@
 import { converStringOrUndefinedToDateOrUndefined } from ".";
-import { IDischarge, IResponseDischarge } from "../../api";
+import { IDischarge, IResponseDischarge, IResponsePerson } from "../../api";
 import { defaultDischargeData } from "../../constants";
+import { convertResponsePersonToIPerson } from "./convertResponsePersonToIPerson";
 
 export const convertResponseDischargeToIDischarge = (
   response?: IResponseDischarge
@@ -8,7 +9,7 @@ export const convertResponseDischargeToIDischarge = (
   if (!response) {
     return defaultDischargeData;
   }
-  const { date, datesData, order, ...data } = response;
+  const { date, datesData, order, person, ...data } = response;
 
   return {
     ...data,
@@ -29,5 +30,6 @@ export const convertResponseDischargeToIDischarge = (
       date: converStringOrUndefinedToDateOrUndefined(order.date) as Date,
       number: order.number,
     },
+    person: convertResponsePersonToIPerson(person as unknown as IResponsePerson),
   };
 };
