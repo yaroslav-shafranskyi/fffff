@@ -1,2 +1,2 @@
 export * from './useGetDischarge';
-export * from './useUpdateDischarge';
+export * from './useCreateDischarge';

@@ -1,156 +1,151 @@
-import { useCallback, useMemo, useState } from 'react';
-import { Container } from '@mui/material';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useCallback, useMemo, useState } from "react";
+import { Container } from "@mui/material";
+import { FormProvider, useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-import { ControlBar } from '../../shared';
-import { dischargeUrl, defaultDischargeBackPageState, defaultDischargeFrontPageState, defaultPersonData } from '../../constants';
-import { useGetDischarge, useUpdatePerson, useUpdateDischarge, useGetPerson, Forms } from '../../api';
+import { ControlBar } from "../../shared";
+import {
+  dischargeUrl,
+  defaultDischargeBackPageState,
+  defaultDischargeFrontPageState,
+  defaultPersonData,
+} from "../../constants";
+import { useGetDischarge, useCreateDischarge } from "../../api";
 
-import { containerStyles } from '../commonFormStyles';
+import { containerStyles } from "../commonFormStyles";
 
-import { FrontPage } from './FrontPage';
-import { DischargeBackPageState, DischargeFrontPageState } from './types';
-import { BackPage } from './BackPage';
-import { dischargeBackPageSchema, dischargeFrontPageSchema } from './schemas';
+import { FrontPage } from "./FrontPage";
+import { DischargeBackPageState, DischargeFrontPageState } from "./types";
+import { BackPage } from "./BackPage";
+import { dischargeBackPageSchema, dischargeFrontPageSchema } from "./schemas";
+
+const { defaultFrontPageValues, defaultBackPageValues } = {
+  defaultFrontPageValues: {
+    ...defaultDischargeFrontPageState,
+    person: defaultPersonData,
+  },
+  defaultBackPageValues: defaultDischargeBackPageState,
+};
 
 export const Discharge = () => {
-    const { pathname, state } = useLocation();
-    
-    const navigate = useNavigate();
+  const { pathname, state } = useLocation();
 
-    const [personId, formId] = useMemo(() => (pathname.split(`${dischargeUrl}/`)[1]?.split('/') ?? []).map(decodeURI), [pathname]);
+  const navigate = useNavigate();
 
-    const initialForm = useGetDischarge(personId, formId);
-    const { data: initialPerson } = useGetPerson(personId);
+  const [personId, formId] = useMemo(
+    () =>
+      (pathname.split(`${dischargeUrl}/`)[1]?.split("/") ?? []).map(decodeURI),
+    [pathname]
+  );
 
-    const { mutate: savePerson } = useUpdatePerson();
-    const { mutate: saveForm } = useUpdateDischarge();
-    
-    const { defaultFrontPageValues, defaultBackPageValues, id } = useMemo(() => {
-        if (!initialForm) {
-            return {
-                defaultFrontPageValues: {
-                    ...defaultDischargeFrontPageState,
-                    person: initialPerson ?? defaultPersonData,
-                },
-                defaultBackPageValues: defaultDischargeBackPageState,
-                id: String(Date.now()),
-            }
-        }
-        const { doctor, date, recommendations, info, id, ...rest } = {...initialForm, person: initialPerson ?? defaultPersonData };
-        return {
-            defaultFrontPageValues: { ...rest },
-            defaultBackPageValues: { doctor, date, recommendations, info },
-            id,
-        };
-    }, [initialForm, initialPerson]);
+  const { discharge: initialForm } = useGetDischarge(personId, formId);
 
-    const readonly = state?.readonly;
+  const { mutate: saveForm } = useCreateDischarge({
+    onSuccess: () => {
+      navigate(-1);
+    },
+  });
 
-    const [page, setPage] = useState<number>(0);
+  const { initialFrontPageValues, initialBackPageValues } = useMemo(() => {
+    const { doctor, date, recommendations, info, ...rest } = initialForm;
+    return {
+      initialFrontPageValues: { ...rest },
+      initialBackPageValues: { doctor, date, recommendations, info },
+    };
+  }, [initialForm]);
 
-    const frontPageMethods = useForm<DischargeFrontPageState>({
-        defaultValues: defaultFrontPageValues,
-        resolver: yupResolver(dischargeFrontPageSchema),
-    });
-    const backPageMethods = useForm<DischargeBackPageState>({
-        defaultValues: defaultBackPageValues,
-        resolver: yupResolver(dischargeBackPageSchema),
-    });
+  const readonly = state?.readonly;
 
-    const { reset: frontPageReset, trigger: frontPageTrigger, watch: watchFrontPage } = frontPageMethods;
-    const { reset: backPageReset, trigger: backPageTrigger, watch: watchBackPage } = backPageMethods;
+  const [page, setPage] = useState<number>(0);
 
-    const { person, ...frontPageState } = watchFrontPage();
-    const backPageState = watchBackPage();
+  const frontPageMethods = useForm<DischargeFrontPageState>({
+    defaultValues: defaultFrontPageValues,
+    values: initialFrontPageValues,
+    resolver: yupResolver(dischargeFrontPageSchema),
+  });
+  const backPageMethods = useForm<DischargeBackPageState>({
+    defaultValues: defaultBackPageValues,
+    values: initialBackPageValues,
+    resolver: yupResolver(dischargeBackPageSchema),
+  });
 
-    const handleSubmitFrontPage = useCallback(async () => {
-        const result = await frontPageTrigger();
-            if (result) {
-                setPage(1);
-            }
-    }, [frontPageTrigger]);
+  const {
+    reset: frontPageReset,
+    trigger: frontPageTrigger,
+    watch: watchFrontPage,
+  } = frontPageMethods;
+  const {
+    reset: backPageReset,
+    trigger: backPageTrigger,
+    watch: watchBackPage,
+  } = backPageMethods;
 
-    const handleSubmitBackPage = useCallback(async () => {
-        const result = await backPageTrigger();
-        if (!result) {
-            return;
-        }
+  const frontPageState = watchFrontPage();
+  const backPageState = watchBackPage();
 
-        const dischargeRecord = {
-            ...frontPageState,
-            ...backPageState,
-            id                  
-        };
+  const handleSubmitFrontPage = useCallback(async () => {
+    const result = await frontPageTrigger();
+    if (result) {
+      setPage(1);
+    }
+  }, [frontPageTrigger]);
 
-        const briefRecord = {
-            fullDiagnosis: dischargeRecord.fullDiagnosis,
-            date: dischargeRecord.date,
-            id,
-            type: Forms.DISCHARGE,
-        };
+  const handleSubmitBackPage = useCallback(async () => {
+    const result = await backPageTrigger();
+    if (!result) {
+      return;
+    }
 
-        const updatedPerson = {
-            ...person,
-            lastRecords: {
-                ...person.lastRecords,
-                discharge: dischargeRecord,
-                brief: briefRecord,
-            },
-            records: {
-                ...person.records,
-                discharge: [ ...person.records.discharge, dischargeRecord ],
-                brief: [ ...person.records.brief, briefRecord ]
-            },
-        };
+    const dischargeRecord = {
+      ...frontPageState,
+      ...backPageState,
+    };
 
-        savePerson(updatedPerson);
-        saveForm({ ...dischargeRecord, person: updatedPerson })
-        navigate(-1)
-    }, [backPageState, backPageTrigger, frontPageState, id, navigate, person, saveForm, savePerson]);
+    saveForm(dischargeRecord);
+  }, [backPageState, backPageTrigger, frontPageState, saveForm]);
 
-    const handleSubmit = useCallback(() => {
-        if (page === 0) {
-            handleSubmitFrontPage();
-            return;
-        }
-        handleSubmitBackPage();
-    }, [handleSubmitBackPage, handleSubmitFrontPage, page])
+  const handleSubmit = useCallback(() => {
+    if (page === 0) {
+      handleSubmitFrontPage();
+      return;
+    }
+    handleSubmitBackPage();
+  }, [handleSubmitBackPage, handleSubmitFrontPage, page]);
 
-    const handleReset = useCallback(() => {
-        if (page === 0) {
-            frontPageReset();
-            return;
-        }
-        backPageReset();
-    }, [backPageReset, frontPageReset, page]);
+  const handleReset = useCallback(() => {
+    if (page === 0) {
+      frontPageReset();
+      return;
+    }
+    backPageReset();
+  }, [backPageReset, frontPageReset, page]);
 
-    const handleGoBack = useCallback(() => {
-        if (page === 0) {
-            navigate(-1);
-            return;
-        }
-        setPage(0);
-    }, [navigate, page])
+  const handleGoBack = useCallback(() => {
+    if (page === 0) {
+      navigate(-1);
+      return;
+    }
+    setPage(0);
+  }, [navigate, page]);
 
-    return (
-        <Container maxWidth={false} sx={containerStyles}>
-            <ControlBar
-                submitButtonText={!page ? 'Далі' : 'Зберегти'}
-                onClear={handleReset}
-                onSubmit={handleSubmit}
-                onBack={handleGoBack}
-            />
-                {page === 0 ?
-                    <FormProvider { ...frontPageMethods }>
-                        <FrontPage readonly={readonly} />
-                    </FormProvider> :
-                    <FormProvider { ...backPageMethods}>
-                        <BackPage readonly={readonly} />
-                    </FormProvider>
-                }
-        </Container>
-    );
+  return (
+    <Container maxWidth={false} sx={containerStyles}>
+      <ControlBar
+        submitButtonText={!page ? "Далі" : "Зберегти"}
+        onClear={handleReset}
+        onSubmit={handleSubmit}
+        onBack={handleGoBack}
+      />
+      {page === 0 ? (
+        <FormProvider {...frontPageMethods}>
+          <FrontPage readonly={readonly} />
+        </FormProvider>
+      ) : (
+        <FormProvider {...backPageMethods}>
+          <BackPage readonly={readonly} />
+        </FormProvider>
+      )}
+    </Container>
+  );
 };

@@ -1,12 +1,38 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-import { IDischarge } from "../IDischarge";
-import { defaultDischargeBackPageState, defaultDischargeFrontPageState } from "../../constants";
+import {
+  serviceUrl,
+  getUrl,
+  dischargeUrl,
+  defaultDischargeData,
+} from "../../constants";
+import { IDischarge, IResponseDischarge } from "../../api";
+import { convertResponseDischargeToIDischarge, http } from "../../helpers";
 
-export const useGetDischarge = (personId: string, dischargeId: string) => {
-    const queryClient = useQueryClient();
+export const useGetDischarge = (
+  personId: string,
+  id: string,
+  options?: UseQueryOptions<IDischarge>
+) => {
+  const queryKey: QueryKey = useMemo(
+    () => ["forms100", personId, id],
+    [personId, id]
+  );
 
-    const data = queryClient.getQueryData<IDischarge>(['discharge', personId, dischargeId]);
+  const queryFunction = () =>
+    http.post(`${serviceUrl}${dischargeUrl}${getUrl}`, {
+      id,
+      personId,
+    }) as unknown as IDischarge;
 
-    return data ?? { ...defaultDischargeBackPageState, ...defaultDischargeFrontPageState, id: String(Date.now()) };
+  const res = useQuery<IDischarge>(queryKey, queryFunction, options);
+
+  return {
+    ...res,
+    discharge:
+      convertResponseDischargeToIDischarge(
+        res?.data as unknown as IResponseDischarge
+      ) ?? defaultDischargeData,
+  };
 };
