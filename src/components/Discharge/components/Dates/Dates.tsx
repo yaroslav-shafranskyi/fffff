@@ -18,7 +18,7 @@ export const Dates: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         if (!date || readonly) {
             return;
         }
-        setValue(`datesData.${field}`, date)
+        setValue(`datesData.${field}`, date.getTime())
         clearErrors(`datesData.${field}`);
     }, [readonly, setValue, clearErrors]);
 

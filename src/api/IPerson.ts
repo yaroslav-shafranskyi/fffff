@@ -1,6 +1,6 @@
 import { IAddress } from "./IAddress";
 import { Gender } from "./Gender";
-import { IBriefRecord, ILastRecords, IResponseBriefRecord } from "./IRecord";
+import { IBriefRecord, ILastRecords } from "./IRecord";
 import { Rank } from "./Rank";
 
 export interface IPerson {
@@ -8,7 +8,7 @@ export interface IPerson {
   fullName: string;
   personalId: string;
   tokenNumber: string;
-  birthDate?: Date;
+  birthDate?: number;
   rank: Rank;
   gender: Gender;
   militaryBase: string; // TODO declare type
@@ -19,24 +19,12 @@ export interface IPerson {
   profession?: string;
 }
 
-export interface IResponsePerson
-  extends Omit<IPerson, "birthDate" | "records"> {
-  birthDate?: string | null;
-  records: IResponseBriefRecord[];
-}
-
 export interface IPersonBrief
   extends Omit<
     IPerson,
     "records" | "lastRecords" | "address" | "profession" | "phoneNumber" | "tokenNumber"
   > {
-  updatedAt?: Date;
+  updatedAt?: number;
   lastRecordDiagnosis?: string;
   recordsQuantity?: number;
-}
-
-export interface IResponsePersonBrief
-  extends Omit<IPersonBrief, "updatedAt" | "birthDate"> {
-  updatedAt?: string | null;
-  birthDate?: string | null;
 }

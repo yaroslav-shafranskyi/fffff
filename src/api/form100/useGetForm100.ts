@@ -7,8 +7,8 @@ import {
   getInitialForm100,
   getUrl,
 } from "../../constants";
-import { IForm100, IResponseForm100 } from "../../api";
-import { convertResForm100ToIForm100, http } from "../../helpers";
+import { IForm100 } from "../../api";
+import { http } from "../../helpers";
 
 export const useGetForm100 = (
   personId: string,
@@ -32,7 +32,7 @@ export const useGetForm100 = (
     ...res,
     form100: {
       ...getInitialForm100(),
-      ...convertResForm100ToIForm100(res?.data as unknown as IResponseForm100),
+      ...res?.data,
     },
   };
 };

@@ -1,8 +1,8 @@
 export interface IDischargeDates {
-  sick: Date;
-  referral: Date;
-  arrival: Date;
-  leaving: Date;
+  sick: number;
+  referral: number;
+  arrival: number;
+  leaving: number;
 }
 
 export interface IResponseDischargeDates {

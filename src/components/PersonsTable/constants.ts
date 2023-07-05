@@ -1,5 +1,5 @@
 import { Gender, IPersonBrief } from "../../api";
-import { formatDate } from "../../helpers";
+import { convertNullOrNumberToDate, formatDate } from "../../helpers";
 import { SortOrder } from "../../interfaces";
 import { IColumn, IQueryData, TableFilterType } from "../../shared";
 
@@ -21,7 +21,7 @@ export const columns: IColumn<IPersonBrief>[] = [
     },
     {
         title: 'Дата народження',
-        render: p => !p.getValue() ? '' : formatDate(new Date(p.getValue() as string)),
+        render: p => !p.getValue() ? '' : formatDate(convertNullOrNumberToDate(p.getValue() as number)),
         key: 'birthDate',
     },
     {
@@ -41,7 +41,7 @@ export const columns: IColumn<IPersonBrief>[] = [
     },
     {
         title: 'Крайнє звернення',
-        render: p => !p.getValue() ? '' : formatDate(new Date(p.getValue() as string)),
+        render: p => !p.getValue() ? '' : formatDate(convertNullOrNumberToDate(p.getValue() as number)),
         key: 'updatedAt',
     },
     {

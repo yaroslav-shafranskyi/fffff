@@ -44,7 +44,7 @@ export const CounterfoilFront: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                     КАРТКИ
                 </Typography>
             </Box>
-            <Form100Date data={date} />
+            <Form100Date data={new Date(date)} />
             <PersonInfo readonly={readonly} />
             <Box sx={evacuationWrapperStyles}>
                 <EvacuationTransportText readonly={readonly} />

@@ -2,9 +2,8 @@ import { useMemo } from "react";
 import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 import { serviceUrl, personsUrl, getUrl } from "../../constants";
-import { IPerson, IResponsePerson } from "../../api";
+import { IPerson } from "../../api";
 import { http } from "../../helpers";
-import { convertResponsePersonToIPerson } from "../../helpers/responseConverters/convertResponsePersonToIPerson";
 
 export const useGetPerson = (
   id: string,
@@ -24,8 +23,6 @@ export const useGetPerson = (
 
   return {
     ...res,
-    person: convertResponsePersonToIPerson(
-      res?.data as unknown as IResponsePerson
-    ),
+    person: res?.data,
   };
 };

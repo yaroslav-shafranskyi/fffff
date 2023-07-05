@@ -47,7 +47,7 @@ import {
   defaultPersonData,
 } from "../../constants";
 import { REQUIRED_FIELD_MESSAGE, personPageSchema } from "../../schemas";
-import { formatDate } from "../../helpers";
+import { convertNullOrNumberToDate, formatDate } from "../../helpers";
 
 import { Header } from "../Header";
 
@@ -140,7 +140,7 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
         return;
       }
       date.setHours(12);
-      setValue("birthDate", date);
+      setValue("birthDate", date.getTime());
     },
     [setValue]
   );
@@ -169,10 +169,7 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
   );
 
   const sortedRecords = useMemo(
-    () =>
-      [...(records ?? [])].sort((a, b) =>
-        a.date.getTime() < b.date.getTime() ? 1 : -1
-      ),
+    () => [...(records ?? [])].sort((a, b) => (a.date < b.date ? 1 : -1)),
     [records]
   );
 
@@ -246,7 +243,7 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
                 <Box sx={fullWidthStyles}>
                   <DatePicker
                     label="Дата народження"
-                    value={watch("birthDate")}
+                    value={convertNullOrNumberToDate(watch("birthDate"))}
                     sx={fullWidthStyles}
                     onChange={handleDateChange}
                   />
@@ -335,10 +332,12 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
               const { id, date, fullDiagnosis, type } = record;
               const shouldHaveConnector = idx < records.length - 1;
               return (
-                <Fragment key={id}>
+                <Fragment key={`person${id}`}>
                   <TimelineItem>
                     <TimelineOppositeContent>
-                      <Typography>{formatDate(date)}</Typography>
+                      <Typography>
+                        {formatDate(convertNullOrNumberToDate(date))}
+                      </Typography>
                     </TimelineOppositeContent>
                     <TimelineSeparator>
                       <TimelineDot />

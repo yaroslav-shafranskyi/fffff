@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Box, Typography } from '@mui/material';
 
 import { CustomDatePicker, Input } from '../../../../shared';
-import { formatDateWithoutDots } from '../../../../helpers';
+import { convertNullOrNumberToDate, formatDateWithoutDots } from '../../../../helpers';
 
 import { ISingleDateFieldProps } from './types';
 import { blankBoxStyles, inputStyles, rowStyles } from './styles';
@@ -16,7 +16,7 @@ export const SingleDateField: FC<ISingleDateFieldProps> = (props) => {
             <Box sx={blankBoxStyles} />
             <CustomDatePicker onChange={onChange}>
                 <Input
-                    value={formatDateWithoutDots(value)}
+                    value={formatDateWithoutDots(convertNullOrNumberToDate(value)) ?? ''}
                     error={error}
                     sx={inputStyles}
                 />

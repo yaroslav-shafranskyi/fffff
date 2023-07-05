@@ -55,7 +55,7 @@ export const Conclusion = () => {
         if (readonly || !date) {
             return;
         }
-        setValue('date', date);
+        setValue('date', date.getTime());
         clearErrors('date');
     }, [clearErrors, readonly, setValue]);
 

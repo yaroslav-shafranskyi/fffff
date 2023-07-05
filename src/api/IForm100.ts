@@ -25,8 +25,8 @@ export interface IForm100 {
   clinic: string;
   author: string;
   person: Form100PersonData;
-  date: Date;
-  accidentTime: Date;
+  date: number;
+  accidentTime: number;
   reason: RecordType;
   bodyImage: IBodyImage;
   bodyDamage: BodyDamageInfo[];
@@ -46,14 +46,4 @@ export interface IForm100 {
   carriedBy?: string;
   timeAfterAccident?: number;
   firstAidInfo: string;
-}
-
-export interface IResponseForm100
-  extends Omit<IForm100, "accidentTime" | "date" | "plait" | "person"> {
-  accidentTime: string;
-  date: string;
-  plait?: string | null;
-  person: Omit<Form100PersonData, 'birthDate'> & {
-    birthDate?: string | null;
-  };
 }

@@ -16,7 +16,7 @@ export interface IDischarge extends ICommonFormHeaderFields {
   fullDiagnosis: string;
   info: string;
   recommendations: string;
-  date: Date;
+  date: number;
   doctor: string;
 }
 

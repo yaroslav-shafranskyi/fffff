@@ -1,4 +1,4 @@
-import { StringSchema, date, string } from "yup";
+import { StringSchema, date, number, string } from "yup";
 
 export const REQUIRED_FIELD_MESSAGE = `Обов'язкове поле`;
 export const MIN_3_SYMBOLS_MESSAGE = 'Це поле не може бути меншим, ніж 3 символи';
@@ -9,3 +9,4 @@ export const min3SymbolsStringSchema = (schema: StringSchema = string()) => sche
 
 export const defaultStringSchema = min3SymbolsStringSchema(fieldRequiredStringSchema());
 export const defaultDateSchema = date().required(REQUIRED_FIELD_MESSAGE);
+export const defautlNumberSchema = number().required(REQUIRED_FIELD_MESSAGE);

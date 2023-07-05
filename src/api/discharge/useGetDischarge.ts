@@ -7,8 +7,8 @@ import {
   dischargeUrl,
   defaultDischargeData,
 } from "../../constants";
-import { IDischarge, IResponseDischarge } from "../../api";
-import { convertResponseDischargeToIDischarge, http } from "../../helpers";
+import { IDischarge } from "../../api";
+import { http } from "../../helpers";
 
 export const useGetDischarge = (
   personId: string,
@@ -26,13 +26,19 @@ export const useGetDischarge = (
       personId,
     }) as unknown as IDischarge;
 
-  const res = useQuery<IDischarge>(queryKey, queryFunction, options);
+  const res = useQuery<IDischarge>(queryKey, queryFunction, {
+    ...options,
+    enabled: options?.enabled !== false && !!id && id !== "create",
+  });
+
+  const convertedData = res?.data;
 
   return {
     ...res,
-    discharge:
-      convertResponseDischargeToIDischarge(
-        res?.data as unknown as IResponseDischarge
-      ) ?? defaultDischargeData,
+    discharge: {
+      ...defaultDischargeData,
+      ...convertedData,
+      date: convertedData?.date ?? defaultDischargeData.date,
+    },
   };
 };

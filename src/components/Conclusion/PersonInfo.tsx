@@ -23,10 +23,10 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
     }, [readonly, setValue, clearErrors]);
 
     const handleDateCalendarChange = useCallback((date?: Date) => {
-        if (readonly) {
+        if (readonly || !date) {
             return;
         }
-        setValue('person.birthDate', date);
+        setValue('person.birthDate', date.getTime());
         clearErrors('person.birthDate')
     }, [readonly, setValue, clearErrors]);
 
@@ -55,7 +55,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                         <Input
                             sx={birthDateInputStyles}
                             inputProps={{ sx: { textAlign: 'center', p: 0 } }}
-                            value={formatDateWithoutDots(person.birthDate)}
+                            value={!person.birthDate ? '' : formatDateWithoutDots(new Date(person.birthDate))}
                         />
                     </CustomDatePicker>
                     {birthDateError !== undefined && <Typography color='error'>{birthDateError}</Typography>}

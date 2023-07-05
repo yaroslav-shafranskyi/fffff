@@ -10,7 +10,7 @@ export const defaultDischargeFrontPageState: DischargeFrontPageState = {
   department: "",
   clinic: "",
   order: {
-    date: undefined as unknown as Date,
+    date: undefined as unknown as number,
     number: "",
   },
   receiver: "",
@@ -23,7 +23,7 @@ export const defaultDischargeFrontPageState: DischargeFrontPageState = {
 
 export const defaultDischargeBackPageState: DischargeBackPageState = {
   doctor: "",
-  date: new Date(),
+  date: Date.now(),
   recommendations: "",
   info: "",
 };

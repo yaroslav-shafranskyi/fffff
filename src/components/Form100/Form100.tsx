@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   IForm100,
@@ -7,7 +8,7 @@ import {
   useGetForm100,
   useUpdateForm100,
 } from "../../api";
-import { form100Url } from "../../constants";
+import { form100Url, personsUrl } from "../../constants";
 
 import { Form100Page } from "./Form100Page";
 
@@ -17,6 +18,8 @@ export const Form100 = () => {
   const readonly = state?.readonly;
 
   const navigate = useNavigate();
+
+  const queryClient = useQueryClient();
 
   const [personId, formId] = useMemo(
     () =>
@@ -28,7 +31,8 @@ export const Form100 = () => {
 
   const handleSuccess = useCallback(() => {
     navigate(-1);
-  }, [navigate]);
+    queryClient.removeQueries([personsUrl]);
+  }, [navigate, queryClient]);
 
   const { mutate: updateForm } = useUpdateForm100({
     onSuccess: handleSuccess,
@@ -58,12 +62,13 @@ export const Form100 = () => {
       const { tokenNumber } = form.person;
       const tokenNumberWithoutSpaces = tokenNumber.split(" ").join("");
       const birthDate = new Date(tokenNumberWithoutSpaces);
-      const isValidDate = !Number.isNaN(birthDate.getTime());
+      const timestamp = birthDate.getTime()
+      const isValidDate = !Number.isNaN(timestamp);
       saveForm({
         ...form,
         person: {
           ...form.person,
-          birthDate: isValidDate ? birthDate : undefined,
+          birthDate: isValidDate ? timestamp : undefined,
         },
       });
     },

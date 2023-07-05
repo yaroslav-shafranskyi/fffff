@@ -3,6 +3,7 @@ import { Container } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { ControlBar } from "../../shared";
 import {
@@ -10,6 +11,7 @@ import {
   defaultDischargeBackPageState,
   defaultDischargeFrontPageState,
   defaultPersonData,
+  personsUrl,
 } from "../../constants";
 import { useGetDischarge, useCreateDischarge } from "../../api";
 
@@ -33,6 +35,8 @@ export const Discharge = () => {
 
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
   const [personId, formId] = useMemo(
     () =>
       (pathname.split(`${dischargeUrl}/`)[1]?.split("/") ?? []).map(decodeURI),
@@ -44,6 +48,7 @@ export const Discharge = () => {
   const { mutate: saveForm } = useCreateDischarge({
     onSuccess: () => {
       navigate(-1);
+      queryClient.removeQueries([personsUrl]);
     },
   });
 

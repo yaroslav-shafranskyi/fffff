@@ -18,7 +18,6 @@ export const CustomDatePicker: FC<ICustomDatePickerProps> = ({ children, onChang
 
     const handleChange = useCallback((date?: Date) => {
         onChange(date);
-        setOpen(false);
     }, [onChange])
 
     return (
