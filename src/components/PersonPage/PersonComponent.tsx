@@ -27,7 +27,11 @@ export const PersonComponent = () => {
       queryClient.removeQueries([personsUrl]);
     },
   });
-  const { mutate: createPerson } = useCreatePerson();
+  const { mutate: createPerson } = useCreatePerson({
+    onSuccess: () => {
+      queryClient.removeQueries([personsUrl]);
+    },
+  });
 
   const submitUserChanges = ({ id, ...newPerson }: IPerson) => {
     if (personId === "create") {
@@ -37,5 +41,5 @@ export const PersonComponent = () => {
     updatePerson({ id, ...newPerson });
   };
 
-  return <PersonPage person={person} onSubmit={submitUserChanges} />;
+  return <PersonPage person={person as IPerson} onSubmit={submitUserChanges} />;
 };

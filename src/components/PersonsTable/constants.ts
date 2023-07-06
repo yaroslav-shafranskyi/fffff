@@ -69,7 +69,7 @@ export const queryData: IQueryData = {
                     title: 'Звання',
                 },
                 {
-                    key: 'id',
+                    key: 'personalId',
                     title: 'Посвідчення особи',
                 },
                 {
@@ -93,7 +93,7 @@ export const queryData: IQueryData = {
             fields: [
                 {
                     title: 'К-ть звернень',
-                    key: 'recordsLength',
+                    key: 'recordsQuantity',
                     type: TableFilterType.RANGE,
                     range: {
                         min: 0,
@@ -139,7 +139,7 @@ export const queryData: IQueryData = {
                 optionTitle: 'Від молодших',
             },
         },
-        recordsLength: {
+        recordsQuantity: {
             [SortOrder.DESC]: {
                 optionTitle: 'Від більшої кількості',
                 infoTitle: 'Від більшої кількості звернень',

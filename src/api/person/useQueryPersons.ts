@@ -21,7 +21,7 @@ export const useQueryPersons = (
   );
 
   const queryFunction = () =>
-    http.get(`${serviceUrl}${personsUrl}`) as unknown as QueryPersonsData;
+    http.post(`${serviceUrl}${personsUrl}`, query) as unknown as QueryPersonsData;
 
   const res = useQuery<QueryPersonsData>(queryKey, queryFunction, options);
 
