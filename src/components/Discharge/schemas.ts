@@ -1,7 +1,7 @@
 import { object } from "yup";
 
 import {
-  defautlNumberSchema,
+  defaultlNumberSchema,
   defaultStringSchema,
   fieldRequiredStringSchema,
   personFullNameSchema,
@@ -12,7 +12,7 @@ export const dischargeFrontPageSchema = object()
     person: object()
       .shape({
         fullName: personFullNameSchema,
-        birthDate: defautlNumberSchema,
+        birthDate: defaultlNumberSchema,
         address: object()
           .shape({
             oblast: defaultStringSchema,
@@ -26,17 +26,17 @@ export const dischargeFrontPageSchema = object()
       .required(),
     order: object()
       .shape({
-        date: defautlNumberSchema,
+        date: defaultlNumberSchema,
         number: fieldRequiredStringSchema(),
       })
       .required(),
     receiver: defaultStringSchema,
     datesData: object()
       .shape({
-        sick: defautlNumberSchema,
-        referral: defautlNumberSchema,
-        arrival: defautlNumberSchema,
-        leaving: defautlNumberSchema,
+        sick: defaultlNumberSchema,
+        referral: defaultlNumberSchema,
+        arrival: defaultlNumberSchema,
+        leaving: defaultlNumberSchema,
       })
       .required(),
     reason: defaultStringSchema,
@@ -50,7 +50,7 @@ export const dischargeFrontPageSchema = object()
 export const dischargeBackPageSchema = object()
   .shape({
     doctor: defaultStringSchema,
-    date: defautlNumberSchema,
+    date: defaultlNumberSchema,
     recommendations: defaultStringSchema,
     info: defaultStringSchema,
   })

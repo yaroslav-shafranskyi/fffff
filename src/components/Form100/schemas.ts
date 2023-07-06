@@ -3,7 +3,7 @@ import { object, date, array, lazy, number } from 'yup';
 import { IPlait } from '../../api';
 import {
     REQUIRED_FIELD_MESSAGE,
-    defautlNumberSchema,
+    defaultlNumberSchema,
     defaultStringSchema,
     fieldRequiredStringSchema,
     personForm100Schema
@@ -27,17 +27,17 @@ export const plaitSchema = lazy((value?: IPlait) => {
 export const form100FrontSchema = object().shape({
     clinic: fieldRequiredStringSchema(),
     person: personForm100Schema,
-    date: defautlNumberSchema,
+    date: defaultlNumberSchema,
     reason: fieldRequiredStringSchema(),
     evacuation: evacuationSchema,
     diagnosis: defaultStringSchema,
     plait: plaitSchema,
     sanitaryTreatment: fieldRequiredStringSchema(),
-    accidentTime: defautlNumberSchema,
+    accidentTime: defaultlNumberSchema,
 });
 
 export const form100BackSchema = object().shape({
-    date: defautlNumberSchema,
+    date: defaultlNumberSchema,
     stage: fieldRequiredStringSchema(),
     fullDiagnosis: defaultStringSchema,
     treatmentInfo: defaultStringSchema,

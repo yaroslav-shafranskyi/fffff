@@ -89,12 +89,19 @@ const getFormURL = (option: Forms) => {
 export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
   const navigate = useNavigate();
 
-  const { formState, register, watch, setValue, handleSubmit, reset } =
-    useForm<IPerson>({
-      defaultValues: defaultPersonData,
-      values: person,
-      resolver: yupResolver(personPageSchema),
-    });
+  const {
+    formState,
+    register,
+    watch,
+    setValue,
+    handleSubmit,
+    reset,
+    clearErrors,
+  } = useForm<IPerson>({
+    defaultValues: defaultPersonData,
+    values: person,
+    resolver: yupResolver(personPageSchema),
+  });
 
   const records = watch("records");
   const id = watch("id");
@@ -117,21 +124,15 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
     });
   }, []);
 
-  const handleInputChange = useCallback(
-    (key: keyof IPerson) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValue(key, event.target.value);
-    },
-    [setValue]
-  );
-
   const handleGenderChange = useCallback(
     (value: Gender) =>
       (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
         if (checked) {
           setValue("gender", value);
+          clearErrors("gender");
         }
       },
-    [setValue]
+    [setValue, clearErrors]
   );
 
   const handleDateChange = useCallback(
@@ -141,8 +142,9 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
       }
       date.setHours(12);
       setValue("birthDate", date.getTime());
+      clearErrors("birthDate");
     },
-    [setValue]
+    [setValue, clearErrors]
   );
 
   const handleMenuOptionSelect = useCallback(
@@ -197,7 +199,6 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
                     error={errors.fullName?.message}
                     fullWidth={true}
                     {...register("fullName")}
-                    onChange={handleInputChange("fullName")}
                     value={watch("fullName") ?? ""}
                   />
                 </Box>
@@ -222,7 +223,6 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
                     error={errors.personalId?.message}
                     fullWidth={true}
                     {...register("personalId")}
-                    onChange={handleInputChange("personalId")}
                     value={watch("personalId") ?? ""}
                   />
                 </Box>
@@ -234,7 +234,6 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
                     error={errors.tokenNumber?.message}
                     fullWidth={true}
                     {...register("tokenNumber")}
-                    onChange={handleInputChange("tokenNumber")}
                     value={watch("tokenNumber") ?? ""}
                   />
                 </Box>
@@ -260,7 +259,6 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
                     inputProps={{ sx: inputPropsSx }}
                     fullWidth={true}
                     {...register("phoneNumber")}
-                    onChange={handleInputChange("phoneNumber")}
                     value={watch("phoneNumber") ?? ""}
                   />
                 </Box>
@@ -275,7 +273,6 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
                   error={errors.militaryBase?.message}
                   fullWidth={true}
                   {...register("militaryBase")}
-                  onChange={handleInputChange("militaryBase")}
                   value={watch("militaryBase") ?? ""}
                 />
               </Box>
