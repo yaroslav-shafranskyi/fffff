@@ -1,13 +1,38 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
+import { QueryKey, UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-import { defaultConclusion } from "../../constants";
+import {
+  serviceUrl,
+  getUrl,
+  conclusionUrl,
+  defaultConclusion,
+} from "../../constants";
+import { IConclusion } from "../../api";
+import { http } from "../../helpers";
 
-import { IConclusion } from "../IConclusion";
+export const useGetConclusion = (
+  personId: string,
+  id: string,
+  options?: UseQueryOptions<IConclusion>
+) => {
+  const queryKey: QueryKey = useMemo(
+    () => [conclusionUrl, personId, id],
+    [personId, id]
+  );
 
-export const useGetConclusion = (personId: string, formId: string) => {
-    const queryClient = useQueryClient();
+  const queryFunction = () =>
+    http.post(`${serviceUrl}${conclusionUrl}${getUrl}`, {
+      id,
+      personId,
+    }) as unknown as IConclusion;
 
-    const data = queryClient.getQueryData<IConclusion>(['conclusion', personId, formId]);
+  const res = useQuery<IConclusion>(queryKey, queryFunction, options);
 
-    return data ?? defaultConclusion;
-}
+  return {
+    ...res,
+    conclusion: {
+      ...defaultConclusion,
+      ...res?.data,
+    },
+  };
+};

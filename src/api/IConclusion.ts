@@ -4,7 +4,7 @@ import { IPerson } from './IPerson';
 export type ConclusionPersonDataType = Pick<IPerson, 'id' | 'fullName' | 'birthDate'>;
 
 export interface IConclusion extends ICommonFormHeaderFields {
-    id: string;
+    id: number;
     person: ConclusionPersonDataType;
     sender: string;
     doctor: string;

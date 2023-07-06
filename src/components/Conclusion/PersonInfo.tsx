@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import { Input, CustomDatePicker, InputWithTextIndent } from '../../shared';
 import { IConclusion } from '../../api';
 import { IFCPropsWithReadonly } from '../../interfaces';
-import { formatDateWithoutDots } from '../../helpers';
+import { convertNullOrNumberToDate, formatDateWithoutDots } from '../../helpers';
 
 
 import { birthDateInputStyles, birthDateWrapperStyles } from '../commonFormStyles';
@@ -55,7 +55,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
                         <Input
                             sx={birthDateInputStyles}
                             inputProps={{ sx: { textAlign: 'center', p: 0 } }}
-                            value={!person.birthDate ? '' : formatDateWithoutDots(new Date(person.birthDate))}
+                            value={!person.birthDate ? '' : formatDateWithoutDots(convertNullOrNumberToDate(person.birthDate))}
                         />
                     </CustomDatePicker>
                     {birthDateError !== undefined && <Typography color='error'>{birthDateError}</Typography>}
