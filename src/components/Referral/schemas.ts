@@ -1,6 +1,6 @@
 import { object, string } from 'yup';
 
-import { defaultDateSchema, defaultStringSchema, personFullNameSchema, REQUIRED_FIELD_MESSAGE } from '../../schemas';
+import { defaultNumberSchema, defaultStringSchema, personFullNameSchema, REQUIRED_FIELD_MESSAGE } from '../../schemas';
 
 export const rankWithNameSchema = object().shape({
     position: defaultStringSchema,
@@ -10,7 +10,7 @@ export const rankWithNameSchema = object().shape({
 export const referralSchema = object().shape({
     militaryBase: defaultStringSchema,
     code: string().required(REQUIRED_FIELD_MESSAGE),
-    date: defaultDateSchema,
+    date: defaultNumberSchema,
     militaryBaseAddress: defaultStringSchema,
     number: string().required(REQUIRED_FIELD_MESSAGE),
     receiver: defaultStringSchema,

@@ -16,7 +16,7 @@ export const useGetForm100 = (
   options?: UseQueryOptions<IForm100>
 ) => {
   const queryKey: QueryKey = useMemo(
-    () => ["forms100", personId, id],
+    () => [form100Url, personId, id],
     [personId, id]
   );
 

@@ -1,7 +1,7 @@
 import { string, object, addMethod } from "yup";
 
 import {
-  defaultlNumberSchema,
+  defaultNumberSchema,
   defaultStringSchema,
   fieldRequiredStringSchema,
 } from "./constants";
@@ -40,6 +40,6 @@ export const personForm100Schema = object()
 export const personPageSchema = object()
   .shape({
     ...defaultPersonSchemaFields,
-    birthDate: defaultlNumberSchema,
+    birthDate: defaultNumberSchema,
   })
   .required();

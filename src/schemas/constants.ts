@@ -9,4 +9,4 @@ export const min3SymbolsStringSchema = (schema: StringSchema = string()) => sche
 
 export const defaultStringSchema = min3SymbolsStringSchema(fieldRequiredStringSchema());
 export const defaultDateSchema = date().required(REQUIRED_FIELD_MESSAGE);
-export const defaultlNumberSchema = number().required(REQUIRED_FIELD_MESSAGE);
+export const defaultNumberSchema = number().required(REQUIRED_FIELD_MESSAGE);

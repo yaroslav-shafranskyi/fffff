@@ -22,6 +22,7 @@ export interface IBriefRecord {
   fullDiagnosis: string;
   id: number;
   type: Forms;
+  formId: number;
 }
 
 export interface ILastRecords {

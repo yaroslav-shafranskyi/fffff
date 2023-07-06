@@ -159,7 +159,7 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
   );
 
   const goToForm = useCallback(
-    ({ type, id: formId }: IBriefRecord) =>
+    ({ type, formId }: IBriefRecord) =>
       () => {
         const formUrl = getFormURL(type);
         if (!formUrl) {

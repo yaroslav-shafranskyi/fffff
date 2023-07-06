@@ -8,7 +8,7 @@ export const defaultPositionWithName: PositionWithName = {
 export const defaultReferralData: IReferral = {
     militaryBase: '',
     code: '',
-    date: undefined as unknown as Date,
+    date: undefined as unknown as number,
     militaryBaseAddress: '',
     number: '',
     receiver: '',
@@ -16,7 +16,6 @@ export const defaultReferralData: IReferral = {
     diagnosis: '',
     commander: defaultPositionWithName,
     medicalCommander: defaultPositionWithName,
-    // TODO: id should be incrementally generated on back-end
-    id: String(Date.now()),
-    personId: String(Math.round(Math.random() * 1000000)),
+    id: -1,
+    personId: -1,
 };

@@ -26,7 +26,7 @@ export const columns: IColumn<IPersonBrief>[] = [
     },
     {
         title: 'Стать',
-        render: p => (p.getValue() as string).toLowerCase() + '.',
+        render: p => !p.getValue() ? '' : (p.getValue() as string).toLowerCase() + '.',
         key: 'gender',
     },
     {

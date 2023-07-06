@@ -14,6 +14,6 @@ export interface IReferral {
     diagnosis: string;
     commander: PositionWithName;
     medicalCommander: PositionWithName;
-    id: string;
-    personId: string;
+    id: number;
+    personId: number;
 }
