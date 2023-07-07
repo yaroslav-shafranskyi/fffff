@@ -78,10 +78,7 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
       }
       onChange({
         ...filterBy,
-        [key]: [
-          (filterBy[key] as Range | undefined)?.[0],
-          value?.getTime(),
-        ],
+        [key]: [(filterBy[key] as Range | undefined)?.[0], value?.getTime()],
       });
     },
     [filterBy, key, onChange]
@@ -126,6 +123,7 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
           size="small"
           value={inputValue}
           placeholder={placeholder ?? title}
+          fullWidth={key !== "Any"}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

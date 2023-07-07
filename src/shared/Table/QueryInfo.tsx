@@ -14,7 +14,7 @@ import {
 export const QueryInfo = <T extends object>(props: IQueryInfoProps<T>) => {
   const { query, queryData, onChange } = props;
   const { sortBy, filterBy } = query;
-  const { sorts: sortsData, filters: filtersData } = queryData;
+  const { sorts: sortsData, filters: filtersData, globalFilter } = queryData;
 
   const removeSortBy = useCallback(() => {
     onChange("sortBy")(undefined);
@@ -36,6 +36,11 @@ export const QueryInfo = <T extends object>(props: IQueryInfoProps<T>) => {
       return sortsData[sortByKey][sortByValue as SortOrder];
     }, [sortBy, sortsData]);
 
+  const hasGlobalFilter = useMemo(
+    () => globalFilter !== undefined && !!filterBy.Any,
+    [globalFilter, filterBy]
+  );
+
   const filtersInfo = useMemo(
     () =>
       filtersData?.reduce((acc: [string, string, string][], cur) => {
@@ -46,7 +51,7 @@ export const QueryInfo = <T extends object>(props: IQueryInfoProps<T>) => {
             return acc;
           }
           const formattedTitle =
-            key === "Any" ? "Загальний пошук" : title ?? key;
+            (key === "Any" ? "Загальний пошук" : title) ?? key;
           if (type === TableFilterType.DATE) {
             const convertedValue = formatDate(
               convertNullOrNumberToDate(value as number)
@@ -96,6 +101,14 @@ export const QueryInfo = <T extends object>(props: IQueryInfoProps<T>) => {
           variant="outlined"
           deleteIcon={<ClearIcon />}
           onDelete={removeSortBy}
+        />
+      )}
+      {hasGlobalFilter && (
+        <Chip
+          label={`Загальний пошук: ${filterBy.Any}`}
+          variant="outlined"
+          deleteIcon={<ClearIcon />}
+          onDelete={removeFilterBy("Any")}
         />
       )}
       {filtersInfo.map(([key, title, value]) => {
