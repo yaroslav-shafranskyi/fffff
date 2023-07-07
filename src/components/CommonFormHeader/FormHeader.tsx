@@ -109,7 +109,7 @@ export const FormHeader = <T extends ICommonFormHeaderFields>({
           <Box>
             <Typography>Наказ МОЗ України</Typography>
             <Box sx={orderWrapperStyles}>
-              <CustomDatePicker onChange={handleDateChange}>
+              <CustomDatePicker readonly={readonly} onChange={handleDateChange}>
                 <Input
                   sx={dateInputStyles}
                   error={
