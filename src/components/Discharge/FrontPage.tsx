@@ -19,7 +19,7 @@ import { contentDataWrapperStyles } from "./styles";
 import { Receiver, PersonInfo, Dates } from "./components";
 
 export const FrontPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-  const { formState, setValue, register, clearErrors } =
+  const { formState, watch, setValue, register, clearErrors } =
     useFormContext<IDischarge>();
   const errors = formState.errors;
 
@@ -57,6 +57,7 @@ export const FrontPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
             </Typography>
             <Input
               {...register("fullDiagnosis")}
+              value={watch("fullDiagnosis") ?? ""}
               onChange={handleInputChange("fullDiagnosis")}
               error={errors?.fullDiagnosis?.message}
               multiline={true}

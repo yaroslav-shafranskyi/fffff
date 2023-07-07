@@ -22,9 +22,9 @@ import {
 } from "./styles";
 
 export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-  const { formState, getValues, register, setValue, clearErrors } =
+  const { formState, watch, register, setValue, clearErrors } =
     useFormContext<IDischarge>();
-  const person = getValues("person");
+  const person = watch("person");
   const errors = formState.errors.person;
 
   const handleInputChange = useCallback(
@@ -84,6 +84,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         <Box>
           <Input
             {...register("person.address.oblast")}
+            value={person.address?.oblast ?? ""}
             onChange={handleInputChange("address.oblast")}
             error={errors?.address?.oblast?.message}
           />
@@ -92,6 +93,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         <Box>
           <Input
             {...register("person.address.region")}
+            value={person.address?.region ?? ""}
             onChange={handleInputChange("address.region")}
             error={errors?.address?.region?.message}
           />
@@ -103,6 +105,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         <Box>
           <Input
             {...register("person.address.settlement")}
+            value={person.address?.settlement ?? ""}
             onChange={handleInputChange("address.settlement")}
             error={errors?.address?.settlement?.message}
           />
@@ -111,6 +114,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         <Box>
           <Input
             {...register("person.address.street")}
+            value={person.address?.street ?? ""}
             onChange={handleInputChange("address.street")}
             error={errors?.address?.street?.message}
           />
@@ -119,6 +123,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         <Box>
           <Input
             {...register("person.address.building")}
+            value={person.address?.building ?? ""}
             onChange={handleInputChange("address.building")}
             error={errors?.address?.building?.message}
             sx={addressNumberInputStyles}
@@ -128,6 +133,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         <Box>
           <Input
             {...register("person.address.appartments")}
+            value={person.address?.appartments ?? ""}
             onChange={handleInputChange("address.appartments")}
             error={errors?.address?.appartments?.message}
             sx={addressNumberInputStyles}
@@ -138,6 +144,7 @@ export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         title="4. Місце роботи(посада)"
         inputProps={{
           ...register("person.profession"),
+          value: person.profession ?? "",
           onChange: handleInputChange("profession"),
           multiline: true,
           rows: 2,

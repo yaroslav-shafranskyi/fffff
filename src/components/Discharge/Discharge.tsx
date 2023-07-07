@@ -78,11 +78,16 @@ export const Discharge = () => {
   const {
     reset: frontPageReset,
     trigger: frontPageTrigger,
-    getValues: getFrontPageValues,
+    watch: watchFrontPage,
   } = frontPageMethods;
-  const { reset: backPageReset, formState, handleSubmit: submitForm } = backPageMethods;
-console.log({ formState })
-  const frontPageState = getFrontPageValues();
+  const {
+    reset: backPageReset,
+    trigger: backPageTrigger,
+    watch: watchBackPage,
+  } = backPageMethods;
+
+  const frontPageState = watchFrontPage();
+  const backPageState = watchBackPage();
 
   const handleSubmitFrontPage = useCallback(async () => {
     const result = await frontPageTrigger();
@@ -91,25 +96,27 @@ console.log({ formState })
     }
   }, [frontPageTrigger]);
 
-  const handleSubmitBackPage = useCallback(
-    (data: DischargeBackPageState) => {
-      const dischargeRecord = {
-        ...frontPageState,
-        ...data,
-      };
+  const handleSubmitBackPage = useCallback(async () => {
+    const result = await backPageTrigger();
+    if (!result) {
+      return;
+    }
 
-      saveForm(dischargeRecord);
-    },
-    [frontPageState, saveForm]
-  );
+    const dischargeRecord = {
+      ...frontPageState,
+      ...backPageState,
+    };
+
+    saveForm(dischargeRecord);
+  }, [backPageState, backPageTrigger, frontPageState, saveForm]);
 
   const handleSubmit = useCallback(() => {
     if (page === 0) {
       handleSubmitFrontPage();
       return;
     }
-    submitForm(handleSubmitBackPage)();
-  }, [handleSubmitBackPage, handleSubmitFrontPage, page, submitForm]);
+    handleSubmitBackPage();
+  }, [handleSubmitBackPage, handleSubmitFrontPage, page]);
 
   const handleReset = useCallback(() => {
     if (page === 0) {
