@@ -22,9 +22,9 @@ import {
 } from "./styles";
 
 export const PersonInfo: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-  const { formState, watch, register, setValue, clearErrors } =
+  const { formState, getValues, register, setValue, clearErrors } =
     useFormContext<IDischarge>();
-  const person = watch("person");
+  const person = getValues("person");
   const errors = formState.errors.person;
 
   const handleInputChange = useCallback(

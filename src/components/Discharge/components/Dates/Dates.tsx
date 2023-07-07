@@ -9,8 +9,8 @@ import { SingleDateField } from './SingleDateField';
 import { reasonWrapperStyles } from './styles';
 
 export const Dates: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-    const { formState, watch, setValue, clearErrors } = useFormContext<IDischarge>();
-    const { sick, referral, arrival, leaving } = watch('datesData');
+    const { formState, getValues, setValue, clearErrors } = useFormContext<IDischarge>();
+    const { sick, referral, arrival, leaving } = getValues('datesData');
     const errors = formState.errors.datesData;
     const reasonError = formState.errors.reason?.message;
     
@@ -27,7 +27,7 @@ export const Dates: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         clearErrors('reason');
     }, [clearErrors, setValue]);
 
-    const getReasonSx = useCallback((reason: DischargeReason) => reason === watch('reason') ? {textDecoration: 'underline'} : {}, [watch]); 
+    const getReasonSx = useCallback((reason: DischargeReason) => reason === getValues('reason') ? {textDecoration: 'underline'} : {}, [getValues]); 
 
     return (
         <Box>
