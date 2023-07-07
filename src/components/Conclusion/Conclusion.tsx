@@ -67,7 +67,7 @@ export const Conclusion = () => {
   const {
     formState,
     register,
-    watch,
+    getValues,
     setValue,
     reset,
     handleSubmit,
@@ -101,9 +101,11 @@ export const Conclusion = () => {
   const submitForm = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ({ id, ...data }: IConclusion) => {
-      saveForm(data);
+      if (!readonly) {
+        saveForm(data);
+      }
     },
-    [saveForm]
+    [readonly, saveForm]
   );
 
   const dateError = errors?.date?.message;
@@ -131,7 +133,7 @@ export const Conclusion = () => {
                 fullWidth: true,
                 multiline: true,
                 rows: 2,
-                value: watch("sender"),
+                value: getValues("sender"),
                 onChange: handleInputChange("sender"),
               }}
             />
@@ -146,7 +148,7 @@ export const Conclusion = () => {
                 fullWidth: true,
                 multiline: true,
                 rows: 2,
-                value: watch("doctor"),
+                value: getValues("doctor"),
                 onChange: handleInputChange("doctor"),
               }}
             />
@@ -158,7 +160,7 @@ export const Conclusion = () => {
                 fullWidth: true,
                 multiline: true,
                 rows: 4,
-                value: watch("labResults"),
+                value: getValues("labResults"),
                 onChange: handleInputChange("labResults"),
               }}
             />
@@ -170,7 +172,7 @@ export const Conclusion = () => {
                 fullWidth: true,
                 multiline: true,
                 rows: 3,
-                value: watch("researchResults"),
+                value: getValues("researchResults"),
                 onChange: handleInputChange("researchResults"),
               }}
             />
@@ -182,7 +184,7 @@ export const Conclusion = () => {
                 fullWidth: true,
                 multiline: true,
                 rows: 3,
-                value: watch("diagnosis"),
+                value: getValues("diagnosis"),
                 onChange: handleInputChange("diagnosis"),
               }}
             />
@@ -194,14 +196,14 @@ export const Conclusion = () => {
                 fullWidth: true,
                 multiline: true,
                 rows: 3,
-                value: watch("recommendations"),
+                value: getValues("recommendations"),
                 onChange: handleInputChange("recommendations"),
               }}
             />
             <Box sx={footerStyles}>
               <Box>
                 <DateInputWithTextMonth
-                  value={convertNullOrNumberToDate(watch("date"))}
+                  value={convertNullOrNumberToDate(getValues("date"))}
                   onChange={handleDateChange}
                 />
                 {dateError !== undefined && (
@@ -217,7 +219,12 @@ export const Conclusion = () => {
             <Box sx={signatureStyles}>
               <Typography>Лікар-консультант</Typography>
               <Box sx={signatureInputWrapperStyles}>
-                <Input fullWidth={true} />
+                <Input
+                  fullWidth={true}
+                  {...register("signature")}
+                  onChange={handleInputChange("signature")}
+                  value={getValues("signature") ?? ""}
+                />
                 <Typography sx={{ textAlign: "center" }} variant="caption">
                   (П.І.Б.)(підпис)
                 </Typography>
@@ -231,7 +238,7 @@ export const Conclusion = () => {
                 <Input
                   {...register("headOfTheClinic")}
                   fullWidth={true}
-                  value={watch("headOfTheClinic")}
+                  value={getValues("headOfTheClinic")}
                   onChange={handleInputChange("headOfTheClinic")}
                 />
                 <Typography sx={{ textAlign: "center" }} variant="caption">

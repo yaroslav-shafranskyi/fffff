@@ -3,13 +3,14 @@ import { Typography, Box } from '@mui/material';
 
 import { getDateData } from '../../helpers';
 import { emptyDateData } from '../../constants';
+import { IFCPropsWithReadonly } from '../../interfaces';
 
 import { IDateCalendarProps } from '../DateCalendar';
+import { CustomDatePicker } from '../CustomDatePicker';
 
 import { fieldStyles, wrapperStyles } from './styles';
-import { CustomDatePicker } from '../CustomDatePicker/CustomDatePicker';
 
-export const DateInputWithTextMonth: FC<IDateCalendarProps> = (props) => {
+export const DateInputWithTextMonth: FC<IFCPropsWithReadonly<IDateCalendarProps>> = (props) => {
     const { value } = props;
     const { day, monthName, year } = useMemo(() => !value ? emptyDateData : getDateData(value), [value]);
 

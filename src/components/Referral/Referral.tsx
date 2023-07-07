@@ -60,7 +60,7 @@ export const Referral = () => {
   const {
     formState,
     register,
-    watch,
+    getValues,
     setValue,
     clearErrors,
     reset,
@@ -122,7 +122,7 @@ export const Referral = () => {
             <Typography>ВІЙСЬКОВА ЧАСТИНА</Typography>
             <Input
               {...register("militaryBase")}
-              value={watch("militaryBase")}
+              value={getValues("militaryBase")}
               fullWidth={true}
               placeholder="Номер в/ч"
               inputProps={{
@@ -135,14 +135,15 @@ export const Referral = () => {
               <Typography>Код</Typography>
               <Input
                 {...register("code")}
-                value={watch("code")}
+                value={getValues("code")}
                 error={errors?.code?.message}
                 onChange={handleInputChange("code")}
               />
             </Box>
             <Box>
               <DateInputWithTextMonth
-                value={convertNullOrNumberToDate(watch("date"))}
+                readonly={readonly}
+                value={convertNullOrNumberToDate(getValues("date"))}
                 onChange={handleDateChange}
               />
               {dateError !== undefined && (
@@ -152,7 +153,7 @@ export const Referral = () => {
             <Box sx={{ width: "100%" }}>
               <Input
                 {...register("militaryBaseAddress")}
-                value={watch("militaryBaseAddress")}
+                value={getValues("militaryBaseAddress")}
                 multiline={true}
                 rows={3}
                 placeholder="Адреса в/ч"
@@ -172,7 +173,7 @@ export const Referral = () => {
               </Typography>
               <Input
                 {...register("number")}
-                value={watch("number")}
+                value={getValues("number")}
                 error={errors?.number?.message}
                 sx={numberInputStyles}
                 inputProps={{
@@ -187,7 +188,7 @@ export const Referral = () => {
                 {...register("receiver")}
                 error={errors?.receiver?.message}
                 fullWidth={true}
-                value={watch("receiver")}
+                value={getValues("receiver")}
                 onChange={handleInputChange("receiver")}
               />
             </Box>
@@ -201,7 +202,7 @@ export const Referral = () => {
               inputProps={{
                 sx: patientInputPropsSx,
               }}
-              value={watch("patient")}
+              value={getValues("patient")}
               onChange={handleInputChange("patient")}
             />
           </Box>
@@ -211,7 +212,7 @@ export const Referral = () => {
           inputProps={{
             ...register("diagnosis"),
             error: errors?.diagnosis?.message,
-            value: watch("diagnosis"),
+            value: getValues("diagnosis"),
             multiline: true,
             rows: 2,
             fullWidth: true,
@@ -221,7 +222,7 @@ export const Referral = () => {
         <Input
           {...register("commander.position")}
           error={errors?.commander?.position?.message}
-          value={watch("commander.position")}
+          value={getValues("commander.position")}
           fullWidth={true}
           inputProps={{
             sx: {
@@ -234,7 +235,7 @@ export const Referral = () => {
         <Input
           {...register("commander.fullName")}
           error={errors?.commander?.fullName?.message}
-          value={watch("commander.fullName")}
+          value={getValues("commander.fullName")}
           fullWidth={true}
           inputProps={{
             sx: {
@@ -247,7 +248,7 @@ export const Referral = () => {
         <Input
           {...register("medicalCommander.position")}
           error={errors?.medicalCommander?.position?.message}
-          value={watch("medicalCommander.position")}
+          value={getValues("medicalCommander.position")}
           fullWidth={true}
           inputProps={{
             sx: {
@@ -260,7 +261,7 @@ export const Referral = () => {
         <Input
           {...register("medicalCommander.fullName")}
           error={errors?.medicalCommander?.fullName?.message}
-          value={watch("medicalCommander.fullName")}
+          value={getValues("medicalCommander.fullName")}
           fullWidth={true}
           inputProps={{
             sx: {
