@@ -10,7 +10,7 @@ import { inputHintStyles, inputTitleStyles } from "../../styles";
 import { receiverInputPropsSx, receiverInputStyles } from "./styles";
 
 export const Receiver: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-  const { formState, setValue, watch, register, clearErrors } =
+  const { formState, setValue, register, clearErrors } =
     useFormContext<IDischarge>();
 
   const handleInputChange = useCallback(
@@ -38,7 +38,6 @@ export const Receiver: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         rows={4}
         {...register("receiver")}
         onChange={handleInputChange}
-        value={watch("receiver") ?? ""}
         inputProps={{ sx: receiverInputPropsSx }}
         error={formState.errors?.receiver?.message}
       />

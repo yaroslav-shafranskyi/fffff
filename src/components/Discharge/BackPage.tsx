@@ -17,7 +17,7 @@ import {
 } from "./styles";
 
 export const BackPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-  const { watch, setValue, clearErrors, register, formState } =
+  const { getValues, setValue, clearErrors, register, formState } =
     useFormContext<DischargeBackPageState>();
   const { errors } = formState;
 
@@ -54,8 +54,6 @@ export const BackPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
           </Typography>
           <Input
             {...register("info")}
-            onChange={handleInputChange("info")}
-            value={watch("info") ?? ""}
             error={errors?.info?.message}
             multiline={true}
             rows={22}
@@ -70,7 +68,6 @@ export const BackPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
           <Input
             {...register("recommendations")}
             onChange={handleInputChange("recommendations")}
-            value={watch("recommendations") ?? ""}
             error={errors?.recommendations?.message}
             multiline={true}
             rows={14}
@@ -82,7 +79,7 @@ export const BackPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
         </Box>
         <Box sx={backPageFooterStyles}>
           <DateInputWithTextMonth
-            value={convertNullOrNumberToDate(watch("date"))}
+            value={convertNullOrNumberToDate(getValues("date"))}
             onChange={handleDateChange}
           />
           <Box sx={{ display: "flex", gap: "2px" }}>
@@ -91,7 +88,6 @@ export const BackPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
               <Input
                 {...register("doctor")}
                 onChange={handleInputChange("doctor")}
-                value={watch("doctor") ?? ""}
                 error={errors?.doctor?.message}
               />
               <Typography variant="caption" sx={doctorHintStyles}>
