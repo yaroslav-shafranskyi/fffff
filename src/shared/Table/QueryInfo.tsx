@@ -2,10 +2,14 @@ import { useCallback, useMemo } from "react";
 import { Stack, Chip } from "@mui/material";
 import { Close as ClearIcon } from "@mui/icons-material";
 
-import { SortOrder } from "../../interfaces";
+import { SortOrder, Range } from "../../interfaces";
 
 import { IQueryInfoProps, SortTitlesType, TableFilterType } from "./types";
-import { convertNullOrNumberToDate, formatDate } from "../../helpers";
+import {
+  checkIfNullish,
+  convertNullOrNumberToDate,
+  formatDate,
+} from "../../helpers";
 
 export const QueryInfo = <T extends object>(props: IQueryInfoProps<T>) => {
   const { query, queryData, onChange } = props;
@@ -50,19 +54,30 @@ export const QueryInfo = <T extends object>(props: IQueryInfoProps<T>) => {
             acc.push([key, formattedTitle, convertedValue]);
           }
           if (type === TableFilterType.DATE_RANGE) {
-            const formattedValues: string[] = [];
-            (value as [number, number]).forEach((field) => {
-              if (field) {
-                formattedValues.push(
-                  formatDate(convertNullOrNumberToDate(field))
-                );
-              }
-            });
-            const convertedValue =
-              formattedValues.length === 1
-                ? formattedValues[0]
-                : formattedValues.join(" - ");
-            acc.push([key, formattedTitle, convertedValue]);
+            const [from, till] = value as Range;
+            const hasOnlyFrom = !checkIfNullish(from) && checkIfNullish(till);
+            if (hasOnlyFrom) {
+              const convertedValue = `${formatDate(
+                convertNullOrNumberToDate(from)
+              )} ->`;
+              acc.push([key, formattedTitle, convertedValue]);
+              return acc;
+            }
+            const hasOnlyTill = checkIfNullish(from) && !checkIfNullish(till);
+            if (hasOnlyTill) {
+              const convertedValue = `-> ${formatDate(
+                convertNullOrNumberToDate(till)
+              )}`;
+              acc.push([key, formattedTitle, convertedValue]);
+              return acc;
+            }
+            const hasBoth = !checkIfNullish(from) && !checkIfNullish(till);
+            if (hasBoth) {
+              const convertedValue = `${formatDate(
+                convertNullOrNumberToDate(from)
+              )} -> ${formatDate(convertNullOrNumberToDate(till))}`;
+              acc.push([key, formattedTitle, convertedValue]);
+            }
           }
           if (!type || type === TableFilterType.STRING) {
             acc.push([key, formattedTitle, String(value)]);

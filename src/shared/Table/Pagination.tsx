@@ -25,7 +25,7 @@ export const Pagination: FC<IPaginationProps> = (props) => {
         <TablePagination
           component="div"
           count={total}
-          page={page}
+          page={!total || total <= 0 ? 0 : page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
           onRowsPerPageChange={handleChangeRowsPerPage}

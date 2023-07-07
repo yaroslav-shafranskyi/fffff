@@ -16,7 +16,8 @@ import {
 } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 
-import { DateRange } from "../../interfaces";
+import { Range } from "../../interfaces";
+import { convertNullOrNumberToDate } from "../../helpers";
 
 import { DatePicker } from "../DatePicker";
 
@@ -27,16 +28,6 @@ import {
   dateRangePickerStyles,
   optionsFilterWrapperStyles,
 } from "./styles";
-
-const convertDateRangeSingleValue = (
-  field: "start" | "end",
-  value?: Date | null
-) => {
-  if (!value) {
-    return field === "start" ? -Infinity : Infinity;
-  }
-  return value.getTime();
-};
 
 export const Filter = <T extends object>(props: IFilterProps<T>) => {
   const { fieldFilterData, filterBy, onChange } = props;
@@ -81,18 +72,15 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
       if (field === "start") {
         onChange({
           ...filterBy,
-          [key]: [
-            convertDateRangeSingleValue(field, value),
-            (filterBy[key] as [number, number])?.[1] ?? 2 * Date.now(),
-          ],
+          [key]: [value?.getTime(), (filterBy[key] as Range)?.[1]],
         });
         return;
       }
       onChange({
         ...filterBy,
         [key]: [
-          (filterBy[key] as [number, number] | undefined)?.[0] ?? -Date.now(),
-          convertDateRangeSingleValue(field, value),
+          (filterBy[key] as Range | undefined)?.[0],
+          value?.getTime(),
         ],
       });
     },
@@ -162,13 +150,17 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
       {type === TableFilterType.DATE_RANGE && (
         <Box sx={dateRangeFilterPickerStyles}>
           <DatePicker
-            value={(filterBy?.[key] as DateRange | undefined)?.[0] ?? undefined}
+            value={convertNullOrNumberToDate(
+              (filterBy?.[key] as Range | undefined)?.[0]
+            )}
             sx={dateRangePickerStyles}
             onChange={handleDateRangeChange("start")}
           />
           <Box>-</Box>
           <DatePicker
-            value={(filterBy?.[key] as DateRange | undefined)?.[1] ?? undefined}
+            value={convertNullOrNumberToDate(
+              (filterBy?.[key] as Range | undefined)?.[1]
+            )}
             sx={dateRangePickerStyles}
             format="dd.MM.yy"
             onChange={handleDateRangeChange("end")}

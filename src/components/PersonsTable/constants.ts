@@ -91,7 +91,7 @@ export const queryData: IQueryData = {
         {
             title: 'Звернення:',
             fields: [
-                {
+            {
                     title: 'К-ть звернень',
                     key: 'recordsQuantity',
                     type: TableFilterType.RANGE,
