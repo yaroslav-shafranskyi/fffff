@@ -28,7 +28,7 @@ export const useGetDischarge = (
 
   const res = useQuery<IDischarge>(queryKey, queryFunction, {
     ...options,
-    enabled: options?.enabled !== false && !!id && id !== "create",
+    enabled: options?.enabled !== false && !!id,
   });
 
   const convertedData = res?.data;

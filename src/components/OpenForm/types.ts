@@ -1,9 +1,13 @@
 import { IPerson } from "../../api";
 
+export type CallbackResponseType = {
+  error?: string;
+  url?: string;
+  state?: unknown;
+};
 export interface IOpenFormDialog {
-    title: string;
-    error?: string;
-    onClose: () => void;
-    goToCreateMode: (id?: number) => () => void;
-    goToUpdateMode: (person?: IPerson) => () => void;
+  title: string;
+  onClose: () => void;
+  goToCreateMode: (id?: number) => CallbackResponseType;
+  goToUpdateMode: (person?: IPerson) => CallbackResponseType;
 }

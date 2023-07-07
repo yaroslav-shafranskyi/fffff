@@ -6,7 +6,7 @@ import { IPerson } from "../../api";
 import { http } from "../../helpers";
 
 export const useGetPerson = (
-  id: string,
+  id?: string,
   options?: UseQueryOptions<IPerson>
 ) => {
   const queryKey: QueryKey = useMemo(() => [personsUrl, getUrl, id], [id]);

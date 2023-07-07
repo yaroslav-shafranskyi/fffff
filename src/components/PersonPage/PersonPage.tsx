@@ -49,8 +49,6 @@ import {
 import { REQUIRED_FIELD_MESSAGE, personPageSchema } from "../../schemas";
 import { convertNullOrNumberToDate, formatDate } from "../../helpers";
 
-import { Header } from "../Header";
-
 import {
   cardStyles,
   inputPropsSx,
@@ -177,7 +175,6 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
 
   return (
     <>
-      <Header />
       <Container maxWidth={false} sx={containerStyles}>
         <Card sx={cardStyles}>
           <ControlBar
