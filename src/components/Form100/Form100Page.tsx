@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 
 import { ControlBar } from "../../shared";
-import { IForm100 } from "../../api";
+import { IForm100, useAuthorizedSubmit } from "../../api";
 import { getInitialForm100 } from "../../constants";
 
 import { form100Schema } from "./schemas";
@@ -58,7 +58,7 @@ export const Form100Page: FC<IForm100PageProps> = ({
       <ControlBar
         submitButtonText={!page ? "Далі" : undefined}
         onClear={reset}
-        onSubmit={handleSubmit}
+        onSubmit={useAuthorizedSubmit(handleSubmit)}
         onBack={handleGoBack}
       />
       {!page ? (

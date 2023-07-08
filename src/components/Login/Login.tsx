@@ -1,9 +1,9 @@
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { clearButtonStyles } from "../../constants";
+import { clearButtonStyles, loginUrl } from "../../constants";
 import {
   IAuthorizationRequest,
   IAuthorizationResponse,
@@ -17,6 +17,9 @@ const errorText = "Неправильний логін або пароль!";
 
 export const Login = () => {
   const navigate = useNavigate();
+
+  const { state } = useLocation();
+  const prevPath = state?.prevPath as string;
 
   const [error, setError] = useState<string>();
 
@@ -35,7 +38,9 @@ export const Login = () => {
         setError(errorText);
         return;
       }
-      navigate('/');
+
+      const url = !!prevPath && prevPath !== loginUrl ? prevPath : "/";
+      navigate(url);
     },
   });
 
@@ -49,11 +54,17 @@ export const Login = () => {
     reset();
   }, [reset]);
 
-  const submit = useCallback(
-    (data: IAuthorizationRequest) => {
-      login(data);
+  const submit = handleSubmit((data: IAuthorizationRequest) => {
+    login(data);
+  });
+
+  const handleKeyUp = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        submit();
+      }
     },
-    [login]
+    [submit]
   );
 
   return (
@@ -70,8 +81,9 @@ export const Login = () => {
         <TextField
           label="Пароль"
           {...register("password")}
-          type='password'
+          type="password"
           onChange={handleInputChange("password")}
+          onKeyUp={handleKeyUp}
           error={!!error}
         />
       </Box>
@@ -84,11 +96,7 @@ export const Login = () => {
         >
           Очистити
         </Button>
-        <Button
-          fullWidth={true}
-          variant="contained"
-          onClick={handleSubmit(submit)}
-        >
+        <Button fullWidth={true} variant="contained" onClick={submit}>
           Прийняти
         </Button>
       </Box>

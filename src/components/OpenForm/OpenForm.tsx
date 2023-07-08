@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { useGetPerson, useQueryPersons } from "../../api";
+import { useAuthorizedSubmit, useGetPerson, useQueryPersons } from "../../api";
 import { getInitialQuery } from "../../constants";
 
 import {
@@ -87,7 +87,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
     setError(undefined);
   };
 
-  const handlCallback = useCallback(
+  const handleCallback = useCallback(
     ({ error, url, state }: CallbackResponseType) => {
       if (error) {
         setError(error);
@@ -102,12 +102,12 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
   );
 
   const handleGoToUpdateMode = useCallback(() => {
-    handlCallback(goToUpdateMode(person));
-  }, [goToUpdateMode, handlCallback, person]);
+    handleCallback(goToUpdateMode(person));
+  }, [goToUpdateMode, handleCallback, person]);
 
   const handleGoToCreateMode = useCallback(() => {
-    handlCallback(goToCreateMode(person?.id));
-  }, [goToCreateMode, handlCallback, person?.id]);
+    handleCallback(goToCreateMode(person?.id));
+  }, [goToCreateMode, handleCallback, person?.id]);
 
   return (
     <Dialog open={true} fullWidth={true} maxWidth="lg" onClose={onClose}>
@@ -133,7 +133,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
           variant="contained"
           size="large"
           sx={openButtonStyles}
-          onClick={handleGoToUpdateMode}
+          onClick={useAuthorizedSubmit(handleGoToUpdateMode)}
         >
           Переглянути
         </Button>
@@ -141,7 +141,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
           variant="contained"
           sx={dialogButtonStyles}
           size="large"
-          onClick={handleGoToCreateMode}
+          onClick={useAuthorizedSubmit(handleGoToCreateMode)}
         >
           Створити
         </Button>

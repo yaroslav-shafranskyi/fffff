@@ -36,7 +36,7 @@ const additionalOptions = [Forms.CONCLUSION, Forms.DISCHARGE, Forms.REFERRAL];
 
 export const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  
+
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
@@ -46,10 +46,10 @@ export const Header = () => {
   useEffect(() => {
     const { role } =
       queryClient.getQueryData<IAuthorizationResponse>([loginUrl]) ?? {};
-    if (!role || role === UserType.NONE) {
-      navigate("/login");
+    if (!role || (role === UserType.NONE && pathname !== loginUrl)) {
+      navigate(loginUrl, { state: { prevPath: pathname } });
     }
-  }, [navigate, queryClient]);
+  }, [navigate, pathname, queryClient]);
 
   const [OpenForm100Component, handleOpenForm100] =
     useOpenFormDialog(OpenForm100Dialog);

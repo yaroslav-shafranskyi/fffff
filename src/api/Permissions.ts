@@ -8,6 +8,7 @@ export enum UserType {
 export interface IAuthorizationResponse {
   role: UserType;
   militaryBase?: string;
+  user: string;
 }
 
 export interface IAuthorizationRequest {

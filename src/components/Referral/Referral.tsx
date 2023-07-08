@@ -5,7 +5,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Container, Typography } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { IReferral, useGetReferral, useCreateReferral } from "../../api";
+import {
+  IReferral,
+  useGetReferral,
+  useCreateReferral,
+  useAuthorizedSubmit,
+} from "../../api";
 import { defaultReferralData, personsUrl, referralUrl } from "../../constants";
 import {
   ControlBar,
@@ -113,7 +118,10 @@ export const Referral = () => {
 
   return (
     <Container maxWidth={false} sx={containerStyles}>
-      <ControlBar onClear={reset} onSubmit={handleSubmit(submitForm)} />
+      <ControlBar
+        onClear={reset}
+        onSubmit={useAuthorizedSubmit(handleSubmit(submitForm))}
+      />
       <Box>
         <Box sx={headerStyles}>
           <Box sx={militaryBaseWrapperStyles}>

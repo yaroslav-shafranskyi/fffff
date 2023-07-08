@@ -13,7 +13,7 @@ import {
   defaultPersonData,
   personsUrl,
 } from "../../constants";
-import { useGetDischarge, useCreateDischarge } from "../../api";
+import { useGetDischarge, useCreateDischarge, useAuthorizedSubmit } from "../../api";
 
 import { containerStyles } from "../commonFormStyles";
 
@@ -142,7 +142,7 @@ export const Discharge = () => {
       <ControlBar
         submitButtonText={!page ? "Далі" : "Зберегти"}
         onClear={handleReset}
-        onSubmit={handleSubmit}
+        onSubmit={useAuthorizedSubmit(handleSubmit)}
         onBack={handleGoBack}
       />
       {page === 0 ? (

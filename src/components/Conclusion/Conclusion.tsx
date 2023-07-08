@@ -6,7 +6,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { conclusionUrl, defaultConclusion, personsUrl } from "../../constants";
-import { IConclusion, useGetConclusion, useCreateConclusion } from "../../api";
+import {
+  IConclusion,
+  useGetConclusion,
+  useCreateConclusion,
+  useAuthorizedSubmit,
+} from "../../api";
 import {
   ControlBar,
   DateInputWithTextMonth,
@@ -112,7 +117,10 @@ export const Conclusion = () => {
 
   return (
     <Container maxWidth={false} sx={containerStyles}>
-      <ControlBar onClear={reset} onSubmit={handleSubmit(submitForm)} />
+      <ControlBar
+        onClear={reset}
+        onSubmit={useAuthorizedSubmit(handleSubmit(submitForm))}
+      />
       <Box sx={formWrapperStyles}>
         <MinistryOrder />
         <Box sx={formContentStyles}>
