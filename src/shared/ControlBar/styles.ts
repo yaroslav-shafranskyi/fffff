@@ -1,5 +1,4 @@
 import { SxProps } from '@mui/material';
-import { Theme } from '@mui/system';
 
 export const containerStyles: SxProps = {
     width: '100%',
@@ -19,10 +18,3 @@ export const actionsWrapperStyles: SxProps = {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
 };
-
-export const clearButtonStyles: SxProps<Theme> = (theme) => ({
-    bgcolor: 'primary.light',
-    '&:hover': {
-        bgcolor: theme.palette.primary.main,
-    },
-});

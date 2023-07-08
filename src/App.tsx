@@ -12,6 +12,7 @@ import {
   Referral,
   Conclusion,
   Header,
+  Login,
 } from "./components";
 import { theme } from "./theme";
 import "./App.css";
@@ -19,6 +20,7 @@ import {
   conclusionUrl,
   dischargeUrl,
   form100Url,
+  loginUrl,
   personsUrl,
   referralUrl,
 } from "./constants";
@@ -39,6 +41,7 @@ const App = () => {
         <Router>
           <Header />
           <Routes>
+            <Route path={loginUrl} element={<Login />} />
             <Route path="/" element={<Home />} />
             <Route path={form100Url} element={<Form100 />} />
             <Route path={`${form100Url}/:personId`} element={<Form100 />} />

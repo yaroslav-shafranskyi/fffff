@@ -1,9 +1,9 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Container } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RowData } from "@tanstack/react-table";
 
-import { IPersonBrief, useQueryPersons } from "../../api";
+import { IPersonBrief, useGetPermissions, useQueryPersons } from "../../api";
 import { Table } from "../../shared";
 import { getInitialQuery } from "../../constants";
 import { IQuery } from "../../interfaces";
@@ -14,10 +14,21 @@ import { columns, queryData } from "./constants";
 export const PersonsTable: FC = () => {
   const [query, setQuery] = useState<IQuery<IPersonBrief>>(getInitialQuery());
 
+  const { militaryBase } = useGetPermissions();
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const { persons, total } = useQueryPersons(query);
+
+  useEffect(() => {
+    if (militaryBase) {
+      setQuery((prevQuery) => ({
+        ...prevQuery,
+        filterBy: { ...prevQuery.filterBy, militaryBase },
+      }));
+    }
+  }, [militaryBase]);
 
   const goBack = () => {
     navigate("/");

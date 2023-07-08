@@ -1,4 +1,4 @@
-import { useState, MouseEvent, useCallback } from "react";
+import { useState, MouseEvent, useCallback, useEffect } from "react";
 import {
   Container,
   Box,
@@ -12,10 +12,11 @@ import {
   AccountCircleOutlined as AvatarIcon,
   ArrowRight as OpenMenuIcon,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
-import { personsUrl } from "../../constants";
-import { Forms } from "../../api";
+import { loginUrl, personsUrl } from "../../constants";
+import { Forms, IAuthorizationResponse, UserType } from "../../api";
 
 import { useOpenFormDialog } from "../OpenForm";
 import { OpenForm100Dialog } from "../Form100";
@@ -35,7 +36,20 @@ const additionalOptions = [Forms.CONCLUSION, Forms.DISCHARGE, Forms.REFERRAL];
 
 export const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  
   const navigate = useNavigate();
+
+  const { pathname } = useLocation();
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const { role } =
+      queryClient.getQueryData<IAuthorizationResponse>([loginUrl]) ?? {};
+    if (!role || role === UserType.NONE) {
+      navigate("/login");
+    }
+  }, [navigate, queryClient]);
 
   const [OpenForm100Component, handleOpenForm100] =
     useOpenFormDialog(OpenForm100Dialog);
@@ -76,6 +90,10 @@ export const Header = () => {
     },
     [handleOpenConclusion, handleOpenDischarge, handleOpenReferral]
   );
+
+  if (pathname === loginUrl) {
+    return null;
+  }
 
   return (
     <Container disableGutters={true} sx={containerStyles} maxWidth={false}>
