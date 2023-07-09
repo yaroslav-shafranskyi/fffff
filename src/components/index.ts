@@ -8,3 +8,4 @@ export * from "./Referral";
 export * from "./Conclusion";
 export * from "./CommonFormHeader";
 export * from "./Login";
+export * from './User';

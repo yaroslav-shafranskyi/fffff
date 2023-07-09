@@ -13,7 +13,12 @@ import {
   defaultPersonData,
   personsUrl,
 } from "../../constants";
-import { useGetDischarge, useCreateDischarge, useAuthorizedSubmit } from "../../api";
+import {
+  useGetDischarge,
+  useCreateDischarge,
+  useAuthorizedSubmit,
+  IDischarge,
+} from "../../api";
 
 import { containerStyles } from "../commonFormStyles";
 
@@ -80,10 +85,24 @@ export const Discharge = () => {
     trigger: frontPageTrigger,
     getValues: getFrontPageValues,
   } = frontPageMethods;
-  const { reset: backPageReset, handleSubmit: submitBackPage } =
-    backPageMethods;
+  const {
+    getValues: getBackPageValues,
+    reset: backPageReset,
+    trigger: backPageTrigger,
+  } = backPageMethods;
 
   const frontPageState = getFrontPageValues();
+  const backPageState = getBackPageValues();
+
+  const saveFormWithAuthorization = useAuthorizedSubmit(
+    saveForm as (data: Omit<IDischarge, "id">) => void,
+    [
+      {
+        ...frontPageState,
+        ...backPageState,
+      },
+    ]
+  );
 
   const handleSubmitFrontPage = useCallback(async () => {
     const result = await frontPageTrigger();
@@ -92,17 +111,12 @@ export const Discharge = () => {
     }
   }, [frontPageTrigger]);
 
-  const handleSubmitBackPage = useCallback(
-    (data: DischargeBackPageState) => {
-      const dischargeRecord = {
-        ...frontPageState,
-        ...data,
-      };
-
-      saveForm(dischargeRecord);
-    },
-    [frontPageState, saveForm]
-  );
+  const handleSubmitBackPage = useCallback(async () => {
+    const result = await backPageTrigger();
+    if (result) {
+      saveFormWithAuthorization();
+    }
+  }, [backPageTrigger, saveFormWithAuthorization]);
 
   const handleSubmit = useCallback(() => {
     if (page === 0) {
@@ -112,14 +126,8 @@ export const Discharge = () => {
     if (readonly) {
       return;
     }
-    submitBackPage(handleSubmitBackPage)();
-  }, [
-    handleSubmitBackPage,
-    handleSubmitFrontPage,
-    page,
-    readonly,
-    submitBackPage,
-  ]);
+    handleSubmitBackPage();
+  }, [handleSubmitBackPage, handleSubmitFrontPage, page, readonly]);
 
   const handleReset = useCallback(() => {
     if (page === 0) {
@@ -141,8 +149,11 @@ export const Discharge = () => {
     <Container maxWidth={false} sx={containerStyles}>
       <ControlBar
         submitButtonText={!page ? "Далі" : "Зберегти"}
+        disabledButtons={{
+          submit: readonly,
+        }}
         onClear={handleReset}
-        onSubmit={useAuthorizedSubmit(handleSubmit)}
+        onSubmit={handleSubmit}
         onBack={handleGoBack}
       />
       {page === 0 ? (

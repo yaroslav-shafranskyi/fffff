@@ -13,6 +13,7 @@ import {
   Conclusion,
   Header,
   Login,
+  User,
 } from "./components";
 import { theme } from "./theme";
 import "./App.css";
@@ -23,6 +24,7 @@ import {
   loginUrl,
   personsUrl,
   referralUrl,
+  userUrl,
 } from "./constants";
 
 const queryClient = new QueryClient({
@@ -70,6 +72,7 @@ const App = () => {
               path={`${conclusionUrl}/:personId/:formId`}
               element={<Conclusion />}
             />
+            <Route path={`${userUrl}/:userId`} element={<User />} />
           </Routes>
         </Router>
       </QueryClientProvider>

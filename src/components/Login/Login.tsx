@@ -10,6 +10,7 @@ import {
   UserType,
   useLogin,
 } from "../../api";
+import { validateUUID } from "../../helpers";
 
 import { actionsStyles, inputsWrapperStyles, wrapperStyles } from "./styles";
 
@@ -55,6 +56,11 @@ export const Login = () => {
   }, [reset]);
 
   const submit = handleSubmit((data: IAuthorizationRequest) => {
+    const isPasswordValid = validateUUID(data.password);
+    if (!isPasswordValid) {
+      setError(errorText);
+      return;
+    }
     login(data);
   });
 

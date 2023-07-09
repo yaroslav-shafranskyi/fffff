@@ -3,13 +3,18 @@ import { useCallback } from "react";
 import { useConfirmPassword } from "./useConfirmPassword";
 import { useGetPermissions } from "./useGetPermissions";
 
-export const useAuthorizedSubmit = (cb: VoidFunction) => {
+const emptyArray: [] = [];
+
+export const useAuthorizedSubmit = <T>(
+  cb: (...args: T[]) => void,
+  args?: T[]
+) => {
   const { user } = useGetPermissions();
 
   const { mutate: confirmPassword } = useConfirmPassword({
     onSuccess: (res) => {
       if (res) {
-        cb();
+        cb(...(args ?? emptyArray));
       }
       if (!res) {
         alert("Неправильний пароль!");

@@ -1,4 +1,5 @@
 export * from "./useLogin";
-export * from "./useGetPermissions";
 export * from "./useConfirmPassword";
-export * from './useAuthorizedSubmit';
+export * from "./useAuthorizedSubmit";
+export * from "./logout";
+export * from "./useGetPermissions";

@@ -11,6 +11,7 @@ export const ControlBar: FC<IControlBarProps> = (props) => {
   const {
     title,
     submitButtonText = "Зберегти",
+    disabledButtons,
     onSubmit,
     onClear,
     onBack,
@@ -37,20 +38,25 @@ export const ControlBar: FC<IControlBarProps> = (props) => {
   return (
     <Box sx={containerStyles}>
       <Box sx={titleStyles}>
-        <IconButton onClick={handleGoBack}>
+        <IconButton disabled={disabledButtons?.back} onClick={handleGoBack}>
           <BackIcon />
         </IconButton>
         {title !== undefined && <Typography variant="h4">{title}</Typography>}
       </Box>
       <Box sx={actionsWrapperStyles}>
         <Button
+          disabled={disabledButtons?.clear}
           sx={clearButtonStyles}
           variant="contained"
           onClick={handleClear}
         >
           Очистити
         </Button>
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button
+          disabled={disabledButtons?.submit}
+          variant="contained"
+          onClick={handleSubmit}
+        >
           {submitButtonText}
         </Button>
       </Box>

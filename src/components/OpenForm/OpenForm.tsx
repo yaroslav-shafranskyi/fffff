@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-import { useAuthorizedSubmit, useGetPerson, useQueryPersons } from "../../api";
+import { useGetPerson, useQueryPersons } from "../../api";
 import { getInitialQuery } from "../../constants";
 
 import {
@@ -46,7 +46,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
           acc: Record<string, string>,
           { fullName, id, personalId, rank, militaryBase }
         ) => {
-          acc[id] = `${fullName}`;
+          acc[id] = fullName;
           if (personalId) {
             acc[id] += `, ID: ${personalId}`;
           }
@@ -133,7 +133,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
           variant="contained"
           size="large"
           sx={openButtonStyles}
-          onClick={useAuthorizedSubmit(handleGoToUpdateMode)}
+          onClick={handleGoToUpdateMode}
         >
           Переглянути
         </Button>
@@ -141,7 +141,7 @@ export const OpenFormDialog: FC<IOpenFormDialog> = (props) => {
           variant="contained"
           sx={dialogButtonStyles}
           size="large"
-          onClick={useAuthorizedSubmit(handleGoToCreateMode)}
+          onClick={handleGoToCreateMode}
         >
           Створити
         </Button>

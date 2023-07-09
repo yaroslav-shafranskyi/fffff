@@ -4,14 +4,10 @@ import {
   Box,
   Typography,
   Link,
-  IconButton,
   Menu,
   MenuItem,
 } from "@mui/material";
-import {
-  AccountCircleOutlined as AvatarIcon,
-  ArrowRight as OpenMenuIcon,
-} from "@mui/icons-material";
+import { ArrowRight as OpenMenuIcon } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -24,18 +20,21 @@ import { OpenPersonDialog } from "../PersonPage";
 import { OpenDischargeForm } from "../Discharge";
 import { OpenReferralForm } from "../Referral";
 import { OpenConclusionForm } from "../Conclusion";
+import { UserIcon } from "../User";
 
 import {
   containerStyles,
   getMenuIconStyles,
   linkStyles,
   linksWrapperStyles,
+  profileStyles,
 } from "./styles";
 
 const additionalOptions = [Forms.CONCLUSION, Forms.DISCHARGE, Forms.REFERRAL];
 
 export const Header = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [formsMenuAnchorEl, setFormsMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
 
   const navigate = useNavigate();
 
@@ -62,20 +61,21 @@ export const Header = () => {
   const [ConclusionDialog, handleOpenConclusion] =
     useOpenFormDialog(OpenConclusionForm);
 
-  const isMenuOpen = Boolean(anchorEl);
-
   const goToPersonsTable = () => {
     navigate(personsUrl);
   };
 
-  const handleOpenMenu = (event: MouseEvent<HTMLAnchorElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleCloseMenu = () => {
-    setAnchorEl(null);
-  };
+  const goHome = () => {
+    navigate('/');
+  }
 
-  const handleMenuOptionSelect = useCallback(
+  const handleOpenFormsMenu = (event: MouseEvent<HTMLAnchorElement>) => {
+    setFormsMenuAnchorEl(event.currentTarget);
+  };
+  const handleCloseFormsMenu = () => {
+    setFormsMenuAnchorEl(null);
+  };
+  const handleFormsMenuOptionSelect = useCallback(
     (option: Forms) => () => {
       if (option === Forms.DISCHARGE) {
         handleOpenDischarge();
@@ -86,10 +86,11 @@ export const Header = () => {
       if (option === Forms.CONCLUSION) {
         handleOpenConclusion();
       }
-      handleCloseMenu();
+      handleCloseFormsMenu();
     },
     [handleOpenConclusion, handleOpenDischarge, handleOpenReferral]
   );
+  const isFormsMenuOpen = Boolean(formsMenuAnchorEl);
 
   if (pathname === loginUrl) {
     return null;
@@ -97,7 +98,7 @@ export const Header = () => {
 
   return (
     <Container disableGutters={true} sx={containerStyles} maxWidth={false}>
-      <Box>
+      <Box sx={{ cursor: 'pointer' }} onClick={goHome}>
         <Typography variant="h5">Logo</Typography>
       </Box>
       <Box sx={linksWrapperStyles}>
@@ -129,18 +130,26 @@ export const Header = () => {
           color="textPrimary"
           component="button"
           sx={linkStyles}
-          onClick={handleOpenMenu}
+          onClick={handleOpenFormsMenu}
         >
           Додаткові документи
-          <OpenMenuIcon sx={getMenuIconStyles(isMenuOpen)} />
+          <OpenMenuIcon sx={getMenuIconStyles(isFormsMenuOpen)} />
         </Link>
       </Box>
-      <IconButton sx={{ justifySelf: "end" }}>
-        <AvatarIcon />
-      </IconButton>
-      <Menu open={isMenuOpen} anchorEl={anchorEl} onClose={handleCloseMenu}>
+      <Box sx={profileStyles}>
+        <UserIcon />
+      </Box>
+      <Menu
+        open={isFormsMenuOpen}
+        anchorEl={formsMenuAnchorEl}
+        onClose={handleCloseFormsMenu}
+      >
         {additionalOptions.map((op) => (
-          <MenuItem key={op} value={op} onClick={handleMenuOptionSelect(op)}>
+          <MenuItem
+            key={op}
+            value={op}
+            onClick={handleFormsMenuOptionSelect(op)}
+          >
             {op}
           </MenuItem>
         ))}

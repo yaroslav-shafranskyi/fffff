@@ -27,3 +27,5 @@ export * from "./ICommonFormHeaderFields";
 export * from "./QueryPersonsData";
 export * from "./Permissions";
 export * from "./login";
+export * from './IUser';
+export * from './user';

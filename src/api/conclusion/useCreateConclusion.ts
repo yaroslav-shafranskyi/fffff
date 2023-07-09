@@ -6,10 +6,12 @@ import { serviceUrl, createUrl, conclusionUrl } from "../../constants";
 import { http } from "../../helpers";
 
 export const useCreateConclusion = (
-  options?: UseMutationOptions<unknown, unknown, Omit<IConclusion, "id">>
+  options?: UseMutationOptions<unknown, unknown, IConclusion>
 ) =>
   useMutation(
-    (conclusion) =>
+    // id will be generated on backend
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ({ id, ...conclusion }) =>
       http.post(`${serviceUrl}${conclusionUrl}${createUrl}`, conclusion),
     options
   );

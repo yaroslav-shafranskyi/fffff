@@ -11,3 +11,5 @@ export const referralUrl = '/referral';
 export const conclusionUrl = '/conclusion';
 
 export const loginUrl = '/login';
+
+export  const userUrl = '/user';

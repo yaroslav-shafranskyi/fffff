@@ -75,10 +75,15 @@ export const Conclusion = () => {
     getValues,
     setValue,
     reset,
-    handleSubmit,
+    trigger,
     clearErrors,
   } = methods;
   const errors = formState.errors;
+
+  const saveFormWithAuthorization = useAuthorizedSubmit(
+    saveForm as (...args: IConclusion[]) => void,
+    [getValues()]
+  );
 
   const handleInputChange = useCallback(
     (field: FieldPath<IConclusion>) =>
@@ -103,23 +108,23 @@ export const Conclusion = () => {
     [clearErrors, readonly, setValue]
   );
 
-  const submitForm = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    ({ id, ...data }: IConclusion) => {
-      if (!readonly) {
-        saveForm(data);
-      }
-    },
-    [readonly, saveForm]
-  );
+  const submitForm = useCallback(async () => {
+    const result = await trigger();
+    if (result) {
+      saveFormWithAuthorization();
+    }
+  }, [saveFormWithAuthorization, trigger]);
 
   const dateError = errors?.date?.message;
 
   return (
     <Container maxWidth={false} sx={containerStyles}>
       <ControlBar
+        disabledButtons={{
+          submit: readonly,
+        }}
         onClear={reset}
-        onSubmit={useAuthorizedSubmit(handleSubmit(submitForm))}
+        onSubmit={submitForm}
       />
       <Box sx={formWrapperStyles}>
         <MinistryOrder />
