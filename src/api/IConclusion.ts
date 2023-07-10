@@ -8,6 +8,7 @@ export interface IConclusion extends ICommonFormHeaderFields {
     person: ConclusionPersonDataType;
     sender: string;
     doctor: string;
+    doctorName?: string;
     labResults: string;
     researchResults: string;
     diagnosis: string;
@@ -15,4 +16,5 @@ export interface IConclusion extends ICommonFormHeaderFields {
     date: number;
     signature: string;
     headOfTheClinic: string;
+    doctorId: number;
 }

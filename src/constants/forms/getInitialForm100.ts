@@ -36,5 +36,6 @@ export const getInitialForm100 = (): IForm100 => {
     result: "",
     firstAidInfo: "",
     sanitaryTreatment: "" as SanitaryTreatmentStatus,
+    doctorId: -1,
   };
 };

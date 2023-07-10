@@ -18,7 +18,10 @@ import {
   Input,
   InputWithTextIndent,
 } from "../../shared";
-import { convertNullOrNumberToDate } from "../../helpers";
+import {
+  convertNullOrNumberToDate,
+  convertUrlIdToResponseId,
+} from "../../helpers";
 
 import { FormHeader, MinistryOrder } from "../CommonFormHeader";
 import {
@@ -46,12 +49,12 @@ export const Conclusion = () => {
 
   const navigate = useNavigate();
 
-  const [personId, formId] = useMemo(
+  const urlIds: string[] = useMemo(
     () =>
       (pathname.split(`${conclusionUrl}/`)[1]?.split("/") ?? []).map(decodeURI),
     [pathname]
   );
-
+  const [personId, formId] = urlIds.map(convertUrlIdToResponseId);
   const { conclusion: initialForm } = useGetConclusion(personId, formId);
 
   const queryClient = useQueryClient();

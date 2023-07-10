@@ -7,7 +7,7 @@ import {
   conclusionUrl,
   defaultConclusion,
 } from "../../constants";
-import { IConclusion } from "../../api";
+import { IConclusion, useGetUser } from "../../api";
 import { http } from "../../helpers";
 
 export const useGetConclusion = (
@@ -15,15 +15,18 @@ export const useGetConclusion = (
   id: string,
   options?: UseQueryOptions<IConclusion>
 ) => {
+  const { id: doctorId } = useGetUser();
+  
   const queryKey: QueryKey = useMemo(
-    () => [conclusionUrl, personId, id],
-    [personId, id]
+    () => [conclusionUrl, personId, id, doctorId],
+    [personId, id, doctorId]
   );
 
   const queryFunction = () =>
     http.post(`${serviceUrl}${conclusionUrl}${getUrl}`, {
       id,
       personId,
+      doctorId
     }) as unknown as IConclusion;
 
   const res = useQuery<IConclusion>(queryKey, queryFunction, options);

@@ -18,4 +18,5 @@ export const defaultReferralData: IReferral = {
     medicalCommander: defaultPositionWithName,
     id: -1,
     personId: -1,
+    doctorId: -1,
 };

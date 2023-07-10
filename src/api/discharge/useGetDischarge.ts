@@ -7,7 +7,7 @@ import {
   dischargeUrl,
   defaultDischargeData,
 } from "../../constants";
-import { IDischarge } from "../../api";
+import { IDischarge, useGetUser } from "../../api";
 import { http } from "../../helpers";
 
 export const useGetDischarge = (
@@ -15,15 +15,18 @@ export const useGetDischarge = (
   id: string,
   options?: UseQueryOptions<IDischarge>
 ) => {
+  const { id: doctorId } = useGetUser();
+
   const queryKey: QueryKey = useMemo(
-    () => ["forms100", personId, id],
-    [personId, id]
+    () => ["discharge", personId, id, doctorId],
+    [personId, id, doctorId]
   );
 
   const queryFunction = () =>
     http.post(`${serviceUrl}${dischargeUrl}${getUrl}`, {
       id,
       personId,
+      doctorId,
     }) as unknown as IDischarge;
 
   const res = useQuery<IDischarge>(queryKey, queryFunction, {

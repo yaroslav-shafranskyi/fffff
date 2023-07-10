@@ -23,4 +23,5 @@ export const defaultConclusion: IConclusion = {
   date: Date.now(),
   signature: "",
   headOfTheClinic: "",
+  doctorId: -1,
 };

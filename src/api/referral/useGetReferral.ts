@@ -7,7 +7,7 @@ import {
   referralUrl,
   defaultReferralData,
 } from "../../constants";
-import { IReferral } from "../../api";
+import { IReferral, useGetUser } from "../../api";
 import { http } from "../../helpers";
 
 export const useGetReferral = (
@@ -15,15 +15,18 @@ export const useGetReferral = (
   id: string,
   options?: UseQueryOptions<IReferral>
 ) => {
+  const { id: doctorId } = useGetUser();
+
   const queryKey: QueryKey = useMemo(
-    () => [referralUrl, personId, id],
-    [personId, id]
+    () => [referralUrl, personId, id, doctorId],
+    [personId, id, doctorId]
   );
 
   const queryFunction = () =>
     http.post(`${serviceUrl}${referralUrl}${getUrl}`, {
       id,
       personId,
+      doctorId
     }) as unknown as IReferral;
 
   const res = useQuery<IReferral>(queryKey, queryFunction, options);

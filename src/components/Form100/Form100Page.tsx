@@ -28,7 +28,7 @@ export const Form100Page: FC<IForm100PageProps> = ({
     resolver: yupResolver(form100Schema),
   });
 
-  const { reset, trigger, handleSubmit: handleSubmitForm100 } = methods;
+  const { reset, trigger, getValues } = methods;
 
   const handleGoBack = useCallback(() => {
     if (!page) {
@@ -45,20 +45,22 @@ export const Form100Page: FC<IForm100PageProps> = ({
     }
   }, [trigger]);
 
-  const handleSubmit = handleSubmitForm100((form) => {
+  const submitWithAuthorization = useAuthorizedSubmit(onSubmit, [getValues()]);
+
+  const handleSubmit = () => {
     if (!page) {
       navigateToBack();
       return;
     }
-    onSubmit(form);
-  });
+    submitWithAuthorization();
+  };
 
   return (
     <Card sx={containerStyles}>
       <ControlBar
         submitButtonText={!page ? "Далі" : undefined}
         onClear={reset}
-        onSubmit={useAuthorizedSubmit(handleSubmit)}
+        onSubmit={handleSubmit}
         onBack={handleGoBack}
       />
       {!page ? (

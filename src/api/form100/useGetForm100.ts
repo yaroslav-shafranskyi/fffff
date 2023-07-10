@@ -7,7 +7,7 @@ import {
   getInitialForm100,
   getUrl,
 } from "../../constants";
-import { IForm100 } from "../../api";
+import { IForm100, useGetUser } from "../../api";
 import { http } from "../../helpers";
 
 export const useGetForm100 = (
@@ -15,15 +15,18 @@ export const useGetForm100 = (
   id: string,
   options?: UseQueryOptions<IForm100>
 ) => {
+  const { id: doctorId } = useGetUser();
+
   const queryKey: QueryKey = useMemo(
-    () => [form100Url, personId, id],
-    [personId, id]
+    () => [form100Url, personId, id, doctorId],
+    [personId, id, doctorId]
   );
 
   const queryFunction = () =>
     http.post(`${serviceUrl}${form100Url}${getUrl}`, {
       id,
       personId,
+      doctorId,
     }) as unknown as IForm100;
 
   const res = useQuery<IForm100>(queryKey, queryFunction, options);

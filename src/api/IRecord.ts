@@ -23,6 +23,7 @@ export interface IBriefRecord {
   id: number;
   type: Forms;
   formId: number;
+  doctorId: number;
 }
 
 export interface ILastRecords {
