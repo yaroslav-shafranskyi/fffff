@@ -38,16 +38,13 @@ import { useNavigate } from "react-router-dom";
 
 import { ArmyRank, Forms, Gender, IBriefRecord, IPerson } from "../../api";
 import { Select, Input, ControlBar, DatePicker } from "../../shared";
-import {
-  conclusionUrl,
-  dischargeUrl,
-  form100Url,
-  referralUrl,
-  createUrl,
-  defaultPersonData,
-} from "../../constants";
+import { createUrl, defaultPersonData } from "../../constants";
 import { REQUIRED_FIELD_MESSAGE, personPageSchema } from "../../schemas";
-import { convertNullOrNumberToDate, formatDate } from "../../helpers";
+import {
+  convertNullOrNumberToDate,
+  formatDate,
+  getFormUrlByType,
+} from "../../helpers";
 
 import {
   cardStyles,
@@ -68,21 +65,6 @@ import {
 import { IPersonPageProps } from "./types";
 
 const options = Object.values(Forms);
-
-const getFormURL = (option: Forms) => {
-  if (option === Forms.FORM_100) {
-    return form100Url;
-  }
-  if (option === Forms.DISCHARGE) {
-    return dischargeUrl;
-  }
-  if (option === Forms.REFERRAL) {
-    return referralUrl;
-  }
-  if (option === Forms.CONCLUSION) {
-    return conclusionUrl;
-  }
-};
 
 export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
   const navigate = useNavigate();
@@ -147,7 +129,7 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
 
   const handleMenuOptionSelect = useCallback(
     (form: Forms) => () => {
-      const formUrl = getFormURL(form);
+      const formUrl = getFormUrlByType(form);
       if (!formUrl) {
         return;
       }
@@ -159,7 +141,7 @@ export const PersonPage: FC<IPersonPageProps> = ({ person, onSubmit }) => {
   const goToForm = useCallback(
     ({ type, formId }: IBriefRecord) =>
       () => {
-        const formUrl = getFormURL(type);
+        const formUrl = getFormUrlByType(type);
         if (!formUrl) {
           return;
         }

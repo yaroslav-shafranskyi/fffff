@@ -11,7 +11,6 @@ import {
   defaultDischargeBackPageState,
   defaultDischargeFrontPageState,
   defaultPersonData,
-  personsUrl,
 } from "../../constants";
 import {
   useGetDischarge,
@@ -19,6 +18,7 @@ import {
   useAuthorizedSubmit,
   IDischarge,
 } from "../../api";
+import { removeQueriesAfterFormSaving } from "../../helpers";
 
 import { containerStyles } from "../commonFormStyles";
 
@@ -53,7 +53,7 @@ export const Discharge = () => {
   const { mutate: saveForm } = useCreateDischarge({
     onSuccess: () => {
       navigate(-1);
-      queryClient.removeQueries([personsUrl]);
+      removeQueriesAfterFormSaving(queryClient);
     },
   });
 

@@ -114,7 +114,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
           </TableHead>
           <TableBody>
             {!total && (
-              <TableRow>
+              <TableRow sx={{ position: "relative" }}>
                 <TableCell sx={placeholderStyles}>
                   <Typography variant="h5" color="text.secondary">
                     Нікого не знайдено

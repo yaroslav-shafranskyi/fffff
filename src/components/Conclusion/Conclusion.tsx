@@ -5,7 +5,7 @@ import { FieldPath, FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { conclusionUrl, defaultConclusion, personsUrl } from "../../constants";
+import { conclusionUrl, defaultConclusion } from "../../constants";
 import {
   IConclusion,
   useGetConclusion,
@@ -21,6 +21,7 @@ import {
 import {
   convertNullOrNumberToDate,
   convertUrlIdToResponseId,
+  removeQueriesAfterFormSaving,
 } from "../../helpers";
 
 import { FormHeader, MinistryOrder } from "../CommonFormHeader";
@@ -61,7 +62,7 @@ export const Conclusion = () => {
 
   const { mutate: saveForm } = useCreateConclusion({
     onSuccess: () => {
-      queryClient.removeQueries([personsUrl]);
+      removeQueriesAfterFormSaving(queryClient);
       navigate(-1);
     },
   });

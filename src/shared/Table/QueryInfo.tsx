@@ -14,7 +14,7 @@ import {
 export const QueryInfo = <T extends object>(props: IQueryInfoProps<T>) => {
   const { query, queryData, onChange } = props;
   const { sortBy, filterBy } = query;
-  const { sorts: sortsData, filters: filtersData, globalFilter } = queryData;
+  const { sorts: sortsData, filters: filtersData } = queryData;
 
   const removeSortBy = useCallback(() => {
     onChange("sortBy")(undefined);
@@ -35,11 +35,6 @@ export const QueryInfo = <T extends object>(props: IQueryInfoProps<T>) => {
       const [sortByKey, sortByValue] = Object.entries(sortBy)[0];
       return sortsData[sortByKey][sortByValue as SortOrder];
     }, [sortBy, sortsData]);
-
-  const hasGlobalFilter = useMemo(
-    () => globalFilter !== undefined && !!filterBy.Any,
-    [globalFilter, filterBy]
-  );
 
   const filtersInfo = useMemo(
     () =>
@@ -103,7 +98,7 @@ export const QueryInfo = <T extends object>(props: IQueryInfoProps<T>) => {
           onDelete={removeSortBy}
         />
       )}
-      {hasGlobalFilter && (
+      {!!filterBy.Any && (
         <Chip
           label={`Загальний пошук: ${filterBy.Any}`}
           variant="outlined"

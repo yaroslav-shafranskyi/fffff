@@ -45,21 +45,23 @@ export const UserIcon = () => {
 
   const [OpenUserComponent, handleOpenUser] = useOpenFormDialog(ManageUsers);
 
-  const goToUser = () => {
-    if (id !== undefined) {
-      navigate(`${userUrl}/${id}`);
-    }
-  };
-
-  const openUser = (mode: ManageUserMode) => () => {
-    handleOpenUser({ mode });
-  };
-
   const handleOpenUserMenu = (event: MouseEvent<HTMLElement>) => {
     setUserMenuAnchorEl(event.currentTarget);
   };
   const handleCloseUserMenu = () => {
     setUserMenuAnchorEl(null);
+  };
+
+  const goToUser = () => {
+    if (id !== undefined) {
+      navigate(`${userUrl}/${id}`);
+      handleCloseUserMenu();
+    }
+  };
+
+  const openUser = (mode: ManageUserMode) => () => {
+    handleOpenUser({ mode });
+    handleCloseUserMenu();
   };
 
   return (

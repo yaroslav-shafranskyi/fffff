@@ -1,30 +1,14 @@
 import {
-  ChangeEvent,
-  useCallback,
-  useState,
-  MouseEvent,
-  Fragment,
-  FC,
-  useMemo,
-} from "react";
-import {
-  Card,
   Typography,
   Box,
   InputLabel,
-  Button,
   Container,
   TextField,
   FormControl,
   MenuItem,
   Select,
 } from "@mui/material";
-import {
-  ArrowRight as OpenMenuIcon,
-  ArrowForwardIos as ArrowForwardIosIcon,
-} from "@mui/icons-material";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
 import {
   ArmyRank,
@@ -37,10 +21,9 @@ import { ControlBar } from "../../shared";
 import { defaultUserData } from "../../constants";
 
 import { containerStyles, infoRowStyles, infoWrapperStyles } from "./styles";
+import { RecordsTable } from "./RecordsTable";
 
 export const UserPage = () => {
-  const navigate = useNavigate();
-
   const user = useGetUser();
 
   const { mutate: updateUser } = useUpdateUser();
@@ -65,7 +48,7 @@ export const UserPage = () => {
           <Box sx={infoRowStyles}>
             <TextField label="ПІБ" {...register("fullName")} />
             <FormControl>
-              <InputLabel sx={{ bgcolor: "background.paper", px: .5 }}>
+              <InputLabel sx={{ bgcolor: "background.paper", px: 0.5 }}>
                 Звання
               </InputLabel>
               <Select {...register("rank")} defaultValue="">
@@ -92,6 +75,7 @@ export const UserPage = () => {
             <TextField label="Підпис" {...register("signature")} />
           </Box>
         </Box>
+        <RecordsTable />
       </Container>
     </>
   );

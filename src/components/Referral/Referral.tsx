@@ -11,7 +11,7 @@ import {
   useCreateReferral,
   useAuthorizedSubmit,
 } from "../../api";
-import { defaultReferralData, personsUrl, referralUrl } from "../../constants";
+import { defaultReferralData, referralUrl } from "../../constants";
 import {
   ControlBar,
   Input,
@@ -19,7 +19,10 @@ import {
   InputWithTextIndent,
 } from "../../shared";
 import { Trident } from "../../assets";
-import { convertNullOrNumberToDate } from "../../helpers";
+import {
+  convertNullOrNumberToDate,
+  removeQueriesAfterFormSaving,
+} from "../../helpers";
 
 import { referralSchema } from "./schemas";
 import {
@@ -58,7 +61,7 @@ export const Referral = () => {
   const { mutate: saveForm } = useCreateReferral({
     onSuccess: () => {
       navigate(-1);
-      queryClient.removeQueries([personsUrl]);
+      removeQueriesAfterFormSaving(queryClient);
     },
   });
 

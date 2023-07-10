@@ -3,6 +3,7 @@ import { Forms } from "./Forms";
 import { IDischarge } from "./IDischarge";
 import { IForm100 } from "./IForm100";
 import { IReferral } from "./IReferral";
+import { IPersonBrief } from "./IPerson";
 
 export enum RecordType {
   INJURY = "injury",
@@ -24,6 +25,7 @@ export interface IBriefRecord {
   type: Forms;
   formId: number;
   doctorId: number;
+  personId: number;
 }
 
 export interface ILastRecords {
@@ -33,3 +35,10 @@ export interface ILastRecords {
   referral?: number;
   conclusion?: number;
 }
+
+export type IUserBriefRecord = IBriefRecord & IPersonBrief;
+
+export type QueryUserRecordsData = {
+  entities: IUserBriefRecord[];
+  total: number;
+};

@@ -8,7 +8,8 @@ import {
   useGetForm100,
   useUpdateForm100,
 } from "../../api";
-import { form100Url, personsUrl } from "../../constants";
+import { form100Url } from "../../constants";
+import { removeQueriesAfterFormSaving } from "../../helpers";
 
 import { Form100Page } from "./Form100Page";
 
@@ -31,7 +32,7 @@ export const Form100 = () => {
 
   const handleSuccess = useCallback(() => {
     navigate(-1);
-    queryClient.removeQueries([personsUrl]);
+    removeQueriesAfterFormSaving(queryClient);
   }, [navigate, queryClient]);
 
   const { mutate: updateForm } = useUpdateForm100({
@@ -62,8 +63,8 @@ export const Form100 = () => {
       const { tokenNumber } = form.person;
       const tokenNumberWithoutSpaces = tokenNumber.split(" ").join("");
       const birthDate = new Date(tokenNumberWithoutSpaces);
-      const timestamp = birthDate.getTime()
-      const isValidDate = !Number.isNaN(timestamp);
+      const timestamp = birthDate.getTime();
+      const isValidDate = !Number.isNaN(birthDate);
       saveForm({
         ...form,
         person: {
