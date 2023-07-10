@@ -87,7 +87,7 @@ export interface IToolbarProps<T extends object> {
   columns: IColumn<T>[];
   queryData?: IQueryData;
   goBack?: () => void;
-  onChange: (field: keyof IQuery<T>) => (value: unknown) => void;
+  onChange: (query: IQuery<T>) => void;
 }
 
 export interface IPaginationProps {
@@ -99,7 +99,9 @@ export interface IPaginationProps {
 export interface IColumnsFiltersProps<T extends object> {
   queryData: IQueryData;
   query: IQuery<T>;
-  onChange: (field: keyof IQuery<T>) => (value: unknown) => void;
+  onChange: (query: IQuery<T>) => void;
 }
 
-export type IQueryInfoProps<T extends object> = IColumnsFiltersProps<T>;
+export interface IQueryInfoProps<T extends object> extends Omit<IColumnsFiltersProps<T>, 'onChange'> {
+  onChange: (field: keyof IQuery<T>) => (value: unknown) => void;
+}

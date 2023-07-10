@@ -82,6 +82,13 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
     [onQueryChange]
   );
 
+  const handleSubmitQuery = useCallback(
+    (newQuery: IQuery<TData>) => {
+      onQueryChange?.(newQuery);
+    },
+    [onQueryChange]
+  );
+
   return (
     <>
       <Toolbar
@@ -90,7 +97,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
         columns={propsColumns}
         queryData={queryData}
         goBack={goBack}
-        onChange={handleQueryChange}
+        onChange={handleSubmitQuery}
       />
       <TableContainer component={Paper}>
         <MuiTable sx={tableStyles} {...restProps}>

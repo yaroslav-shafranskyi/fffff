@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect, useCallback } from "react";
 import {
   Button,
   Typography,
@@ -12,8 +12,12 @@ import {
   Close as CloseIcon,
 } from "@mui/icons-material";
 
+import { IQuery } from "../../interfaces";
+import { clearButtonStyles, getInitialQuery } from "../../constants";
+
 import { IColumnsFiltersProps } from "./types";
 import {
+  columnsFilterActionsWrapperStyles,
   columnsFiltersButtonStyles,
   columnsFiltersHeaderStyles,
   filterFieldWrapperStyles,
@@ -27,12 +31,24 @@ import { Sort } from "./Sort";
 export const ColumnsFilter = <T extends object>(
   props: IColumnsFiltersProps<T>
 ) => {
-  const { queryData = {}, query, onChange } = props;
-
-  const { filterBy, sortBy } = query;
-  const { filters, sorts } = queryData;
+  const { queryData = {}, query: propsQuery, onChange } = props;
 
   const [open, setOpen] = useState<boolean>(false);
+  const [query, setQuery] = useState<IQuery<T>>(propsQuery);
+
+  const { filterBy, sortBy } = query ?? {};
+  const { filters, sorts } = queryData;
+
+  useEffect(() => {
+    setQuery(propsQuery);
+  }, [propsQuery]);
+
+  const updateQuery = useCallback(
+    (key: keyof IQuery<T>) => (value: unknown) => {
+      setQuery((prevQuery) => ({ ...prevQuery, [key]: value }));
+    },
+    []
+  );
 
   const handleOpenMenu = () => {
     setOpen(true);
@@ -40,6 +56,15 @@ export const ColumnsFilter = <T extends object>(
   const handleCloseMenu = () => {
     setOpen(false);
   };
+
+  const handleClear = () => {
+    setQuery(getInitialQuery());
+  };
+
+  const handleSubmit = useCallback(() => {
+    onChange(query);
+    handleCloseMenu();
+  }, [query, onChange]);
 
   return (
     <>
@@ -88,14 +113,14 @@ export const ColumnsFilter = <T extends object>(
                       <Filter
                         fieldFilterData={fieldData}
                         filterBy={filterBy}
-                        onChange={onChange("filterBy")}
+                        onChange={updateQuery("filterBy")}
                       />
                       {sortData !== undefined && (
                         <Sort
                           field={key as keyof T}
                           fieldSortData={sortData}
                           sortBy={sortBy}
-                          onChange={onChange("sortBy")}
+                          onChange={updateQuery("sortBy")}
                         />
                       )}
                     </Box>
@@ -107,6 +132,18 @@ export const ColumnsFilter = <T extends object>(
               )}
             </Fragment>
           ))}
+        <Box sx={columnsFilterActionsWrapperStyles}>
+          <Button
+            sx={clearButtonStyles}
+            variant="contained"
+            onClick={handleClear}
+          >
+            ОЧИСТИТИ
+          </Button>
+          <Button variant="contained" color="inherit" onClick={handleSubmit}>
+            ЗАСТОСУВАТИ
+          </Button>
+        </Box>
       </Popover>
     </>
   );
