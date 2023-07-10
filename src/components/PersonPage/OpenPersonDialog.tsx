@@ -2,12 +2,12 @@ import { useCallback } from "react";
 
 import { UseOpenFormComponentType } from "../../interfaces";
 import { personsUrl } from "../../constants";
-import { IPerson, useGetPermissions } from "../../api";
+import { IPerson, useGetUser } from "../../api";
 
 import { OpenFormDialog } from "../OpenForm";
 
 export const OpenPersonDialog: UseOpenFormComponentType = ({ onClose }) => {
-  const { militaryBase } = useGetPermissions();
+  const { militaryBase } = useGetUser();
 
   const goToUpdateMode = useCallback(
     (person?: IPerson) => {

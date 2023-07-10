@@ -17,12 +17,19 @@ export interface IPerson {
   phoneNumber?: string;
   address?: IAddress;
   profession?: string;
+  subdivision?: string;
 }
 
 export interface IPersonBrief
   extends Omit<
     IPerson,
-    "records" | "lastRecords" | "address" | "profession" | "phoneNumber" | "tokenNumber"
+    | "records"
+    | "lastRecords"
+    | "address"
+    | "profession"
+    | "phoneNumber"
+    | "tokenNumber"
+    | "subdivision"
   > {
   updatedAt?: number;
   lastRecordDiagnosis?: string;

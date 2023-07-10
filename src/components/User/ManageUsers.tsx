@@ -17,6 +17,8 @@ import {
   Select,
   MenuItem,
   SelectChangeEvent,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 
 import {
@@ -27,6 +29,7 @@ import {
   useAuthorizedSubmit,
   CreateUserPayload,
   useDeleteUser,
+  IUserBrief,
 } from "../../api";
 
 import {
@@ -68,7 +71,7 @@ export const ManageUsers: OpenUserType = ({ mode, onClose }) => {
     if (userId === undefined) {
       return;
     }
-    updateUser({ id: +userId, role });
+    updateUser({ id: +userId, role } as IUserBrief);
   }, [role, updateUser, userId]);
   const updateUserWithAuthorization = useAuthorizedSubmit(handleUpdateUser);
 
@@ -148,7 +151,9 @@ export const ManageUsers: OpenUserType = ({ mode, onClose }) => {
     <Dialog open={true} fullWidth={true} maxWidth="lg" onClose={onClose}>
       <DialogContent sx={dialogContentStyles}>
         <Typography variant="h4" sx={{ textAlign: "center" }}>
-          Виберіть користувача
+          {mode === ManageUserMode.CREATE
+            ? "Введіть дані нового користувача"
+            : "Виберіть користувача"}
         </Typography>
         <Box sx={dialogInputsWrapperStyles}>
           {mode !== ManageUserMode.CREATE ? (
@@ -157,7 +162,7 @@ export const ManageUsers: OpenUserType = ({ mode, onClose }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder="Почніть вводити прізвище"
+                  placeholder="Почніть вводити логін"
                   onChange={handleInputChange}
                 />
               )}
@@ -166,19 +171,27 @@ export const ManageUsers: OpenUserType = ({ mode, onClose }) => {
               onChange={handleUserChange}
             />
           ) : (
-            <TextField value={userName} onChange={handleInputChange} />
+            <TextField
+              label="Логін"
+              value={userName}
+              onChange={handleInputChange}
+            />
           )}
-          <Select
-            value={role}
-            disabled={mode === ManageUserMode.REMOVE}
-            onChange={handleRoleChange}
-          >
-            {Object.values(UserType).map((type) => (
-              <MenuItem value={type} key={type}>
-                {type}
-              </MenuItem>
-            ))}
-          </Select>
+          <FormControl>
+            <InputLabel>Рівень доступу</InputLabel>
+            <Select
+              value={role}
+              disabled={mode === ManageUserMode.REMOVE}
+              label="Рівень доступу"
+              onChange={handleRoleChange}
+            >
+              {Object.values(UserType).map((type) => (
+                <MenuItem value={type} key={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
       </DialogContent>
       <DialogActions sx={dialogActionsStyles}>

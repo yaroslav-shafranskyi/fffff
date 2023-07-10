@@ -3,7 +3,7 @@ import { Container } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RowData } from "@tanstack/react-table";
 
-import { IPersonBrief, useGetPermissions, useQueryPersons } from "../../api";
+import { IPersonBrief, UserType, useGetUser, useQueryPersons } from "../../api";
 import { Table } from "../../shared";
 import { getInitialQuery } from "../../constants";
 import { IQuery } from "../../interfaces";
@@ -14,7 +14,7 @@ import { columns, queryData } from "./constants";
 export const PersonsTable: FC = () => {
   const [query, setQuery] = useState<IQuery<IPersonBrief>>(getInitialQuery());
 
-  const { militaryBase } = useGetPermissions();
+  const { militaryBase, role } = useGetUser();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -22,13 +22,13 @@ export const PersonsTable: FC = () => {
   const { persons, total } = useQueryPersons(query);
 
   useEffect(() => {
-    if (militaryBase) {
+    if (role !== UserType.SUPER_ADMIN && militaryBase) {
       setQuery((prevQuery) => ({
         ...prevQuery,
         filterBy: { ...prevQuery.filterBy, militaryBase },
       }));
     }
-  }, [militaryBase]);
+  }, [militaryBase, role]);
 
   const goBack = () => {
     navigate("/");

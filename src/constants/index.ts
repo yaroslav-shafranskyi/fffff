@@ -9,3 +9,4 @@ export * from './paperSizes';
 export * from './forms';
 export * from './styles';
 export * from './http';
+export * from './user';

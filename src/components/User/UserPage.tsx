@@ -1,0 +1,98 @@
+import {
+  ChangeEvent,
+  useCallback,
+  useState,
+  MouseEvent,
+  Fragment,
+  FC,
+  useMemo,
+} from "react";
+import {
+  Card,
+  Typography,
+  Box,
+  InputLabel,
+  Button,
+  Container,
+  TextField,
+  FormControl,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import {
+  ArrowRight as OpenMenuIcon,
+  ArrowForwardIos as ArrowForwardIosIcon,
+} from "@mui/icons-material";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+
+import {
+  ArmyRank,
+  IUserBrief,
+  useAuthorizedSubmit,
+  useGetUser,
+  useUpdateUser,
+} from "../../api";
+import { ControlBar } from "../../shared";
+import { defaultUserData } from "../../constants";
+
+import { containerStyles, infoRowStyles, infoWrapperStyles } from "./styles";
+
+export const UserPage = () => {
+  const navigate = useNavigate();
+
+  const user = useGetUser();
+
+  const { mutate: updateUser } = useUpdateUser();
+
+  const { register, handleSubmit, reset } = useForm<IUserBrief>({
+    defaultValues: defaultUserData,
+    values: user,
+  });
+
+  return (
+    <>
+      <Container maxWidth={false} sx={containerStyles}>
+        <ControlBar
+          title="Налаштування"
+          onClear={reset}
+          onSubmit={useAuthorizedSubmit(
+            handleSubmit(updateUser as (nUser: IUserBrief) => void)
+          )}
+        />
+        <Typography variant="h5">Особиста інформація</Typography>
+        <Box sx={infoWrapperStyles}>
+          <Box sx={infoRowStyles}>
+            <TextField label="ПІБ" {...register("fullName")} />
+            <FormControl>
+              <InputLabel sx={{ bgcolor: "background.paper", px: .5 }}>
+                Звання
+              </InputLabel>
+              <Select {...register("rank")} defaultValue="">
+                {Object.values(ArmyRank).map((r) => (
+                  <MenuItem value={r} key={r}>
+                    {r}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <TextField label="Посада" {...register("position")} />
+          </Box>
+          <Box sx={infoRowStyles}>
+            <TextField label="Мед. установа" {...register("clinic")} />
+            <TextField
+              label="Військова частина"
+              {...register("militaryBase")}
+            />
+            <TextField label="Підрозділ" {...register("subdivision")} />
+          </Box>
+          <Box sx={infoRowStyles}>
+            <TextField label="Телефон" {...register("phone")} />
+            <TextField label="Пошта" {...register("email")} />
+            <TextField label="Підпис" {...register("signature")} />
+          </Box>
+        </Box>
+      </Container>
+    </>
+  );
+};

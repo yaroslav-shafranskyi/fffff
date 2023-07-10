@@ -66,3 +66,31 @@ export const dialogInputsWrapperStyles: SxProps = {
   gridTemplateColumns: "repeat(2, 1fr)",
   gap: 2,
 };
+
+export const cardStyles: SxProps = {
+  p: 2,
+  display: "grid",
+  gap: 2,
+};
+
+const commonWrapperStyles: SxProps = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 2,
+};
+
+export const containerStyles: SxProps = {
+  py: 2,
+  bgcolor: "background.paper",
+  ...commonWrapperStyles,
+};
+
+export const infoWrapperStyles: SxProps = {
+  ...commonWrapperStyles,
+};
+
+export const infoRowStyles: SxProps = {
+  display: "grid",
+  gridTemplateColumns: "repeat(3, 1fr)",
+  gap: 2,
+};

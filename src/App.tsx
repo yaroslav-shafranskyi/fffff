@@ -13,7 +13,7 @@ import {
   Conclusion,
   Header,
   Login,
-  User,
+  UserPage,
 } from "./components";
 import { theme } from "./theme";
 import "./App.css";
@@ -72,7 +72,7 @@ const App = () => {
               path={`${conclusionUrl}/:personId/:formId`}
               element={<Conclusion />}
             />
-            <Route path={`${userUrl}/:userId`} element={<User />} />
+            <Route path={`${userUrl}/:userId`} element={<UserPage />} />
           </Routes>
         </Router>
       </QueryClientProvider>

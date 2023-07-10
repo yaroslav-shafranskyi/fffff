@@ -1,7 +1,11 @@
 import { useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { loginUrl } from "../../constants";
+
+import { useGetUser } from "../user";
 
 import { useConfirmPassword } from "./useConfirmPassword";
-import { useGetPermissions } from "./useGetPermissions";
 
 const emptyArray: [] = [];
 
@@ -9,7 +13,8 @@ export const useAuthorizedSubmit = <T>(
   cb: (...args: T[]) => void,
   args?: T[]
 ) => {
-  const { user } = useGetPermissions();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const { mutate: confirmPassword } = useConfirmPassword({
     onSuccess: (res) => {
@@ -22,7 +27,13 @@ export const useAuthorizedSubmit = <T>(
     },
   });
 
+  const { user } = useGetUser();
+
   const handleSubmit = useCallback(() => {
+    if (!user) {
+      navigate(loginUrl, { state: { prevPath: pathname } });
+      return;
+    }
     const password = prompt("Підтвердіть пароль");
     if (password === null) {
       return;
@@ -31,7 +42,7 @@ export const useAuthorizedSubmit = <T>(
       user,
       password,
     });
-  }, [confirmPassword, user]);
+  }, [confirmPassword, navigate, pathname, user]);
 
   return handleSubmit;
 };

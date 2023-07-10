@@ -4,7 +4,7 @@ import { http } from "../../helpers";
 import { serviceUrl, userUrl } from "../../constants";
 
 import { IUser } from "../IUser";
-import { useGetPermissions } from "../login";
+import { useGetUser } from "../user";
 
 import { queryUsersQueryKey } from "./constants";
 
@@ -19,7 +19,7 @@ export const useQueryUsers = (
   queryString?: string,
   options?: UseQueryOptions<QueryUsersType>
 ) => {
-  const { user: currentUser } = useGetPermissions();
+  const { user: currentUser } = useGetUser();
 
   const queryFn = () =>
     http.post(`${serviceUrl}${userUrl}/query`, {

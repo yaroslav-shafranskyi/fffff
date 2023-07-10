@@ -37,9 +37,7 @@ export const UserIcon = () => {
 
   const logout = useLogout();
 
-  const { user } = useGetUser({
-    enabled: !!userMenuAnchorEl,
-  });
+  const user = useGetUser();
   const { fullName, position, user: login, role, id } = user;
 
   const isAdmin = role === UserType.ADMIN || role === UserType.SUPER_ADMIN;
