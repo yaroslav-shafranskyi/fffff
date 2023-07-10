@@ -18,6 +18,7 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
     title,
     columns,
     queryData = {},
+    isMinor,
     goBack,
     onChange,
   } = props;
@@ -46,10 +47,12 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
     <Box sx={{ width: "100%" }}>
       <Box sx={toolbarWrapperStyles}>
         <Box sx={titleWrapperStyles}>
-          <IconButton onClick={handleGoBack}>
-            <BackIcon />
-          </IconButton>
-          <Typography variant="h4">{title}</Typography>
+          {!isMinor && (
+            <IconButton onClick={handleGoBack}>
+              <BackIcon />
+            </IconButton>
+          )}
+          <Typography variant={isMinor ? "h5" : "h4"}>{title}</Typography>
         </Box>
         <Box sx={titleWrapperStyles}>
           {globalFilter !== undefined && (

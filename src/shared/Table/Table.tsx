@@ -15,6 +15,7 @@ import {
   TableContainer,
   Paper,
   Tooltip,
+  Box,
 } from "@mui/material";
 
 import { getInitialQuery } from "../../constants/query/query";
@@ -26,6 +27,7 @@ import {
   placeholderStyles,
   tableRowStyles,
   tableStyles,
+  tableWrappersStyles,
 } from "./styles";
 import { ITableProps } from "./types";
 import { Toolbar } from "./Toolbar";
@@ -38,6 +40,7 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
     total: propsTotal,
     title,
     queryData,
+    isMinor,
     query = getInitialQuery(),
     onQueryChange,
     goBack,
@@ -90,12 +93,13 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
   );
 
   return (
-    <>
+    <Box sx={tableWrappersStyles}>
       <Toolbar
         title={title}
         query={query}
         columns={propsColumns}
         queryData={queryData}
+        isMinor={isMinor}
         goBack={goBack}
         onChange={handleSubmitQuery}
       />
@@ -154,6 +158,6 @@ export const Table = <TData extends object>(props: ITableProps<TData>) => {
           onChange={handleQueryChange("iterator")}
         />
       </TableContainer>
-    </>
+    </Box>
   );
 };

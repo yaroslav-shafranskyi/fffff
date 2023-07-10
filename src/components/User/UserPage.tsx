@@ -75,7 +75,9 @@ export const UserPage = () => {
             <TextField label="Підпис" {...register("signature")} />
           </Box>
         </Box>
-        <RecordsTable />
+        <Box sx={{ mt: 1 }}>
+          <RecordsTable />
+        </Box>
       </Container>
     </>
   );

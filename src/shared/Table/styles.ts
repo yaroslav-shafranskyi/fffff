@@ -142,3 +142,8 @@ export const columnsFilterActionsWrapperStyles: SxProps = {
   display: "flex",
   gap: 2,
 };
+
+export const tableWrappersStyles: SxProps = {
+  display: "grid",
+  gap: 2,
+};

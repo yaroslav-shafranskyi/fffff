@@ -19,19 +19,21 @@ export const RecordsTable: FC = () => {
 
   const { records, total } = useQueryUserRecords(query);
 
-  const goBack = () => {
-    navigate("/");
-  };
+  const goToForm = useCallback(
+    (row: RowData) => () => {
+      const { personId, type, formId } = (row as { original: IUserBriefRecord })
+        .original;
 
-  const goToForm = useCallback((row: RowData) => () => {
-    const { personId, type, formId } = (row as { original: IUserBriefRecord }).original;
-
-    const formUrl = getFormUrlByType(type);
-    if (!formUrl) {
-      return;
-    }
-    navigate(`${formUrl}/${personId}/${formId}`);
-  }, [navigate])
+      const formUrl = getFormUrlByType(type);
+      if (!formUrl) {
+        return;
+      }
+      navigate(`${formUrl}/${personId}/${formId}`, {
+        state: { readonly: true },
+      });
+    },
+    [navigate]
+  );
 
   return (
     <Table<IUserBriefRecord>
@@ -40,9 +42,9 @@ export const RecordsTable: FC = () => {
       query={query}
       queryData={queryData}
       total={total}
-      size='small'
+      size="small"
       title="Заповнені документи"
-      goBack={goBack}
+      isMinor={true}
       onQueryChange={setQuery}
       onRowClick={goToForm}
     />

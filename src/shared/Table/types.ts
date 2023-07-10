@@ -57,6 +57,7 @@ export interface IQueryData {
 
 export interface ITableProps<T extends object> extends TableProps {
   title?: string;
+  isMinor?: boolean;
   data: T[];
   columns: IColumn<T>[];
   query?: IQuery<T>;
@@ -86,6 +87,7 @@ export interface IToolbarProps<T extends object> {
   query?: IQuery<T>;
   columns: IColumn<T>[];
   queryData?: IQueryData;
+  isMinor?: boolean;
   goBack?: () => void;
   onChange: (query: IQuery<T>) => void;
 }
