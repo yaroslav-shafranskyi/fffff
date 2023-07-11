@@ -162,7 +162,7 @@ export const ManageUsers: OpenUserType = ({ mode, onClose }) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder="Почніть вводити логін"
+                  placeholder="Почніть вводити логін або ім'я користувача"
                   onChange={handleInputChange}
                 />
               )}

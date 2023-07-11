@@ -40,7 +40,6 @@ export const UserIcon = () => {
   const user = useGetUser();
   const { fullName, position, user: login, role, id } = user;
 
-  const isAdmin = role === UserType.ADMIN || role === UserType.SUPER_ADMIN;
   const isSuperAdmin = role === UserType.SUPER_ADMIN;
 
   const [OpenUserComponent, handleOpenUser] = useOpenFormDialog(ManageUsers);
@@ -85,7 +84,7 @@ export const UserIcon = () => {
         {!!position && (
           <Typography color="textSecondary">{position}</Typography>
         )}
-        {isAdmin && (
+        {isSuperAdmin && (
           <Box sx={menuButtonsWrapperStyles}>
             <Button
               variant="contained"
@@ -94,24 +93,20 @@ export const UserIcon = () => {
             >
               Додати користувача
             </Button>
-            {isSuperAdmin && (
-              <>
-                <Button
-                  variant="contained"
-                  sx={updateUserButtonStyles}
-                  onClick={openUser(ManageUserMode.UPDATE)}
-                >
-                  Редагувати користувача
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={openUser(ManageUserMode.REMOVE)}
-                >
-                  Видалити користувача
-                </Button>
-              </>
-            )}
+            <Button
+              variant="contained"
+              sx={updateUserButtonStyles}
+              onClick={openUser(ManageUserMode.UPDATE)}
+            >
+              Редагувати користувача
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={openUser(ManageUserMode.REMOVE)}
+            >
+              Видалити користувача
+            </Button>
           </Box>
         )}
         <MenuItem sx={{ width: "100%" }} onClick={goToUser}>

@@ -1,25 +1,22 @@
 import { useFormContext } from "react-hook-form";
-import { Box, Typography } from '@mui/material';
+import { Box, Typography } from "@mui/material";
 
-import { Input } from "../../../../shared";
+import { Signature as SharedSignature } from "../../../../shared";
 import { IForm100 } from "../../../../api";
-import { ChangeEvent } from "react";
 
 export const Signature = () => {
-    const { getValues, setValue } = useFormContext<IForm100>();
+  const { getValues, setValue } = useFormContext<IForm100>();
 
-    const signature = getValues('signature');
+  const signature = getValues("signature");
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setValue('signature', event.target.value);
-    };
+  const handleChange = (sig?: string) => {
+    setValue("signature", sig);
+  };
 
-    return (
-        <Box sx={{ textAlign: 'center' }}>
-            <Input fullWidth={true} value={signature ?? ''} onChange={handleChange} />
-            <Typography variant='caption'>
-                підпис (розбірливо)
-            </Typography>
-        </Box>
-    );
+  return (
+    <Box sx={{ textAlign: "center" }}>
+      <SharedSignature onSubmit={handleChange} signature={signature} />
+      <Typography variant="caption">підпис (розбірливо)</Typography>
+    </Box>
+  );
 };

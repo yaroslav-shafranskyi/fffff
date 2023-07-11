@@ -53,5 +53,6 @@ export const dischargeBackPageSchema = object()
     date: defaultNumberSchema,
     recommendations: defaultStringSchema,
     info: defaultStringSchema,
+    signature: defaultStringSchema,
   })
   .required();

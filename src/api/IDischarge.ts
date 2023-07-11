@@ -19,6 +19,7 @@ export interface IDischarge extends ICommonFormHeaderFields {
   date: number;
   doctor: string;
   doctorId: number;
+  signature: string;
 }
 
 export interface IResponseDischarge

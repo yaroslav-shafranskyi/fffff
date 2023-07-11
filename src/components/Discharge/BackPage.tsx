@@ -4,7 +4,7 @@ import { Box, Typography } from "@mui/material";
 
 import { IFCPropsWithReadonly } from "../../interfaces";
 import { commonInputStyles, multilineInputStyles } from "../../constants";
-import { Input, DateInputWithTextMonth } from "../../shared";
+import { Input, DateInputWithTextMonth, Signature } from "../../shared";
 import { convertNullOrNumberToDate } from "../../helpers";
 
 import { formContentStyles } from "../commonFormStyles";
@@ -14,10 +14,11 @@ import {
   backPageFooterStyles,
   backPageWrapper,
   doctorHintStyles,
+  doctorWrapperStyles,
 } from "./styles";
 
 export const BackPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
-  const { getValues, setValue, clearErrors, register, formState } =
+  const { getValues, setValue, clearErrors, register, watch, formState } =
     useFormContext<DischargeBackPageState>();
   const { errors } = formState;
 
@@ -42,6 +43,13 @@ export const BackPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
       clearErrors("date");
     },
     [clearErrors, readonly, setValue]
+  );
+
+  const handleSignatureChange = useCallback(
+    (sig?: string) => {
+      setValue("signature", sig ?? "");
+    },
+    [setValue]
   );
 
   return (
@@ -85,14 +93,23 @@ export const BackPage: FC<IFCPropsWithReadonly> = ({ readonly }) => {
             value={convertNullOrNumberToDate(getValues("date"))}
             onChange={handleDateChange}
           />
-          <Box sx={{ display: "flex", gap: "2px" }}>
+          <Box sx={doctorWrapperStyles}>
             <Typography>Лікар</Typography>
             <Box sx={{ display: "grid" }}>
               <Input
                 {...register("doctor")}
                 onChange={handleInputChange("doctor")}
                 value={getValues("doctor") ?? ""}
-                error={errors?.doctor?.message}
+                error={errors?.doctor?.message || errors?.signature?.message}
+                InputProps={{
+                  sx: { alignItems: "baseline" },
+                  endAdornment: (
+                    <Signature
+                      signature={watch("signature")}
+                      onSubmit={handleSignatureChange}
+                    />
+                  ),
+                }}
               />
               <Typography variant="caption" sx={doctorHintStyles}>
                 (прізвище, підпис)

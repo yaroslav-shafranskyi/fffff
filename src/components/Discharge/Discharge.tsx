@@ -58,10 +58,10 @@ export const Discharge = () => {
   });
 
   const { initialFrontPageValues, initialBackPageValues } = useMemo(() => {
-    const { doctor, date, recommendations, info, ...rest } = initialForm;
+    const { doctor, date, recommendations, info, signature, ...rest } = initialForm;
     return {
       initialFrontPageValues: { ...rest },
-      initialBackPageValues: { doctor, date, recommendations, info },
+      initialBackPageValues: { doctor, date, recommendations, info, signature },
     };
   }, [initialForm]);
 

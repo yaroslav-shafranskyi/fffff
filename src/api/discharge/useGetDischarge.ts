@@ -29,10 +29,7 @@ export const useGetDischarge = (
       doctorId,
     }) as unknown as IDischarge;
 
-  const res = useQuery<IDischarge>(queryKey, queryFunction, {
-    ...options,
-    enabled: options?.enabled !== false && !!id,
-  });
+  const res = useQuery<IDischarge>(queryKey, queryFunction, options);
 
   const convertedData = res?.data;
 

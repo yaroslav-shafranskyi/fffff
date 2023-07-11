@@ -17,6 +17,7 @@ import {
   DateInputWithTextMonth,
   Input,
   InputWithTextIndent,
+  Signature,
 } from "../../shared";
 import {
   convertNullOrNumberToDate,
@@ -110,6 +111,13 @@ export const Conclusion = () => {
       clearErrors("date");
     },
     [clearErrors, readonly, setValue]
+  );
+
+  const handleSignatureShange = useCallback(
+    (sig?: string) => {
+      setValue("signature", sig ?? "");
+    },
+    [setValue]
   );
 
   const submitForm = useCallback(async () => {
@@ -236,12 +244,20 @@ export const Conclusion = () => {
             <Box sx={signatureStyles}>
               <Typography>Лікар-консультант</Typography>
               <Box sx={signatureInputWrapperStyles}>
-                <Input
-                  fullWidth={true}
-                  {...register("signature")}
-                  onChange={handleInputChange("signature")}
-                  value={getValues("signature") ?? ""}
-                />
+                  <Input
+                    fullWidth={true}
+                    {...register("doctorName")}
+                    onChange={handleInputChange("doctorName")}
+                    value={getValues("doctorName") ?? ""}
+                    InputProps={{
+                      endAdornment: (
+                        <Signature
+                          signature={getValues("signature")}
+                          onSubmit={handleSignatureShange}
+                        />
+                      ),
+                    }}
+                  />
                 <Typography sx={{ textAlign: "center" }} variant="caption">
                   (П.І.Б.)(підпис)
                 </Typography>
