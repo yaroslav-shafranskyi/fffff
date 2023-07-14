@@ -1,19 +1,26 @@
-import { FC, forwardRef } from 'react';
-import { TextField, Typography } from '@mui/material';
+import { FC, forwardRef, useMemo } from "react";
+import { Box, TextField, Typography } from "@mui/material";
 
-import { IInputProps } from './types';
+import { IInputProps } from "./types";
 
 export const Input: FC<IInputProps> = forwardRef((props, ref) => {
-    const { error, inputProps } = props;
-    return <>
-        <TextField
-            ref={ref}
-            variant='standard'
-            sx={{ p: 0 }}
-            {...props}
-            error={error !== undefined} 
-            inputProps={{sx: { p: 0 }, ...inputProps }}
-        />
-        {error && <Typography color='error'>{error}</Typography>}
-    </>
+  const { error, inputProps, variant = "standard" } = props;
+
+  const defaultSx = useMemo(
+    () => (variant === "standard" ? { p: 0 } : {}),
+    [variant]
+  );
+  return (
+    <Box>
+      <TextField
+        ref={ref}
+        sx={defaultSx}
+        variant={variant}
+        {...props}
+        error={error !== undefined}
+        inputProps={{ sx: defaultSx, ...inputProps }}
+      />
+      {error && <Typography color="error">{error}</Typography>}
+    </Box>
+  );
 });

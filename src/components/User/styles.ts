@@ -41,10 +41,23 @@ export const dialogActionsStyles: SxProps = {
   gap: 2,
 };
 
+export const dialogTitleStyles: SxProps = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  px: 2,
+};
+
 export const dialogContentStyles: SxProps = {
-  gap: 6,
   display: "grid",
-  p: 5,
+  gap: 4,
+  pt: 4,
+};
+
+export const dialogInputsWrapperStyles: SxProps = {
+  gap: 2,
+  display: "grid",
+  p: 2,
 };
 
 export const dialogButtonStyles: SxProps<Theme> = (theme) => ({
@@ -60,12 +73,6 @@ export const openButtonStyles: SxProps<Theme> = (theme) => ({
     bgcolor: theme.palette.primary.main,
   },
 });
-
-export const dialogInputsWrapperStyles: SxProps = {
-  display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
-  gap: 2,
-};
 
 export const cardStyles: SxProps = {
   p: 2,

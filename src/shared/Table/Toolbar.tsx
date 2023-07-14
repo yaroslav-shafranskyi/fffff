@@ -52,7 +52,7 @@ export const Toolbar = <T extends object>(props: IToolbarProps<T>) => {
               <BackIcon />
             </IconButton>
           )}
-          <Typography variant={isMinor ? "h5" : "h4"}>{title}</Typography>
+          <Typography variant="h5">{title}</Typography>
         </Box>
         <Box sx={titleWrapperStyles}>
           {globalFilter !== undefined && (

@@ -8,7 +8,9 @@ import {
   getUrl,
 } from "../../constants";
 import { IForm100, useGetUser } from "../../api";
-import { http } from "../../helpers";
+import { http, mergeObjects } from "../../helpers";
+
+const emptyObj = {} as IForm100;
 
 export const useGetForm100 = (
   personId: string,
@@ -33,9 +35,6 @@ export const useGetForm100 = (
 
   return {
     ...res,
-    form100: {
-      ...getInitialForm100(),
-      ...res?.data,
-    },
+    form100: mergeObjects(getInitialForm100(), res?.data ?? emptyObj),
   };
 };

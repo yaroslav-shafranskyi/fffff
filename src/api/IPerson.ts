@@ -18,6 +18,7 @@ export interface IPerson {
   address?: IAddress;
   profession?: string;
   subdivision?: string;
+  corps?: string;
 }
 
 export interface IPersonBrief

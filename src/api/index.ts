@@ -29,3 +29,4 @@ export * from "./Permissions";
 export * from "./login";
 export * from './IUser';
 export * from './user';
+export * from './CorpsType';

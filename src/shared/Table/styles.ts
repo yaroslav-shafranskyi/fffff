@@ -48,6 +48,7 @@ export const toolbarWrapperStyles: SxProps = {
 export const titleWrapperStyles: SxProps = {
   display: "flex",
   justifyContent: "start",
+  alignItems: "center",
   gap: 2,
 };
 

@@ -35,3 +35,8 @@ export const clearButtonStyles: SxProps<Theme> = (theme) => ({
     bgcolor: theme.palette.primary.main,
   },
 });
+
+export const inputLabelStyles: SxProps = {
+  bgcolor: "background.paper",
+  px: 0.5,
+};

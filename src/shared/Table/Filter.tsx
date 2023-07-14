@@ -135,7 +135,7 @@ export const Filter = <T extends object>(props: IFilterProps<T>) => {
             sx: { pl: 0 },
           }}
           onChange={handleInputChange}
-          onKeyPress={handleEnterPress}
+          onKeyUp={handleEnterPress}
         />
       )}
       {type === TableFilterType.DATE && (

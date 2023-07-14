@@ -1,4 +1,4 @@
-import { IUserBrief, Rank, UserType } from "../../api";
+import { IUserBrief, Rank, UserType, CorpsDataType } from "../../api";
 
 export const defaultUserData: IUserBrief = {
   user: "",
@@ -8,6 +8,7 @@ export const defaultUserData: IUserBrief = {
   clinic: "",
   militaryBase: "",
   subdivision: "",
+  corps: "" as CorpsDataType,
   phone: "",
   email: "",
   signature: "",
